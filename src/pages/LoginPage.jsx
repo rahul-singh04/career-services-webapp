@@ -74,7 +74,7 @@ const LoginPage = () => {
             {mode === 'login' ? 'Login' : 'Sign Up'}
           </button>
         </form>
-        <p className="text-center mt-4">   https://github.com/theOGCodeWitcher/error404Soen6011summer2023.git
+        <p className="text-center mt-4"> 
           {mode === 'login' ? "Don't have an account?" : "Already have an account?"}{' '}
           <button className="text-blue-500 font-semibold border border-indigo-600" onClick={toggleMode}>
             {mode === 'login' ? 'Sign Up' : 'Login'}
