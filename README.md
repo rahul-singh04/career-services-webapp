@@ -24,8 +24,14 @@
 ### Database
  As data storage, we decided to use Mongodb as our database. Compared with other databases, its document structure storage method ensures easier access to data. With the built-in distributed file system GridFS, MongoDB can satisfy fast range queries on large data sets. In addition, the sharding design capability of MongoDB can support a maximum of about 20 petabytes, which is enough to support general applications.
 
+## User Stories Backlog
 
 
+
+## Open Issues or plan for Next sprint
+In this round of sprints, we confirmed the important requirements of the project as user stories, formulated technical approaches suitable for our team and built a basic system platform. 
+We also encountered many problems. Unfamiliarity with the Node.js express framework will undoubtedly make us spend more time learning this emerging technology on the back end. For the front end, we also have some members who do not have corresponding experience, which also needs to invest time.
+In addition, we also assigned each member some challenging work for future sprints. In the next sprint, we will continue to optimise the results we have now, and gradually implement various functions.First of all, we will improve the corresponding interface for different user identities, such as student, employee and admin. At the same time, adjust the backend to match the frontend data. After each member completes the assigned tasks, we will integrate each branch and test each function. According to the feedback of our test results, we will make plans and adjustments for our next-step.
 
  
  
