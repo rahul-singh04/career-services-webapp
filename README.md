@@ -31,6 +31,7 @@ Front End React JS
 Our team has opted to use React as our front end technology since it is simple to understand and apply. Moreover,it provides great community access and documentation which can help any newbie to create web applications. 
 
 Backend
+We chose the younger Node.js Express framework. It can respond to front-end requests with middleware, and perform different request actions through routing tables. Based on the V8 JavaScript runtime environment, it develops faster because its model is lighter and its syntax is simpler.
 
 
 Database
