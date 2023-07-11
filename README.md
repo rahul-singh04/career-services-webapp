@@ -7,3 +7,16 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;To this end, the Agile development method will be applied to this project. By adopting four phases of sprints, incremental development is carried out to reach the final operational application system. In this process, according to the basic principles of Agile, personnel will be allocated reasonably, and fixed communication will also be arranged to promote understanding of each other’s work process and achieve better cooperation efficiency. 
 
+## Team members and Roles
+The duties have been assigned according to the experience of the team members and their suitability. Also, as a team we tried to help each other whenever someone get stuck and  found a solution.
+
+| Team Member         | Role                                     |
+|---------------------|------------------------------------------|
+| Jatin Arora         | Back End Developer + Product Owner       |
+| Nithin              | Front End Developer + Designer           |
+| Rahul Singh         | Front End Developer +  Project Manager   |
+| Vaishali Bansal     | Front End Developer + Scrum Master       | 
+| Yang Lui            | Back End Developer +  Tester             |
+| Vignesh Pugazhendhi | Developer + Quality Analyst              |
+
+
