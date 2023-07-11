@@ -19,4 +19,21 @@ The duties have been assigned according to the experience of the team members an
 | Yang Lui            | Back End Developer +  Tester             |
 | Vignesh Pugazhendhi | Developer + Quality Analyst              |
 
+## 3 Project Approach and Technology
+
+Approach- Agile Methodology
+Agile Methodology based on development within a short span of time as we have only four sprints to complete this project. Software is developed in increment so changes can be done quickly and it focuses on interaction over tools, maintaining simplicity with minimum documentation. 
+
+Version Control Software
+We have given Github a version control tool to work on our project as it is easy to integrate all the codes and to observe every minute changes in a team. It makes it easy for frontend and backend developers to commit changes. 
+
+Front End React JS 
+Our team has opted to use React as our front end technology since it is simple to understand and apply. Moreover,it provides great community access and documentation which can help any newbie to create web applications. 
+
+Backend
+
+
+Database
+As data storage, we decided to use Mongodb as our database. Compared with other databases, its document structure storage method ensures easier access to data. With the built-in distributed file system GridFS, MongoDB can satisfy fast range queries on large data sets. In addition, the sharding design capability of MongoDB can support a maximum of about 20 petabytes, which is enough to support general applications.
+
 
