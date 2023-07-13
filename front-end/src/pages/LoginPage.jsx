@@ -5,7 +5,7 @@ const LoginPage = () => {
   const [mode, setMode] = useState('login');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('') ;
   const [passwordMatch, setPasswordMatch] = useState(true);
 
   const toggleMode = () => {
