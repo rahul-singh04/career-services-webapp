@@ -29,11 +29,11 @@ export default function NavigationBar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Pages
-        </a>
+        <Link to="/profile">
+          Profile
+        </Link>
       </Typography>
-      <Typography
+      {/* <Typography
         as="li"
         variant="small"
         color="blue-gray"
@@ -62,7 +62,7 @@ export default function NavigationBar() {
         <a href="#" className="flex items-center">
           Docs
         </a>
-      </Typography>
+      </Typography> */}
     </ul>
   );
 
@@ -79,7 +79,7 @@ export default function NavigationBar() {
           </Typography>
           </Link>
           <div className="flex items-center gap-4">
-            {/* <div className="mr-4 hidden lg:block">{navList}</div> */}
+            <div className="mr-4 hidden lg:block">{navList}</div>
             <Link to="/Signin">
               <Button
                 variant="filled"
@@ -130,7 +130,7 @@ export default function NavigationBar() {
           </div>
         </div>
         <Collapse open={openNav}>
-          {/* {navList} */}
+          {navList}
           <Link to="/Signin">
           <Button variant="gradient" size="sm" fullWidth className="mb-2">
             <span>Sign in</span>

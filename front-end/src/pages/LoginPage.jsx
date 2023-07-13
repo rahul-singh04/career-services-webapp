@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import RoleDropdown from '../components/RoleDropdown';
 import { handleSignup, handleSignin } from '../api/authApi';
+import { Navigate } from "react-router-dom";
+
 
 
 const LoginPage = () => {
@@ -47,19 +49,21 @@ const LoginPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    {
-      mode === login ? signInDetails = {
-        username: 'abc',
-        email: email,
-        password: password,
-      } : signUpdetails = {
-        username: 'abc',
-        email: email,
-        password: password,
-      };
-    }
 
-    { mode === login ? handleSignin(signInDetails, handleSigninCallback) : handleSignup(signUpdetails, handleSignupCallback) }
+    const signInDetails = {
+        username: username,
+        email: email,
+        password: password,
+      } 
+       const signUpdetails = {
+        username: username,
+        email: email,
+        password: password,
+        roles : [role]
+      };
+    
+
+    { mode === 'login' ? handleSignin(signInDetails, handleSigninCallback) : handleSignup(signUpdetails, handleSignupCallback) }
 
   };
 
@@ -67,15 +71,16 @@ const LoginPage = () => {
     if (result === 'Success') {
       console.log('Signup successful');
     } else {
-      console.error('Signup failed');
+      console.log(result);
     }
   };
 
   const handleSigninCallback = (result) => {
     if (result === 'Success') {
-      console.log('Signup successful');
+      console.log('Signin successful');
+      <Navigate to="/profile" replace={true} />
     } else {
-      console.error('Signup failed');
+      console.log(result);
     }
   };
 
