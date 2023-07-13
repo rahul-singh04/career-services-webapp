@@ -11,14 +11,20 @@ var corsOptions = {
 };
 
 const PORT = process.env.PORT || config.serverPort;
+const path = __dirname + "/app/views/";
 
 const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path));
 
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to careerServices application!" });
+// app.get("/", (req, res) => {
+//   res.json({ message: "Welcome to careerServices application!" });
+// });
+
+app.get("/", function (req, res) {
+  res.sendFile(path + "index.html");
 });
 
 app.listen(PORT, () => {
