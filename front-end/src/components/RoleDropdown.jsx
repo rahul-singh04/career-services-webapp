@@ -19,9 +19,9 @@ const RoleDropdown = ({ onSelectRole }) => {
             onChange={handleRoleChange}
           >
             <option value="">Select Role</option>
-            <option value="student">Student</option>
-            <option value="employer">Employer</option>
-            <option value="admin">Admin</option>
+            <option value="candidate">candidate</option>
+            <option value="employer">employer</option>
+            <option value="admin">admin</option>
           </select>
         </div>
     </div>
