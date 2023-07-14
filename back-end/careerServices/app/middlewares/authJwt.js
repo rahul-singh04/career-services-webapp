@@ -22,71 +22,81 @@ verifyToken = (req, res, next) => {
   });
 };
 
-isAdmin = (req, res, next) => {
-  User.findById(req.userId).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
-
-    Role.find(
-      {
-        _id: { $in: user.roles },
-      },
-      (err, roles) => {
-        if (err) {
-          res.status(500).send({ message: err });
-          return;
-        }
-
-        for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === "admin") {
+const isAdmin = (req, res, next) => {
+  User.findById(req.userId)
+    .exec()
+    .then((user) => {
+      Role.find({ _id: { $in: user.roles } })
+        .exec()
+        .then((roles) => {
+          const isAdminRole = roles.some((role) => role.name === "admin");
+          if (isAdminRole) {
             next();
-            return;
+          } else {
+            res.status(403).send({ message: "Require Admin Role!" });
           }
-        }
-
-        res.status(403).send({ message: "Require Admin Role!" });
-        return;
-      }
-    );
-  });
+        })
+        .catch((err) => {
+          res.status(500).send({ message: err });
+        });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err });
+    });
 };
 
-isEmployer = (req, res, next) => {
-  User.findById(req.userId).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err });
-      return;
-    }
-
-    Role.find(
-      {
-        _id: { $in: user.roles },
-      },
-      (err, roles) => {
-        if (err) {
-          res.status(500).send({ message: err });
-          return;
-        }
-
-        for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === "employer") {
+const isEmployer = (req, res, next) => {
+  User.findById(req.userId)
+    .exec()
+    .then((user) => {
+      Role.find({ _id: { $in: user.roles } })
+        .exec()
+        .then((roles) => {
+          const isEmployerRole = roles.some((role) => role.name === "employer");
+          if (isEmployerRole) {
             next();
-            return;
+          } else {
+            res.status(403).send({ message: "Require Employer Role!" });
           }
-        }
+        })
+        .catch((err) => {
+          res.status(500).send({ message: err });
+        });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err });
+    });
+};
 
-        res.status(403).send({ message: "Require Employer Role!" });
-        return;
-      }
-    );
-  });
+const isCandidate = (req, res, next) => {
+  User.findById(req.userId)
+    .exec()
+    .then((user) => {
+      Role.find({ _id: { $in: user.roles } })
+        .exec()
+        .then((roles) => {
+          const isCandidateRole = roles.some(
+            (role) => role.name === "candidate"
+          );
+          if (isCandidateRole) {
+            next();
+          } else {
+            res.status(403).send({ message: "Require Candidate Role!" });
+          }
+        })
+        .catch((err) => {
+          res.status(500).send({ message: err });
+        });
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err });
+    });
 };
 
 const authJwt = {
   verifyToken,
   isAdmin,
   isEmployer,
+  isCandidate,
 };
 module.exports = authJwt;

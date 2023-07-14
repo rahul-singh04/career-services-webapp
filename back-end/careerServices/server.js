@@ -19,10 +19,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path));
 
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome to careerServices application!" });
-// });
-
 app.get("/", function (req, res) {
   res.sendFile(path + "index.html");
 });
