@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RoleDropdown from '../components/RoleDropdown';
 import { handleSignup, handleSignin } from '../api/authApi';
+import { useNavigate } from 'react-router-dom';
 
 
 const LoginPage = () => {
@@ -11,6 +12,8 @@ const LoginPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('') ;
   const [passwordMatch, setPasswordMatch] = useState(true);
+
+  const navigate = useNavigate();
 
   const toggleMode = () => {
     setMode(prevMode => prevMode === 'login' ? 'signup' : 'login');
@@ -47,19 +50,20 @@ const LoginPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    {
-      mode === login ? signInDetails = {
-        username: 'abc',
+    const signInDetails = {
+        username: username,
         email: email,
         password: password,
-      } : signUpdetails = {
-        username: 'abc',
+      } 
+       const signUpdetails = {
+        username: username,
         email: email,
         password: password,
+        roles : [role]
       };
-    }
+    
 
-    { mode === login ? handleSignin(signInDetails, handleSigninCallback) : handleSignup(signUpdetails, handleSignupCallback) }
+    { mode === 'login' ? handleSignin(signInDetails, handleSigninCallback) : handleSignup(signUpdetails, handleSignupCallback) }
 
   };
 
@@ -67,15 +71,16 @@ const LoginPage = () => {
     if (result === 'Success') {
       console.log('Signup successful');
     } else {
-      console.error('Signup failed');
+      console.log(result);
     }
   };
 
   const handleSigninCallback = (result) => {
     if (result === 'Success') {
-      console.log('Signup successful');
+      console.log('Signin successful');
+      navigate('/profile')
     } else {
-      console.error('Signup failed');
+      console.log(result);
     }
   };
 
