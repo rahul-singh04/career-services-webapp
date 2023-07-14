@@ -13,11 +13,11 @@ The duties have been assigned according to the experience of the team members an
 | Team Member      (Github usernames)   | Role                                     |
 |---------------------------------------|------------------------------------------|
 | Jatin Arora         (jatin51997)      | Back End Developer + Product Owner       |
-| Nithin               (nithincode-s)   | Front End Developer + Designer           |
+| Nithin              (nithincode-s)   | Front End Developer + Designer            |
 | Rahul Singh        (theOGCodeWitcher) | Front End Developer +  Project Manager   |
-| Vaishali Bansal    (vaishu49)         | Front End Developer + Scrum Master       | 
+| Vaishali Bansal    (vaishu49)         | Front End Developer +  Quality Analyst   | 
 | Yang Lui           (Liuliu-09-17)     | Back End Developer +  Tester             |
-| Vignesh Pugazhendhi  (VigneshP1505 )  | Developer + Quality Analyst              |
+| Vignesh Pugazhendhi  (VigneshP1505 )  | Developer +  Scrum Master                |
 
 ## Project Approach and Technology
 

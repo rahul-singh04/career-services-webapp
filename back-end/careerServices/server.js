@@ -1,27 +1,32 @@
 const express = require("express");
 const cors = require("cors");
 
-const db = require("./app/models");
+const config = require("./app/config/config");
 
-const app = express();
+const db = require("./app/models");
 const Role = db.role;
+
 var corsOptions = {
-  origin: "http://localhost:8081",
+  origin: config.corsOrigin,
 };
 
-const PORT = process.env.PORT || 3090;
+const PORT = process.env.PORT || config.serverPort;
+const path = __dirname + "/app/views/";
 
+const app = express();
 app.use(cors(corsOptions));
-
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path));
 
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to careerServices application!" });
+// app.get("/", (req, res) => {
+//   res.json({ message: "Welcome to careerServices application!" });
+// });
+
+app.get("/", function (req, res) {
+  res.sendFile(path + "index.html");
 });
 
-require("./app/routes/dummy.routes")(app);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });
@@ -45,8 +50,8 @@ async function initial() {
     const count = await Role.estimatedDocumentCount();
     if (count === 0) {
       await Promise.all([
-        new Role({ name: "user" }).save(),
-        new Role({ name: "moderator" }).save(),
+        new Role({ name: "candidate" }).save(),
+        new Role({ name: "employer" }).save(),
         new Role({ name: "admin" }).save(),
       ]);
 
