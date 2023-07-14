@@ -23,7 +23,7 @@ The duties have been assigned according to the experience of the team members an
 
 * Approach- Agile Methodology
 
-  *Agile Methodology based on development within a short span of time as we have only four sprints to complete this project. Software is developed in increments so changes can be done quickly and it focuses on interaction over tools, maintaining simplicity with minimum documentation. 
+  * Agile Methodology based on development within a short span of time as we have only four sprints to complete this project. Software is developed in increments so changes can be done quickly and it focuses on interaction over tools, maintaining simplicity with minimum documentation. 
 
 * Version Control Software
 
