@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
-
 const config = require("./app/config/config");
+const { logger } = require("./app/config/logger")
 
 const db = require("./app/models");
 const Role = db.role;
@@ -28,7 +28,7 @@ app.get("/", function (req, res) {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+  logger.info(`Server is running on port ${PORT}.`);
 });
 
 db.mongoose
@@ -37,11 +37,11 @@ db.mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to the database!");
+    logger.info("Connected to the database!");
     initial();
   })
   .catch((err) => {
-    console.log("Cannot connect to the database!", err);
+    logger.error("Cannot connect to the database!", err);
     process.exit();
   });
 
@@ -55,10 +55,10 @@ async function initial() {
         new Role({ name: "admin" }).save(),
       ]);
 
-      console.log("Roles added to the collection");
+      logger.notice("Roles added to the collection");
     }
   } catch (err) {
-    console.log("Error adding roles to the collection", err);
+    logger.error("Error adding roles to the collection", err);
   }
 }
 
