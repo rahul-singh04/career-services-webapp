@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import RoleDropdown from '../components/RoleDropdown';
 import { handleSignup, handleSignin } from '../api/authApi';
-import { Navigate } from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 
 const LoginPage = () => {
@@ -13,6 +12,8 @@ const LoginPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('') ;
   const [passwordMatch, setPasswordMatch] = useState(true);
+
+  const navigate = useNavigate();
 
   const toggleMode = () => {
     setMode(prevMode => prevMode === 'login' ? 'signup' : 'login');
@@ -49,7 +50,6 @@ const LoginPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-
     const signInDetails = {
         username: username,
         email: email,
@@ -78,7 +78,7 @@ const LoginPage = () => {
   const handleSigninCallback = (result) => {
     if (result === 'Success') {
       console.log('Signin successful');
-      <Navigate to="/profile" replace={true} />
+      navigate('/profile')
     } else {
       console.log(result);
     }

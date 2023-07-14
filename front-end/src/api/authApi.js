@@ -25,5 +25,14 @@ export const handleSignin = (formData, callback) => {
     //   console.error(error.response.data.message);
       callback(error.response.data.message);
     });
+
 };
+
+export const  getCurrentUser = () =>{
+  return JSON.parse(localStorage.getItem('user'));;
+}
+
+export const logout = () => {
+  localStorage.removeItem("user");
+}
 

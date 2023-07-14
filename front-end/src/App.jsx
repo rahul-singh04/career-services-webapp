@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import Profile from './pages/Profile';
 
 function App() {
+    
   return (
     <div className="flex flex-col h-screen flex w-screen overflow-y-auto">
       <NavigationBar />
