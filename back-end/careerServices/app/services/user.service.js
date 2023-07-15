@@ -68,6 +68,29 @@ exports.getJobsPosted = async (token) => {
   return jobPostingsModel.find({ employerID: userId }).exec();
 };
 
+exports.getUserProfile = async (token) => {
+  const userId = new mongoose.Types.ObjectId(
+    extractuserModelIdFromToken(token)
+  );
+  return userModel.findOne({ _id: userId }, { password: 0 }).exec();
+};
+
+exports.updateUserProfile = async (token, updatedFields) => {
+  const userId = new mongoose.Types.ObjectId(
+    extractuserModelIdFromToken(token)
+  );
+
+  try {
+    const result = await userModel
+      .updateOne({ _id: userId }, { $set: updatedFields })
+      .exec();
+    return result;
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    throw error;
+  }
+};
+
 exports.createJob = async (token, jobTitle, jobDesc) => {
   const userId = new mongoose.Types.ObjectId(
     extractuserModelIdFromToken(token)
