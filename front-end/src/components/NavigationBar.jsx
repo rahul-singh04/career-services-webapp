@@ -103,7 +103,7 @@ export default function NavigationBar() {
 
   return (
     <>
-      <Navbar className="sticky top z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4" key={loggedin}>
+      <Navbar className="sticky top z-10 h-max max-w-full rounded-none py-2 px-4  lg:px-8 lg:py-4" key={loggedin}>
         <div className="flex items-center justify-between text-blue-gray-900">
           <Link to="/">
             <Typography
