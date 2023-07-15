@@ -21,7 +21,9 @@ export const handleSignin = (formData, callback) => {
       callback('success');
     })
     .catch((error) => {
-    //   console.error(error.response.data.message);
+      if(error.code == "ERR_NETWORK"){
+        callback(error.message);
+      }
       callback(error.response);
     });
 

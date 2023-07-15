@@ -34,7 +34,9 @@ export default function NavigationBar() {
     if (getCurrentUser() != null) {
       logout();
       setloggedin(false);
-      navigate('/');
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
     }
   }
 
