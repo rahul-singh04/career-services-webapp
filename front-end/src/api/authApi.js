@@ -15,15 +15,14 @@ export const handleSignup = (formData, callback) => {
 export const handleSignin = (formData, callback) => {
   axios.post('http://localhost:3090/api/auth/signin', formData)
     .then((response) => {
-    //   console.log(response.data);
     if (response.data.accessToken) {
         localStorage.setItem("user", JSON.stringify(response.data));
       }
-      callback('Success');
+      callback('success');
     })
     .catch((error) => {
     //   console.error(error.response.data.message);
-      callback(error.response.data.message);
+      callback(error.response);
     });
 
 };
