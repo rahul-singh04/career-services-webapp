@@ -12,6 +12,8 @@ const LoginPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('') ;
   const [passwordMatch, setPasswordMatch] = useState(true);
+  const [afterSignInMessage, setlafterSignInMessage] = useState('') ;
+
 
   const navigate = useNavigate();
 
@@ -30,11 +32,13 @@ const LoginPage = () => {
   const handleuserNameChange = e => {
     const value = e.target.value;
     setUsername(value);
+    setlafterSignInMessage('')
   };
   const handlePasswordChange = e => {
     const value = e.target.value;
     setPassword(value);
     setPasswordMatch(confirmPassword === value);
+    setlafterSignInMessage('')
   };
 
   const handleConfirmPasswordChange = e => {
@@ -62,24 +66,28 @@ const LoginPage = () => {
         roles : [role]
       };
     
-
     { mode === 'login' ? handleSignin(signInDetails, handleSigninCallback) : handleSignup(signUpdetails, handleSignupCallback) }
-
   };
 
   const handleSignupCallback = (result) => {
-    if (result === 'Success') {
-      console.log('Signup successful');
+    if (result.includes('successfully')) {
+      navigate('/')
     } else {
       console.log(result);
     }
   };
 
   const handleSigninCallback = (result) => {
-    if (result === 'Success') {
+    if (result === 'success') {
       console.log('Signin successful');
-      navigate('/profile')
+      setlafterSignInMessage('Successfully logged in!')
+        setTimeout(() => {
+        navigate('/profile')
+      }, 1000);
     } else {
+      if(result.statusText == "Unauthorized"){
+        setlafterSignInMessage('Wrong Password')
+      }
       console.log(result);
     }
   };
@@ -87,7 +95,7 @@ const LoginPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md">
+      <div className="bg-white p-8 w-1/3 rounded shadow-md">
         <h2 className="text-2xl font-bold mb-4">{mode === 'login' ? 'Login' : 'Sign Up'}</h2>
         <form>
         <div className="mb-4">
@@ -130,6 +138,9 @@ const LoginPage = () => {
               </div>
             </div>
           )}
+          {afterSignInMessage &&  <div className={afterSignInMessage.includes('Successfully') ? 'text-green-600 mb-4' : 'text-red-600 mb-4'}>
+          {afterSignInMessage}
+          </div>}
           <button type="submit" className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
             onClick={handleSubmit}>
             {mode === 'login' ? 'Login' : 'Sign Up'}
