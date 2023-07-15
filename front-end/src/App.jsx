@@ -12,7 +12,7 @@ import Candidates from './pages/Candidates';
 function App() {
 
   return (
-    <div className="flex flex-col h-screen flex w-screen overflow-y-auto">
+    <div className="flex flex-col h-screen flex w-screen bg-gray-100 overflow-y-auto">
       <NavigationBar />
       <Routes>
         <Route path="/" element={<HomePage />} />
