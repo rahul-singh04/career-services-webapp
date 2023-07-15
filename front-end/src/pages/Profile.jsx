@@ -37,10 +37,6 @@ const Profile = () => {
         )}
         <div className='flex flex-row justify-center'>
               <div className="flex justify-center items-center">
-                <label htmlFor="resume-upload" className=" flex bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded cursor-pointer">
-                  <MdOutlineUploadFile size={40} onClick={handleResumeUpload} />
-                  <p className='pt-2'>Upload Resume</p>
-                </label>
                 <input
                   id="resume-upload"
                   type="file"
