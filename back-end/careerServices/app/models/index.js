@@ -1,16 +1,14 @@
-const config = require("../config/config");
-const dbConfig = require("../config/config.js");
-const db = {};
+const applicationModel = require("./applications.model");
+const jobPostingsModel = require("./jobPostings.model");
+const roleModel = require("./role.model");
+const userModel = require("./user.model");
+const ROLES = ["employer", "candidate", "admin"];
 const mongoose = require("mongoose");
-
-mongoose.Promise = global.Promise;
-
-db.mongoose = mongoose;
-db.url = dbConfig.url;
-db.user = require("./user.model");
-db.role = require("./role.model");
-db.jobPostings = require("./jobPostings.model");
-db.applications = require("./applications.model");
-db.ROLES = ["employer", "candidate", "admin"];
-
-module.exports = db;
+module.exports = {
+  applicationModel,
+  jobPostingsModel,
+  roleModel,
+  userModel,
+  ROLES,
+  mongoose,
+};
