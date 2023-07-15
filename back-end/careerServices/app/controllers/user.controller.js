@@ -1,3 +1,4 @@
+const { userModel } = require("../models");
 const service = require("../services");
 const userService = service.userService;
 
@@ -64,6 +65,33 @@ exports.getJobsPosted = async (req, res) => {
   } catch (error) {
     console.error("Failed to fetch jobs:", error);
     res.status(500).send("Failed to fetch jobs");
+  }
+};
+
+exports.getUserProfile = async (req, res) => {
+  try {
+    const profile = await userService.getUserProfile(
+      req.headers["x-access-token"]
+    );
+    res.status(200).send(profile);
+  } catch (error) {
+    console.error("Failed to fetch profile:", error);
+    res.status(500).send("Failed to fetch profile");
+  }
+};
+
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const updatedFields = req.body;
+
+    await userService.updateUserProfile(
+      req.headers["x-access-token"],
+      updatedFields
+    );
+    res.status(200).json({ message: "User profile updated successfully" });
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -136,7 +164,7 @@ exports.applyJob = async (req, res) => {
 
 exports.readUsers = async (req, res) => {
   try {
-    const users = await userService.getAllUsers();
+    const users = await userService.getAlluserModels();
     res.status(200).send(users);
   } catch (error) {
     console.error("Failed to fetch users:", error);

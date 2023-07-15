@@ -26,6 +26,17 @@ module.exports = function (app) {
   );
 
   app.get(
+    "/api/test/candidate/getUserProfile",
+    [authController.verifyToken, authController.isCandidate],
+    userController.getUserProfile
+  );
+  app.put(
+    "/api/test/candidate/updateUserProfile",
+    [authController.verifyToken, authController.isCandidate],
+    userController.updateUserProfile
+  );
+
+  app.get(
     "/api/test/admin",
     [authController.verifyToken, authController.isAdmin],
     userController.adminBoard
