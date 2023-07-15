@@ -28,6 +28,24 @@ app.listen(PORT, () => {
   logger.info(`Server is running on port ${PORT}.`);
 });
 
+app.use(async (req, res, next) => {
+  try {
+    console.log("Request Method:", req.method);
+    console.log("Request URL:", req.originalUrl);
+    console.log("Request Body:", req.body);
+
+    const oldSend = res.send;
+    res.send = async function (data) {
+      console.log("Response Body:", data);
+      await oldSend.apply(res, arguments);
+    };
+
+    await next();
+  } catch (error) {
+    next(error);
+  }
+});
+
 models.mongoose
   .connect(serverConfig.url, {
     useNewUrlParser: true,
