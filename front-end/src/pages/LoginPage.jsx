@@ -85,8 +85,11 @@ const LoginPage = () => {
         navigate('/profile')
       }, 1000);
     } else {
-      if(result.statusText == "Unauthorized"){
+      if(result.statusText && result.statusText == "Unauthorized"){
         setlafterSignInMessage('Wrong Password')
+      }
+      if(result == 'Network Error'){
+        //do something here , add material react modal
       }
       console.log(result);
     }
