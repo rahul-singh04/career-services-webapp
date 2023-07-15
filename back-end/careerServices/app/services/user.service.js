@@ -22,22 +22,13 @@ exports.getAdminContent = async () => {
 };
 
 exports.getFilteredCandidates = async () => {
-  const users = await userModel.find().populate("roles").exec();
+  const users = await userModel.find({}).populate("roles").exec();
   const candidates = users.filter((user) =>
     user.roles.some((role) => role.name === "candidate")
   );
   return candidates.map((candidate) => {
-    return {
-      username: candidate.username,
-      email: candidate.email,
-      fullName: candidate.fullName,
-      professionalSummary: candidate.professionalSummary,
-      location: candidate.location,
-      phoneNumber: candidate.phoneNumber,
-      linkedInProfile: candidate.linkedInProfile,
-      twitterProfile: candidate.twitterProfile,
-      githubProfile: candidate.githubProfile,
-    };
+    const { _id, password, roles, ...candidateInfo } = candidate._doc;
+    return candidateInfo;
   });
 };
 
@@ -72,7 +63,9 @@ exports.getUserProfile = async (token) => {
   const userId = new mongoose.Types.ObjectId(
     extractuserModelIdFromToken(token)
   );
-  return userModel.findOne({ _id: userId }, { password: 0 }).exec();
+  return userModel
+    .findOne({ _id: userId }, { password: 0, _id: 0, roles: 0 })
+    .exec();
 };
 
 exports.updateUserProfile = async (token, updatedFields) => {
