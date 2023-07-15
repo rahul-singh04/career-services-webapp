@@ -27,17 +27,8 @@ exports.getFilteredCandidates = async () => {
     user.roles.some((role) => role.name === "candidate")
   );
   return candidates.map((candidate) => {
-    return {
-      username: candidate.username,
-      email: candidate.email,
-      fullName: candidate.fullName,
-      professionalSummary: candidate.professionalSummary,
-      location: candidate.location,
-      phoneNumber: candidate.phoneNumber,
-      linkedInProfile: candidate.linkedInProfile,
-      twitterProfile: candidate.twitterProfile,
-      githubProfile: candidate.githubProfile,
-    };
+    const { password, ...candidateInfo } = candidate._doc;
+    return candidateInfo;
   });
 };
 

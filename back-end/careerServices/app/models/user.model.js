@@ -13,7 +13,15 @@ const User = mongoose.model(
       },
     ],
     fullName: String,
-    professionalSummary: String,
+    professionalSummary: [
+      {
+        companyName: String,
+        title: String,
+        startDate: Date,
+        endDate: Date,
+      },
+    ],
+    skills: [String],
     location: String,
     phoneNumber: String,
     linkedInProfile: String,
