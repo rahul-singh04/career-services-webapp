@@ -1,5 +1,6 @@
-const { authJwt } = require("../middlewares");
-const controller = require("../controllers/user.controller");
+const controller = require("../controllers");
+const authController = controller.authController;
+const userController = controller.userController;
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -10,23 +11,69 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/api/test/all", controller.allAccess);
+  app.get("/api/test/all", userController.allAccess);
 
   app.get(
     "/api/test/candidate",
-    [authJwt.verifyToken],
-    controller.candidateBoard
+    [authController.verifyToken],
+    userController.candidateBoard
   );
 
   app.get(
     "/api/test/employer",
-    [authJwt.verifyToken, authJwt.isEmployer],
-    controller.employerBoard
+    [authController.verifyToken, authController.isEmployer],
+    userController.employerBoard
   );
 
   app.get(
     "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
+    [authController.verifyToken, authController.isAdmin],
+    userController.adminBoard
+  );
+
+  app.get(
+    "/api/test/employer/browseCandidates",
+    [authController.verifyToken, authController.isEmployer],
+    userController.browseCandidates
+  );
+  app.get(
+    "/api/test/candidate/browseJobs",
+    [authController.verifyToken, authController.isCandidate],
+    userController.browseJobs
+  );
+  app.get(
+    "/api/test/employer/getJobsPosted",
+    [authController.verifyToken, authController.isEmployer],
+    userController.getJobsPosted
+  );
+  app.post(
+    "/api/test/employer/postJob",
+    [authController.verifyToken, authController.isEmployer],
+    userController.postJob
+  );
+  app.post(
+    "/api/test/candidate/applyJob",
+    [authController.verifyToken, authController.isCandidate],
+    userController.applyJob
+  );
+  app.get(
+    "/api/test/employer/getApplicants",
+    [authController.verifyToken, authController.isEmployer],
+    userController.getApplicants
+  );
+  app.put(
+    "/api/test/employer/putInterview",
+    [authController.verifyToken, authController.isEmployer],
+    userController.putInterview
+  );
+  app.get(
+    "/api/test/admin/readUsers",
+    [authController.verifyToken, authController.isAdmin],
+    userController.readUsers
+  );
+  app.get(
+    "/api/test/admin/readJobPostings",
+    [authController.verifyToken, authController.isAdmin],
+    userController.readJobPostings
   );
 };
