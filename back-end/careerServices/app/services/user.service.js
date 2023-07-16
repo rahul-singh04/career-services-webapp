@@ -4,23 +4,8 @@ const mongoose = models.mongoose;
 const userModel = models.userModel;
 const jobPostingsModel = models.jobPostingsModel;
 const applicationModel = models.applicationModel;
-
-exports.getPublicContent = async () => {
-  return "Public Content.";
-};
-
-exports.getCandidateContent = async () => {
-  return "Candidate Content.";
-};
-
-exports.getEmployerContent = async () => {
-  return "Employer Content.";
-};
-
-exports.getAdminContent = async () => {
-  return "Admin Content.";
-};
-
+const config = require("../config");
+const logger = config.loggerConfig.logger;
 exports.getFilteredCandidates = async () => {
   const users = await userModel.find({}).populate("roles").exec();
   const candidates = users.filter((user) =>
@@ -52,7 +37,7 @@ exports.getAllJobs = async () => {
   });
 };
 
-exports.getJobsPosted = async (token) => {
+exports.getJobs = async (token) => {
   const userId = new mongoose.Types.ObjectId(
     extractuserModelIdFromToken(token)
   );
@@ -79,7 +64,22 @@ exports.updateUserProfile = async (token, updatedFields) => {
       .exec();
     return result;
   } catch (error) {
-    console.error("Error updating user profile:", error);
+    logger.error("Error updating user profile:", error);
+    throw error;
+  }
+};
+exports.updateJobPosting = async (token, updatedFields) => {
+  const userId = new mongoose.Types.ObjectId(
+    extractuserModelIdFromToken(token)
+  );
+
+  try {
+    const result = await jobPostingsModel
+      .updateOne({ _id: userId }, { $set: updatedFields })
+      .exec();
+    return result;
+  } catch (error) {
+    logger.error("Error updating job posting:", error);
     throw error;
   }
 };
@@ -102,7 +102,10 @@ exports.getApplicants = async (jobID, token) => {
     .find({ jobID: jobObjectId })
     .exec();
   const candidateIDs = applications.map((app) => app.candidateID);
-  const users = await userModel.find({ _id: { $in: candidateIDs } }).exec();
+  const users = await userModel
+    .find({ _id: { $in: candidateIDs } })
+    .select("-password -roles") // Exclude 'password' and 'roles' fields
+    .exec();
   return applications.map((app) => {
     const user = users.find(
       (user) => user._id.toString() === app.candidateID.toString()
@@ -120,8 +123,8 @@ exports.getApplicants = async (jobID, token) => {
 exports.updateApplicationStatus = async (jobID, candidateID) => {
   const jobObjectId = new mongoose.Types.ObjectId(jobID);
   const candidateObjectId = new mongoose.Types.ObjectId(candidateID);
-  console.log(jobObjectId);
-  console.log(candidateObjectId);
+  logger.log(jobObjectId);
+  logger.log(candidateObjectId);
   const updatedApplication = await applicationModel.findOneAndUpdate(
     { jobID: jobObjectId, candidateID: candidateObjectId },
     { status: "Interview Posted" },
