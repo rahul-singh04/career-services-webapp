@@ -1,13 +1,12 @@
 const jwt = require("jsonwebtoken");
 const models = require("../../models");
 const { logger } = require("../../config").loggerConfig;
-const { writeToPdf } = require("./user.util")
+const { writeToPdf } = require("./user.util");
 const mongoose = models.mongoose;
 const userModel = models.userModel;
 const jobPostingsModel = models.jobPostingsModel;
 const applicationModel = models.applicationModel;
-const config = require("../config");
-const logger = config.loggerConfig.logger;
+
 exports.getFilteredCandidates = async () => {
   const users = await userModel.find({}).populate("roles").exec();
   const candidates = users.filter((user) =>
@@ -94,7 +93,7 @@ exports.generateResumePdf = async (token) => {
     logger.error(`Error generating resume for user: ${userId}`);
     throw error;
   }
-}
+};
 
 exports.createJob = async (token, jobTitle, jobDesc) => {
   const userId = new mongoose.Types.ObjectId(
