@@ -56,14 +56,17 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
     };
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
     updateProfile(formData, authToken)
-      .then(() => {
-        setdisplayMessage('Profile Update Successful')
-        setTimeout(() => {
-          onUpdateSuccess();
-        }, [1000])
+      .then((response) => {
+        if(response){
+          setdisplayMessage('Profile Update Successful')
+          setTimeout(() => {
+            onUpdateSuccess();
+          }, [1000])
+        }else{
+          setdisplayMessage('Error updating profile:')
+        }
       })
       .catch((error) => {
-        setdisplayMessage('Error updating profile:')
         console.error('Error updating profile:', error);
       });
   };

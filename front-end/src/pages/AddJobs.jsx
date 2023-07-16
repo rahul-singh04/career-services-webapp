@@ -1,18 +1,58 @@
 import React, { useState } from 'react';
-import LocationAuto from '../components/locationAuto';
+import { postJob } from '../api/EmployerApi';
 
 const AddJobs = () => {
   const [jobTitle, setJobTitle] = useState('');
-  const [location, setLocation] = useState('');
-  const [dateAdded, setDateAdded] = useState(new Date().toISOString().slice(0, 10));
+  const [companylocation, setcompanylocation] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [totalOpenings, setTotalOpenings] = useState('');
+  const [worklocation, setworklocation] = useState('');
+  const [displayMessage, setDisplayMessage] = useState('');
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform form submission logic with the field values
-    // ...
+  
+    if (
+      jobTitle.trim() === '' ||
+      worklocation.trim() === '' ||
+      companylocation.trim() === '' ||
+      jobDescription.trim() === '' ||
+      totalOpenings.trim() === ''
+    ) {
+      setDisplayMessage('All fields are required');
+      return;
+    }
+  
+    const formData = {
+      jobTitle: jobTitle,
+      companyLocation:companylocation,
+      jobDesc: jobDescription,
+      workLocation: worklocation,
+      totalOpenings: totalOpenings
+    }
+
+    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    postJob(formData, authToken)
+      .then((response) => {
+        if(response){
+          setDisplayMessage('Job Posted');
+          setTimeout(() => {
+            setJobTitle('');
+            setcompanylocation('');
+            setworklocation('');
+            setJobDescription('');
+            setTotalOpenings('');
+          }, 1000);
+        }else{
+          setDisplayMessage('Error posting job: Please contact Support');
+        }
+      })
+      .catch((error) => {
+        console.error('Error posting job:', error);
+      });
   };
+  
 
   return (
     <div className='flex w-full'>
@@ -27,7 +67,7 @@ const AddJobs = () => {
               type="text"
               id="jobTitle"
               value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
+              onChange={(e) => {setJobTitle(e.target.value),setDisplayMessage('');}}
               placeholder="Example: Software Engineer"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
             />
@@ -40,23 +80,9 @@ const AddJobs = () => {
             <input
               type="text"
               id="location"
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              value={companylocation}
+              onChange={(e) => {setcompanylocation(e.target.value) ,setDisplayMessage('');}}
               placeholder="Example: San Francisco, CA"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="dateAdded" className="block font-semibold mb-1">
-              Date Added
-            </label>
-            <input
-              type="text"
-              id="dateAdded"
-              value={dateAdded}
-              readOnly
-              placeholder="Automatically filled with the current date"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
             />
           </div>
@@ -68,7 +94,7 @@ const AddJobs = () => {
             <textarea
               id="jobDescription"
               value={jobDescription}
-              onChange={(e) => setJobDescription(e.target.value)}
+              onChange={(e) =>{ setJobDescription(e.target.value) ,setDisplayMessage('');}}
               placeholder="Example: We are seeking a highly motivated software engineer with experience in web development..."
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2 h-32"
             ></textarea>
@@ -81,8 +107,8 @@ const AddJobs = () => {
             <input
               type="text"
               id="totalOpenings"
-              value={totalOpenings}
-              onChange={(e) => setTotalOpenings(e.target.value)}
+              value={worklocation}
+              onChange={(e) => {setworklocation(e.target.value),setDisplayMessage('');}}
               placeholder="Example: 5"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
             />
@@ -96,12 +122,24 @@ const AddJobs = () => {
               type="text"
               id="totalOpenings"
               value={totalOpenings}
-              onChange={(e) => setTotalOpenings(e.target.value)}
+              onChange={(e) => {setTotalOpenings(e.target.value),setDisplayMessage('');}}
               placeholder="Example: 5"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
             />
           </div>
-
+          {displayMessage && (
+          <div className="my-2 p-2 w-full rounded-md text-center">
+            <p
+              className={
+                displayMessage.includes('Successful')
+                  ? 'text-green-500 font-extrabold'
+                  : 'text-red-500 font-extrabold'
+              }
+            >
+              {displayMessage}
+            </p>
+          </div>
+        )}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"

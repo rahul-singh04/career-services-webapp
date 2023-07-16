@@ -100,6 +100,16 @@ export default function NavigationBar() {
         <p className="whitespace-nowrap">Add Jobs</p>
         </Link>
       </Typography>}
+      {(loggedin && currentUserRole.includes('EMPLOYER')) && 
+      <Typography
+        as="li"
+        className="mr-4 cursor-pointer py-1.5 font-large"
+        variant="h6" color="blue" textGradient
+      >
+        <Link to="/employerProfile">
+        <p className="whitespace-nowrap">Profile</p>
+        </Link>
+      </Typography>}
     </ul>
   );
 
