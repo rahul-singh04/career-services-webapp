@@ -72,4 +72,9 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isAdmin],
     userController.readJobPostings
   );
+  app.get(
+    "/api/test/candidate/resume",
+    [authController.verifyToken, authController.isCandidate],
+    userController.generateUserResume
+  );
 };

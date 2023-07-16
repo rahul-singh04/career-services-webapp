@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
-const models = require("../models");
+const models = require("../../models");
+const { logger } = require("../../config").loggerConfig;
+const { writeToPdf } = require("./user.util")
 const mongoose = models.mongoose;
 const userModel = models.userModel;
 const jobPostingsModel = models.jobPostingsModel;
@@ -83,6 +85,16 @@ exports.updateJobPosting = async (token, updatedFields) => {
     throw error;
   }
 };
+
+exports.generateResumePdf = async (token) => {
+  try {
+    const user = await this.getUserProfile(token);
+    return await writeToPdf(user);
+  } catch (error) {
+    logger.error(`Error generating resume for user: ${userId}`);
+    throw error;
+  }
+}
 
 exports.createJob = async (token, jobTitle, jobDesc) => {
   const userId = new mongoose.Types.ObjectId(

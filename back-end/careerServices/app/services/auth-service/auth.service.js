@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const config = require("../config");
+const config = require("../../config");
 const serverConfig = config.serverConfig;
 
-const models = require("../models");
+const models = require("../../models");
 const userModel = models.userModel;
 const roleModel = models.roleModel;
 

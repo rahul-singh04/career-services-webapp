@@ -1,4 +1,8 @@
+const fs = require("fs");
+const onFinished = require("on-finished");
+const { userModel } = require("../models");
 const service = require("../services");
+const { logger } = require("../config").loggerConfig;
 const userService = service.userService;
 const config = require("../config");
 const logger = config.loggerConfig.logger;
@@ -188,3 +192,18 @@ exports.updateJobPosting = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+exports.generateUserResume = async (req, res) => {
+  try {
+    const filePath = await userService.generateResumePdf(req.headers["x-access-token"]);
+    res.download(filePath);
+    onFinished(res, () => {
+      fs.unlink(filePath, (err) => {
+        if (err) logger.error("Failed to delete resume from disk:", filePath)
+      })
+    })
+  } catch (error) {
+    logger.error("Error generating resume-controller");
+    res.status(500).send("Failed to generate resume");
+  }
+}
