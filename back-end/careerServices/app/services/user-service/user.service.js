@@ -63,8 +63,7 @@ exports.getJobsPosted = async (token) => {
 
 exports.getUserProfile = async (token) => {
   const userId = new mongoose.Types.ObjectId(
-    // extractuserModelIdFromToken(token)
-    "64b2f168e7e4e2dce6b1a487"
+    extractuserModelIdFromToken(token)
   );
   return userModel
     .findOne({ _id: userId }, { password: 0, _id: 0, roles: 0 })

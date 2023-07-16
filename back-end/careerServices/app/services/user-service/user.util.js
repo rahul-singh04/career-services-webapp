@@ -32,10 +32,34 @@ const writeToPdf = async (user) => {
     doc.text(phoneNumber, { align: "left" })
     doc.moveDown(0.5)
     doc.text(linkedInProfile, { align: "left" })
+    doc.moveDown(0.5)
+    doc.text(githubProfile, { align: "left" })
     doc.text("-----------------------------------------------------------------------")
 
-    //work experience
+    //professional summary
     doc.moveDown(1.0)
+    doc.fontSize(20)
+    doc.text("Experience")
+    doc.moveDown(0.5)
+    professionalSummary.forEach(experience => {
+        doc.fontSize(16);
+        doc.text(experience?.companyName, { align: "left" })
+        doc.fontSize(12);
+        doc.text(experience?.title, { align: "left" })
+        doc.text(experience?.startDate?.toISOString().slice(0, 10) + "  -  " + experience?.endDate?.toISOString().slice(0, 10), { align: "left" })
+    })
+    doc.text("-----------------------------------------------------------------------")
+
+    //skills
+    doc.moveDown(1.0)
+    doc.fontSize(20)
+    doc.text("Skills")
+    doc.moveDown(0.5)
+    skills.forEach(skill => {
+        doc.fontSize(16);
+        doc.text(skill, { align: "left" })
+    })
+
 
     doc.end();
     return new Promise((resolve, reject) => {
