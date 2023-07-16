@@ -51,28 +51,28 @@ const LoginPage = () => {
     setRole(role);
   };
 
+  const signInDetails = {
+    username: username,
+    email: email,
+    password: password,
+  } 
+   const signUpdetails = {
+    username: username,
+    email: email,
+    password: password,
+    roles : [role]
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const signInDetails = {
-        username: username,
-        email: email,
-        password: password,
-      } 
-       const signUpdetails = {
-        username: username,
-        email: email,
-        password: password,
-        roles : [role]
-      };
     
     { mode === 'login' ? handleSignin(signInDetails, handleSigninCallback) : handleSignup(signUpdetails, handleSignupCallback) }
   };
 
   const handleSignupCallback = (result) => {
     if (result.includes('successfully')) {
-      navigate('/')
-    } else {
+      handleSignin(signInDetails, handleSigninCallback)
+        } else {
       console.log(result);
     }
   };
@@ -82,7 +82,11 @@ const LoginPage = () => {
       console.log('Signin successful');
       setlafterSignInMessage('Successfully logged in!')
         setTimeout(() => {
-        navigate('/profile')
+          if(role === 'candidate'){
+            navigate('/profile')
+          }else{
+            navigate('/')
+          }
       }, 1000);
     } else {
       if(result.statusText && result.statusText == "Unauthorized"){
@@ -131,11 +135,11 @@ const LoginPage = () => {
               <input
                 type="password"
                 id="confirmPassword"
-                className={`w-full px-4 py-2 border ${passwordMatch ? 'border-gray-300' : 'border-red-500'} rounded focus:outline-none focus:border-blue-500`}
+                className={`w-full px-4 py-2 border ${confirmPassword == '' || passwordMatch ? 'border-gray-300' : 'border-red-500'} rounded focus:outline-none focus:border-blue-500`}
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
               />
-              {!passwordMatch && <p className="text-red-500 text-sm mt-1">Passwords do not match.</p>}
+              {confirmPassword && !passwordMatch && <p className="text-red-500 text-sm mt-1">Passwords do not match.</p>}
               <div className='pt-4'>
                 <RoleDropdown onSelectRole={handleSelectRole} />
               </div>

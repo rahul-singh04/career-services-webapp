@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getProfile, updateProfile } from '../api/StudentApi';
 
-const CandidateProfileForm = ({onUpdateSuccess}) => {
+const CandidateProfileForm = ({ onUpdateSuccess }) => {
 
   const [fullName, setFullName] = useState('');
   const [location, setLocation] = useState('');
@@ -34,23 +34,33 @@ const CandidateProfileForm = ({onUpdateSuccess}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    // Check if any field is blank
+    if (
+      fullName.trim() === '' ||
+      location.trim() === '' ||
+      phoneNumber.trim() === '' ||
+      linkedin.trim() === '' ||
+      twitter.trim() === '' ||
+      github.trim() === ''
+    ) {
+      setdisplayMessage('All fields are required');
+      return;
+    }
     const formData = {
-      fullName,
-      location,
-      phoneNumber,
+      fullName: fullName,
+      location:location,
+      phoneNumber :phoneNumber,
       linkedInProfile: linkedin,
       twitterProfile: twitter,
       githubProfile: github,
     };
-
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
     updateProfile(formData, authToken)
       .then(() => {
         setdisplayMessage('Profile Update Successful')
-        setTimeout(()=>{
+        setTimeout(() => {
           onUpdateSuccess();
-        },[1000])
+        }, [1000])
       })
       .catch((error) => {
         setdisplayMessage('Error updating profile:')

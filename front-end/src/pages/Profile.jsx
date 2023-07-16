@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getCurrentUser } from '../api/authApi';
-import { MdOutlineUploadFile } from 'react-icons/md';
+// import { MdOutlineUploadFile } from 'react-icons/md';
 import CandidateProfileDisplay from '../components/CandidateProfileDisplay'
 
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState();
-  const [resume, setResume] = useState(null);
-  const fileInputRef = useRef(null);
 
   useEffect(() => {
     setUserDetails(getCurrentUser());
