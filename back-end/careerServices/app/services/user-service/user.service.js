@@ -31,6 +31,7 @@ exports.getAllJobs = async () => {
       companyLocation,
       workLocation,
       totalOpenings,
+      datePosted,
     } = job;
     const { username, email } = employerID;
     return {
@@ -40,6 +41,7 @@ exports.getAllJobs = async () => {
       companyLocation,
       workLocation,
       totalOpenings,
+      datePosted,
       employerID: {
         username,
         email,
