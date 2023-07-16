@@ -21,12 +21,18 @@ const User = mongoose.model(
         endDate: Date,
       },
     ],
+    userBio: String,
     skills: [String],
     location: String,
     phoneNumber: String,
     linkedInProfile: String,
     twitterProfile: String,
     githubProfile: String,
+    resumeUploaded: String,
+    photoUploaded: String,
+    companyDesc: String,
+    totalNoOfEmp: String,
+    sector: String,
   })
 );
 

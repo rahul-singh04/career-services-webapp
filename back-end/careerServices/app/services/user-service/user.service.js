@@ -1,11 +1,11 @@
-const jwt = require("jsonwebtoken");
 const models = require("../../models");
 const { logger } = require("../../config").loggerConfig;
-const { writeToPdf } = require("./user.util");
+const { writeToPdf, extractuserModelIdFromToken } = require("./user.util");
 const mongoose = models.mongoose;
 const userModel = models.userModel;
 const jobPostingsModel = models.jobPostingsModel;
 const applicationModel = models.applicationModel;
+const path = require("path");
 
 exports.getFilteredCandidates = async () => {
   const users = await userModel.find({}).populate("roles").exec();
@@ -13,23 +13,33 @@ exports.getFilteredCandidates = async () => {
     user.roles.some((role) => role.name === "candidate")
   );
   return candidates.map((candidate) => {
-    const { _id, password, roles, ...candidateInfo } = candidate._doc;
+    const { password, roles, ...candidateInfo } = candidate._doc;
     return candidateInfo;
   });
 };
-
 exports.getAllJobs = async () => {
   const jobs = await jobPostingsModel
     .find()
     .populate("employerID", "username email")
     .exec();
   return jobs.map((job) => {
-    const { _id, jobTitle, jobDesc, employerID } = job;
+    const {
+      _id,
+      jobTitle,
+      jobDesc,
+      employerID,
+      companyLocation,
+      workLocation,
+      totalOpenings,
+    } = job;
     const { username, email } = employerID;
     return {
       _id,
       jobTitle,
       jobDesc,
+      companyLocation,
+      workLocation,
+      totalOpenings,
       employerID: {
         username,
         email,
@@ -49,9 +59,7 @@ exports.getUserProfile = async (token) => {
   const userId = new mongoose.Types.ObjectId(
     extractuserModelIdFromToken(token)
   );
-  return userModel
-    .findOne({ _id: userId }, { password: 0, _id: 0, roles: 0 })
-    .exec();
+  return userModel.findOne({ _id: userId }, { password: 0, roles: 0 }).exec();
 };
 
 exports.updateUserProfile = async (token, updatedFields) => {
@@ -95,16 +103,33 @@ exports.generateResumePdf = async (token) => {
   }
 };
 
-exports.createJob = async (token, jobTitle, jobDesc) => {
-  const userId = new mongoose.Types.ObjectId(
-    extractuserModelIdFromToken(token)
-  );
-  const job = {
-    employerID: userId,
-    jobTitle: jobTitle,
-    jobDesc: jobDesc,
-  };
-  return jobPostingsModel.create(job);
+// exports.createJob = async (token, jobTitle, jobDesc) => {
+//   const userId = new mongoose.Types.ObjectId(
+//     extractuserModelIdFromToken(token)
+//   );
+//   const job = {
+//     employerID: userId,
+//     jobTitle: jobTitle,
+//     jobDesc: jobDesc,
+//   };
+//   return jobPostingsModel.create(job);
+// };
+
+exports.createJob = async (token, jobTitle, jobDesc, additionalParams) => {
+  try {
+    console.log(additionalParams);
+    const userId = extractuserModelIdFromToken(token);
+    const job = {
+      employerID: userId,
+      jobTitle: jobTitle,
+      jobDesc: jobDesc,
+      ...additionalParams,
+    };
+    const createdJob = await jobPostingsModel.create(job);
+    return createdJob;
+  } catch (error) {
+    throw new Error("Failed to create job: " + error.message);
+  }
 };
 
 exports.getApplicants = async (jobID, token) => {
@@ -146,14 +171,6 @@ exports.updateApplicationStatus = async (jobID, candidateID) => {
   } else {
     return { updated: false };
   }
-};
-
-const extractuserModelIdFromToken = (token) => {
-  const decodedToken = jwt.decode(token, { complete: true });
-  if (!decodedToken) {
-    throw new Error("Invalid token");
-  }
-  return decodedToken.payload.id;
 };
 
 exports.createApplication = async (candidateID, token) => {
@@ -220,4 +237,86 @@ exports.deleteApplication = async (applicationID) => {
   return applicationModel
     .findByIdAndRemove(applicationID, { useFindAndModify: false })
     .exec();
+};
+
+exports.deleteApplication = async (applicationID) => {
+  return applicationModel
+    .findByIdAndRemove(applicationID, { useFindAndModify: false })
+    .exec();
+};
+
+exports.getResume = async (token) => {
+  const id = extractuserModelIdFromToken(token);
+  const user = await userModel.findById(id);
+
+  if (user && user.resumeUploaded === "Yes") {
+    const baseDir = path.resolve(__dirname, "../../../");
+    const filePath = path.join(baseDir, "/uploads/", id + ".pdf");
+    return filePath;
+  } else {
+    throw new Error("Resume not uploaded.");
+  }
+};
+
+exports.getPhoto = async (token) => {
+  const id = extractuserModelIdFromToken(token);
+  const user = await userModel.findById(id);
+
+  if (user && user.photoUploaded === "Yes") {
+    const baseDir = path.resolve(__dirname, "../../../");
+    const filePath = path.join(baseDir, "/uploads/", id + ".jpg");
+    return filePath;
+  } else {
+    throw new Error("Photo not uploaded.");
+  }
+};
+
+exports.postResume = async (file, token) => {
+  if (!file) {
+    throw new Error("No file uploaded.");
+  } else {
+    try {
+      const id = extractuserModelIdFromToken(token);
+      const resumeUploaded = "Yes";
+
+      const updatedUser = await userModel.findByIdAndUpdate(
+        id,
+        { resumeUploaded },
+        { new: true }
+      );
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve("File uploaded successfully.");
+        }, 1000);
+      });
+    } catch (error) {
+      throw new Error("Failed to update the database.");
+    }
+  }
+};
+
+exports.postPhoto = async (file, token) => {
+  if (!file) {
+    throw new Error("No photo uploaded.");
+  } else {
+    try {
+      const id = extractuserModelIdFromToken(token);
+      const photoUploaded = "Yes";
+
+      const updatedUser = await userModel.findByIdAndUpdate(
+        id,
+        { photoUploaded },
+        { new: true }
+      );
+
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve("Photo uploaded successfully.");
+        }, 1000);
+      });
+    } catch (error) {
+      throw new Error("Failed to update the database.");
+    }
+  }
 };
