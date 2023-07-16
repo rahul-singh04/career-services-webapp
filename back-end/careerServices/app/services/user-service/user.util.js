@@ -23,12 +23,13 @@ const writeToPdf = async (user) => {
     //details section
     doc.fontSize(24);
     doc.text(fullName, { align: "left" })
-    doc.moveDown(0.5);
-    doc.fontSize(12)
+    doc.moveDown(0.2);
+    doc.fontSize(10)
     doc.text(location, { align: "left" })
     doc.moveDown(1.0)
-    doc.fontSize(18)
-    doc.text(email, { align: "left" })
+    doc.fontSize(16)
+    doc.text(email+"                    "+phoneNumber, { align: "left" })
+    // doc.text(phoneNumber, { align: "right" })
     doc.moveDown(0.5)
     doc.text(linkedInProfile, { align: "left" })
 
