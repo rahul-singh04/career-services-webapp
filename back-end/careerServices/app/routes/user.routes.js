@@ -19,6 +19,11 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isCandidate],
     userController.getUserProfile
   );
+  app.get(
+    endPointConfig.employerEndpoint + "/getEmployerProfile",
+    [authController.verifyToken, authController.isEmployer],
+    userController.getUserProfile
+  );
   app.put(
     endPointConfig.candidateEndpoint + "/updateUserProfile",
     [authController.verifyToken, authController.isCandidate],
