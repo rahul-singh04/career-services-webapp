@@ -89,7 +89,7 @@ module.exports = function (app) {
   );
   app.get(
     "/api/test/candidate/resume",
-    // [authController.verifyToken, authController.isCandidate],
+    [authController.verifyToken, authController.isCandidate],
     userController.generateUserResume
   );
 };
