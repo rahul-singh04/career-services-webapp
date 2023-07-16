@@ -13,23 +13,33 @@ exports.getFilteredCandidates = async () => {
     user.roles.some((role) => role.name === "candidate")
   );
   return candidates.map((candidate) => {
-    const { _id, password, roles, ...candidateInfo } = candidate._doc;
+    const { password, roles, ...candidateInfo } = candidate._doc;
     return candidateInfo;
   });
 };
-
 exports.getAllJobs = async () => {
   const jobs = await jobPostingsModel
     .find()
     .populate("employerID", "username email")
     .exec();
   return jobs.map((job) => {
-    const { _id, jobTitle, jobDesc, employerID } = job;
+    const {
+      _id,
+      jobTitle,
+      jobDesc,
+      employerID,
+      companyLocation,
+      workLocation,
+      totalOpenings,
+    } = job;
     const { username, email } = employerID;
     return {
       _id,
       jobTitle,
       jobDesc,
+      companyLocation,
+      workLocation,
+      totalOpenings,
       employerID: {
         username,
         email,
@@ -49,9 +59,7 @@ exports.getUserProfile = async (token) => {
   const userId = new mongoose.Types.ObjectId(
     extractuserModelIdFromToken(token)
   );
-  return userModel
-    .findOne({ _id: userId }, { password: 0, _id: 0, roles: 0 })
-    .exec();
+  return userModel.findOne({ _id: userId }, { password: 0, roles: 0 }).exec();
 };
 
 exports.updateUserProfile = async (token, updatedFields) => {
