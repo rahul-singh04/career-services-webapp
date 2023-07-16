@@ -18,13 +18,14 @@ const Candidates = () => {
    
   }, [])
   
+  console.log(candidateProfiles);
 
   return (
     <div className="w-2/3 mx-auto">
       <h2 className="text-2xl font-bold my-4 text-center">Candidate Profiles</h2>
       {candidateProfiles && candidateProfiles.map((candidate) => (
         <CandidateCard
-          // key={candidate.id}
+          key={candidate._id}
           fullName={candidate.fullName}
           location={candidate.location}
           phoneNumber={candidate.phoneNumber}

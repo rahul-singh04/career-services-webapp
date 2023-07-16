@@ -1,7 +1,6 @@
 import React from 'react';
 
 const CandidateCard = ({ fullName, professionalSummary, location, phoneNumber, linkedinProfile, githubProfile, profileImage }) => {
-  console.log(githubProfile);
   return (
     <div className="flex flex-row bg-white rounded-lg shadow-md p-6 mb-4 gap-4">
       <div className="flex items-center">
