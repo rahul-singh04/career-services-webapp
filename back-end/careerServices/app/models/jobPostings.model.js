@@ -12,13 +12,22 @@ const JobPosting = mongoose.model(
       type: String,
       required: true,
     },
-    jobDesc: {
+    companyLocation: {
       type: String,
-      required: true,
     },
     datePosted: {
       type: Date,
       default: Date.now,
+    },
+    jobDesc: {
+      type: String,
+      required: true,
+    },
+    workLocation: {
+      type: String,
+    },
+    totalOpenings: {
+      type: String,
     },
   })
 );

@@ -4,6 +4,24 @@ const onFinished = require("on-finished");
 const service = require("../services");
 const { logger } = require("../config").loggerConfig;
 const userService = service.userService;
+const path = require("path");
+const {
+  extractuserModelIdFromToken,
+} = require("../services/user-service/user.util");
+
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    // Define the destination directory for uploaded files
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const id = extractuserModelIdFromToken(req.headers["x-access-token"]);
+    const originalExtension = path.extname(file.originalname);
+    cb(null, id + originalExtension);
+  },
+});
+const upload = multer({ storage: storage });
 
 exports.browseCandidates = async (req, res) => {
   try {
@@ -64,10 +82,12 @@ exports.updateUserProfile = async (req, res) => {
 
 exports.postJob = async (req, res) => {
   try {
+    const { jobTitle, jobDesc, ...additionalParams } = req.body;
     const createdJob = await userService.createJob(
       req.headers["x-access-token"],
-      req.query.jobTitle,
-      req.query.jobDesc
+      jobTitle,
+      jobDesc,
+      additionalParams
     );
     res.status(200).send(createdJob);
   } catch (error) {
@@ -206,5 +226,67 @@ exports.generateUserResume = async (req, res) => {
   } catch (error) {
     logger.error("Error generating resume-controller");
     res.status(500).send("Failed to generate resume");
+  }
+};
+
+exports.getResume = async (req, res) => {
+  try {
+    const resume = await userService.getResume(req.headers["x-access-token"]);
+    res.status(200).sendFile(resume);
+  } catch (error) {
+    logger.error("Failed to fetch resume:", error);
+    res.status(500).send("Failed to fetch resume");
+  }
+};
+
+exports.getPhoto = async (req, res) => {
+  try {
+    const photo = await userService.getPhoto(req.headers["x-access-token"]);
+    res.status(200).sendFile(photo);
+  } catch (error) {
+    logger.error("Failed to fetch photo:", error);
+    res.status(500).send("Failed to fetch photo");
+  }
+};
+exports.uploadFileMiddleware = async (req, res, next) => {
+  try {
+    await new Promise((resolve, reject) => {
+      upload.single("file")(req, res, (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+    next();
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+exports.postResume = async (req, res) => {
+  try {
+    console.log(req.file);
+    const result = await userService.postResume(
+      req.file,
+      req.headers["x-access-token"]
+    );
+    res.send(result);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+};
+
+exports.postPhoto = async (req, res) => {
+  try {
+    console.log(req.file);
+    const result = await userService.postPhoto(
+      req.file,
+      req.headers["x-access-token"]
+    );
+    res.send(result);
+  } catch (error) {
+    res.status(400).send(error.message);
   }
 };

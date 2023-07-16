@@ -51,6 +51,11 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isEmployer],
     userController.postJob
   );
+  app.put(
+    endPointConfig.employerEndpoint + "/updateEmployerProfile",
+    [authController.verifyToken, authController.isEmployer],
+    userController.updateUserProfile
+  );
 
   app.get(
     endPointConfig.employerEndpoint + "/getApplicants",
@@ -73,8 +78,32 @@ module.exports = function (app) {
     userController.readJobPostings
   );
   app.get(
-    "/api/test/candidate/resume",
+    endPointConfig.candidateEndpoint + "/resume",
     [authController.verifyToken, authController.isCandidate],
     userController.generateUserResume
+  );
+
+  app.get(
+    endPointConfig.candidateEndpoint + "/getResume",
+    [authController.verifyToken, authController.isCandidate],
+    userController.getResume
+  );
+  app.get(
+    endPointConfig.candidateEndpoint + "/getPhoto",
+    [authController.verifyToken, authController.isCandidate],
+    userController.getPhoto
+  );
+
+  app.post(
+    endPointConfig.candidateEndpoint + "/postResume",
+    [authController.verifyToken, authController.isCandidate],
+    userController.uploadFileMiddleware,
+    userController.postResume
+  );
+  app.post(
+    endPointConfig.candidateEndpoint + "/postPhoto",
+    [authController.verifyToken, authController.isCandidate],
+    userController.uploadFileMiddleware,
+    userController.postPhoto
   );
 };
