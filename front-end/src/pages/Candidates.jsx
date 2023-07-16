@@ -1,43 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CandidateCard from '../components/CandidateCard';
+import { getAllCandidates } from '../api/EmployerApi';
 
 const Candidates = () => {
-  // Dummy data for candidate profiles
-  const candidateProfiles = [
-    {
-      id: 1,
-      fullName: 'John Doe',
-      professionalSummary: 'Experienced frontend developer with expertise in React and JavaScript',
-      location: 'New York, USA',
-      phoneNumber: '+1 123-456-7890',
-      linkedinProfile: 'https://www.linkedin.com/johndoe',
-      githubProfile: 'https://github.com/johndoe',
-      profileImage: 'https://example.com/profile-image-1.jpg',
-    },
-    {
-      id: 2,
-      fullName: 'Jane Smith',
-      professionalSummary: 'Full-stack web developer with a passion for building scalable applications',
-      location: 'San Francisco, USA',
-      phoneNumber: '+1 987-654-3210',
-      linkedinProfile: 'https://www.linkedin.com/janesmith',
-      githubProfile: 'https://github.com/janesmith',
-      profileImage: 'https://example.com/profile-image-2.jpg',
-    },
-    // Add more candidate profiles as needed
-  ];
+
+  const [candidateProfiles, setcandidateProfiles] = useState([]);
+
+  useEffect(() => {
+    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    getAllCandidates(authToken)
+    .then((candidates)=>{
+      setcandidateProfiles(candidates)
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+   
+  }, [])
+  
 
   return (
     <div className="w-2/3 mx-auto">
       <h2 className="text-2xl font-bold my-4 text-center">Candidate Profiles</h2>
-      {candidateProfiles.map((candidate) => (
+      {candidateProfiles && candidateProfiles.map((candidate) => (
         <CandidateCard
-          key={candidate.id}
+          // key={candidate.id}
           fullName={candidate.fullName}
-          professionalSummary={candidate.professionalSummary}
           location={candidate.location}
           phoneNumber={candidate.phoneNumber}
-          linkedinProfile={candidate.linkedinProfile}
+          linkedinProfile={candidate.linkedInProfile}
           githubProfile={candidate.githubProfile}
           profileImage={candidate.profileImage}
         />
