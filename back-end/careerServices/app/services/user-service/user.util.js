@@ -28,10 +28,14 @@ const writeToPdf = async (user) => {
     doc.text(location, { align: "left" })
     doc.moveDown(1.0)
     doc.fontSize(16)
-    doc.text(email+"                    "+phoneNumber, { align: "left" })
-    // doc.text(phoneNumber, { align: "right" })
+    doc.text(email, { align: "left" })
+    doc.text(phoneNumber, { align: "left" })
     doc.moveDown(0.5)
     doc.text(linkedInProfile, { align: "left" })
+    doc.text("-----------------------------------------------------------------------")
+
+    //work experience
+    doc.moveDown(1.0)
 
     doc.end();
     return new Promise((resolve, reject) => {
