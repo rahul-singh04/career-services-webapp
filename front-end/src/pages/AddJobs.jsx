@@ -34,19 +34,21 @@ const AddJobs = () => {
 
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
     postJob(formData, authToken)
-      .then(() => {
-        setDisplayMessage('Job Posted');
-        setTimeout(() => {
-          // Clear form fields after successful submission
-          setJobTitle('');
-          setcompanylocation('');
-          setworklocation('');
-          setJobDescription('');
-          setTotalOpenings('');
-        }, 1000);
+      .then((response) => {
+        if(response){
+          setDisplayMessage('Job Posted');
+          setTimeout(() => {
+            setJobTitle('');
+            setcompanylocation('');
+            setworklocation('');
+            setJobDescription('');
+            setTotalOpenings('');
+          }, 1000);
+        }else{
+          setDisplayMessage('Error posting job: Please contact Support');
+        }
       })
       .catch((error) => {
-        setDisplayMessage('Error posting job:');
         console.error('Error posting job:', error);
       });
   };

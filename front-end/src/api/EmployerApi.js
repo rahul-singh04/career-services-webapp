@@ -48,8 +48,8 @@ export const getAllCandidates = async (authToken) => {
     };
   
     try {
-          const response = await axios.put('http://localhost:8090/api/test/employer/postJob', formData, { headers });
-          // console.log('Data successfully updated in the database:', response.data);
+          const response = await axios.post('http://localhost:8090/api/test/employer/postJob', formData, { headers });
+          console.log('Data successfully updated in the database:', response.data);
           return response.data;
       } catch (error) {
           console.error('Error updating data in the database:', error);
