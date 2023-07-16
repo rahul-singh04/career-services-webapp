@@ -1,5 +1,6 @@
 const { userModel } = require("../models");
 const service = require("../services");
+const { logger } = require("../config").loggerConfig;
 const userService = service.userService;
 
 exports.allAccess = async (req, res) => {
@@ -226,3 +227,13 @@ exports.updateJobPosting = async (req, res) => {
     res.status(500).send("Failed to update JobPostings");
   }
 };
+
+exports.generateUserResume = async (req, res) => {
+  try {
+    const filePath = await userService.generateResumePdf(req.headers["x-access-token"]);
+    res.download(filePath);
+  } catch (error) {
+    logger.error("Error generating resume-controller");
+    res.status(500).send("Failed to generate resume");
+  }
+}
