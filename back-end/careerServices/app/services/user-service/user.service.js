@@ -6,6 +6,20 @@ const userModel = models.userModel;
 const jobPostingsModel = models.jobPostingsModel;
 const applicationModel = models.applicationModel;
 const path = require("path");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/");
+  },
+  filename: function (req, file, cb) {
+    const id = extractuserModelIdFromToken(req.headers["x-access-token"]);
+    const originalExtension = path.extname(file.originalname);
+    cb(null, id + originalExtension);
+  },
+});
+
+exports.upload = multer({ storage: storage });
 
 exports.getFilteredCandidates = async () => {
   const users = await userModel.find({}).populate("roles").exec();
@@ -104,18 +118,6 @@ exports.generateResumePdf = async (token) => {
     throw error;
   }
 };
-
-// exports.createJob = async (token, jobTitle, jobDesc) => {
-//   const userId = new mongoose.Types.ObjectId(
-//     extractuserModelIdFromToken(token)
-//   );
-//   const job = {
-//     employerID: userId,
-//     jobTitle: jobTitle,
-//     jobDesc: jobDesc,
-//   };
-//   return jobPostingsModel.create(job);
-// };
 
 exports.createJob = async (token, jobTitle, jobDesc, additionalParams) => {
   try {
@@ -247,39 +249,37 @@ exports.deleteApplication = async (applicationID) => {
     .exec();
 };
 
-exports.getResume = async (token) => {
-  const id = extractuserModelIdFromToken(token);
+exports.getResume = async (id) => {
   const user = await userModel.findById(id);
 
-  if (user && user.resumeUploaded === "Yes") {
+  if (user && user.resumeUploaded !== "") {
     const baseDir = path.resolve(__dirname, "../../../");
-    const filePath = path.join(baseDir, "/uploads/", id + ".pdf");
+    const filePath = path.join(baseDir, user.resumeUploaded);
     return filePath;
   } else {
     throw new Error("Resume not uploaded.");
   }
 };
 
-exports.getPhoto = async (token) => {
-  const id = extractuserModelIdFromToken(token);
+exports.getPhoto = async (id) => {
   const user = await userModel.findById(id);
 
-  if (user && user.photoUploaded === "Yes") {
+  if (user && user.photoUploaded !== "") {
     const baseDir = path.resolve(__dirname, "../../../");
-    const filePath = path.join(baseDir, "/uploads/", id + ".jpg");
+    const filePath = path.join(baseDir, user.photoUploaded);
     return filePath;
   } else {
     throw new Error("Photo not uploaded.");
   }
 };
 
-exports.postResume = async (file, token) => {
+exports.postResume = async (file, token, filePath) => {
   if (!file) {
     throw new Error("No file uploaded.");
   } else {
     try {
       const id = extractuserModelIdFromToken(token);
-      const resumeUploaded = "Yes";
+      const resumeUploaded = filePath;
 
       const updatedUser = await userModel.findByIdAndUpdate(
         id,
@@ -298,13 +298,13 @@ exports.postResume = async (file, token) => {
   }
 };
 
-exports.postPhoto = async (file, token) => {
+exports.postPhoto = async (file, token, filePath) => {
   if (!file) {
     throw new Error("No photo uploaded.");
   } else {
     try {
       const id = extractuserModelIdFromToken(token);
-      const photoUploaded = "Yes";
+      const photoUploaded = filePath;
 
       const updatedUser = await userModel.findByIdAndUpdate(
         id,
