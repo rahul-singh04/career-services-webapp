@@ -69,7 +69,7 @@ const writeToPdf = async (user) => {
         });
 
         fileStream.on('error', (err) => {
-            console.error('Error generating resume:', err);
+            logger.error('Error generating resume:', err);
             reject(err);
         });
     });
