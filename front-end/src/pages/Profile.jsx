@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getCurrentUser } from '../api/authApi';
 import { MdOutlineUploadFile } from 'react-icons/md';
-import CandidateProfileForm from '../components/ProfileForm';
+import CandidateProfileDisplay from '../components/CandidateProfileDisplay'
+
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState();
@@ -11,15 +12,6 @@ const Profile = () => {
   useEffect(() => {
     setUserDetails(getCurrentUser());
   }, []);
-
-  const handleResumeUpload = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setResume(file);
-  };
 
   return (
     <div className="flex  w-full bg-gray-100 justify-center ">
@@ -35,24 +27,7 @@ const Profile = () => {
             </p>
           </div>
         )}
-        <div className='flex flex-row justify-center'>
-              <div className="flex justify-center items-center">
-                <input
-                  id="resume-upload"
-                  type="file"
-                  accept=".pdf"
-                  className="hidden"
-                  ref={fileInputRef}
-                  onChange={handleFileChange}
-                />
-              </div>
-              {resume && (
-                <p className="mt-4">
-                  Uploaded Resume: {resume.name}
-                </p>
-              )}
-            </div>
-        <CandidateProfileForm />
+        <CandidateProfileDisplay />
       </div>
     </div>
   );

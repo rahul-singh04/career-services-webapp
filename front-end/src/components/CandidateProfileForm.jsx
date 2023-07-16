@@ -1,28 +1,63 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { getProfile, updateProfile } from '../api/StudentApi';
 
-const CandidateProfileForm = () => {
+const CandidateProfileForm = ({onUpdateSuccess}) => {
+
   const [fullName, setFullName] = useState('');
-  const [summary, setSummary] = useState('');
   const [location, setLocation] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [linkedin, setLinkedin] = useState('');
   const [twitter, setTwitter] = useState('');
   const [github, setGithub] = useState('');
-  
+
+  const [profileInfo, setProfileInfo] = useState(null);
+  const [displayMessage, setdisplayMessage] = useState('')
+
+  useEffect(() => {
+    setdisplayMessage('')
+    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    getProfile(authToken)
+      .then((profileData) => {
+        setProfileInfo(profileData);
+        setFullName(profileData.fullName || '');
+        setLocation(profileData.location || '');
+        setPhoneNumber(profileData.phoneNumber || '');
+        setLinkedin(profileData.linkedInProfile || '');
+        setTwitter(profileData.twitterProfile || '');
+        setGithub(profileData.githubProfile || '');
+      })
+      .catch((error) => {
+        console.error('Error fetching profile:', error);
+      });
+  }, []);
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Perform any additional actions with the form data, such as saving it to a database
+    const formData = {
+      fullName,
+      location,
+      phoneNumber,
+      linkedInProfile: linkedin,
+      twitterProfile: twitter,
+      githubProfile: github,
+    };
 
-    // Clear form fields after submission
-    setFullName('');
-    setSummary('');
-    setLocation('');
-    setPhoneNumber('');
-    setLinkedin('');
-    setTwitter('');
-    setGithub('');
+    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    updateProfile(formData, authToken)
+      .then(() => {
+        setdisplayMessage('Profile Update Successful')
+        setTimeout(()=>{
+          onUpdateSuccess();
+        },[1000])
+      })
+      .catch((error) => {
+        setdisplayMessage('Error updating profile:')
+        console.error('Error updating profile:', error);
+      });
   };
+
 
   return (
     <div className="max-w-lg mx-auto">
@@ -38,17 +73,6 @@ const CandidateProfileForm = () => {
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
           />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="summary" className="block font-semibold mb-1">
-            Professional Summary
-          </label>
-          <textarea
-            id="summary"
-            className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-          ></textarea>
         </div>
         <div className="mb-4">
           <label htmlFor="location" className="block font-semibold mb-1">
@@ -110,6 +134,13 @@ const CandidateProfileForm = () => {
             onChange={(e) => setGithub(e.target.value)}
           />
         </div>
+        {displayMessage && (
+          <div className="my-2 p-2 w-full rounded-md text-center">
+            <p className={displayMessage.includes('Successful') ? 'text-green-500 font-extrabold' : 'text-red-500 font-extrabold'}>
+              {displayMessage}
+            </p>
+          </div>
+        )}
         <button
           type="submit"
           className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"

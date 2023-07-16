@@ -2,6 +2,9 @@ const controller = require("../controllers");
 const authController = controller.authController;
 const userController = controller.userController;
 
+const config = require("../config");
+const endPointConfig = config.endPointConfig;
+
 module.exports = function (app) {
   app.use(function (req, res, next) {
     res.header(
@@ -11,79 +14,61 @@ module.exports = function (app) {
     next();
   });
 
-  app.get("/api/test/all", userController.allAccess);
-
   app.get(
-    "/api/test/candidate",
-    [authController.verifyToken],
-    userController.candidateBoard
-  );
-
-  app.get(
-    "/api/test/employer",
-    [authController.verifyToken, authController.isEmployer],
-    userController.employerBoard
-  );
-
-  app.get(
-    "/api/test/candidate/getUserProfile",
+    endPointConfig.candidateEndpoint + "/getUserProfile",
     [authController.verifyToken, authController.isCandidate],
     userController.getUserProfile
   );
   app.put(
-    "/api/test/candidate/updateUserProfile",
+    endPointConfig.candidateEndpoint + "/updateUserProfile",
     [authController.verifyToken, authController.isCandidate],
     userController.updateUserProfile
   );
-
   app.get(
-    "/api/test/admin",
-    [authController.verifyToken, authController.isAdmin],
-    userController.adminBoard
-  );
-
-  app.get(
-    "/api/test/employer/browseCandidates",
-    [authController.verifyToken, authController.isEmployer],
-    userController.browseCandidates
-  );
-  app.get(
-    "/api/test/candidate/browseJobs",
+    endPointConfig.candidateEndpoint + "/browseJobs",
     [authController.verifyToken, authController.isCandidate],
     userController.browseJobs
   );
-  app.get(
-    "/api/test/employer/getJobsPosted",
-    [authController.verifyToken, authController.isEmployer],
-    userController.getJobsPosted
-  );
   app.post(
-    "/api/test/employer/postJob",
-    [authController.verifyToken, authController.isEmployer],
-    userController.postJob
-  );
-  app.post(
-    "/api/test/candidate/applyJob",
+    endPointConfig.candidateEndpoint + "/applyJob",
     [authController.verifyToken, authController.isCandidate],
     userController.applyJob
   );
+
   app.get(
-    "/api/test/employer/getApplicants",
+    endPointConfig.employerEndpoint + "/getCandidates",
+    [authController.verifyToken, authController.isEmployer],
+    userController.browseCandidates
+  );
+
+  app.get(
+    endPointConfig.employerEndpoint + "/getJobs",
+    [authController.verifyToken, authController.isEmployer],
+    userController.getJobs
+  );
+  app.post(
+    endPointConfig.employerEndpoint + "/postJob",
+    [authController.verifyToken, authController.isEmployer],
+    userController.postJob
+  );
+
+  app.get(
+    endPointConfig.employerEndpoint + "/getApplicants",
     [authController.verifyToken, authController.isEmployer],
     userController.getApplicants
   );
   app.put(
-    "/api/test/employer/putInterview",
+    endPointConfig.employerEndpoint + "/putInterview",
     [authController.verifyToken, authController.isEmployer],
     userController.putInterview
   );
   app.get(
-    "/api/test/admin/readUsers",
+    endPointConfig.adminEndpoint + "/readUsers",
     [authController.verifyToken, authController.isAdmin],
     userController.readUsers
   );
   app.get(
-    "/api/test/admin/readJobPostings",
+    endPointConfig.adminEndpoint + "/readJobPostings",
     [authController.verifyToken, authController.isAdmin],
     userController.readJobPostings
   );
