@@ -4,24 +4,6 @@ const onFinished = require("on-finished");
 const service = require("../services");
 const { logger } = require("../config").loggerConfig;
 const userService = service.userService;
-const path = require("path");
-const {
-  extractuserModelIdFromToken,
-} = require("../services/user-service/user.util");
-
-const multer = require("multer");
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Define the destination directory for uploaded files
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    const id = extractuserModelIdFromToken(req.headers["x-access-token"]);
-    const originalExtension = path.extname(file.originalname);
-    cb(null, id + originalExtension);
-  },
-});
-const upload = multer({ storage: storage });
 
 exports.browseCandidates = async (req, res) => {
   try {
@@ -231,7 +213,7 @@ exports.generateUserResume = async (req, res) => {
 
 exports.getResume = async (req, res) => {
   try {
-    const resume = await userService.getResume(req.headers["x-access-token"]);
+    const resume = await userService.getResume(req.query.candidateID);
     res.status(200).sendFile(resume);
   } catch (error) {
     logger.error("Failed to fetch resume:", error);
@@ -241,17 +223,18 @@ exports.getResume = async (req, res) => {
 
 exports.getPhoto = async (req, res) => {
   try {
-    const photo = await userService.getPhoto(req.headers["x-access-token"]);
+    const photo = await userService.getPhoto(req.query.candidateID);
     res.status(200).sendFile(photo);
   } catch (error) {
     logger.error("Failed to fetch photo:", error);
     res.status(500).send("Failed to fetch photo");
   }
 };
+
 exports.uploadFileMiddleware = async (req, res, next) => {
   try {
     await new Promise((resolve, reject) => {
-      upload.single("file")(req, res, (error) => {
+      userService.upload.single("file")(req, res, (error) => {
         if (error) {
           reject(error);
         } else {
@@ -267,10 +250,11 @@ exports.uploadFileMiddleware = async (req, res, next) => {
 
 exports.postResume = async (req, res) => {
   try {
-    console.log(req.file);
+    logger.info(req.file);
     const result = await userService.postResume(
       req.file,
-      req.headers["x-access-token"]
+      req.headers["x-access-token"],
+      req.file.path
     );
     res.send(result);
   } catch (error) {
@@ -280,10 +264,11 @@ exports.postResume = async (req, res) => {
 
 exports.postPhoto = async (req, res) => {
   try {
-    console.log(req.file);
+    logger.info(req.file);
     const result = await userService.postPhoto(
       req.file,
-      req.headers["x-access-token"]
+      req.headers["x-access-token"],
+      req.file.path
     );
     res.send(result);
   } catch (error) {
