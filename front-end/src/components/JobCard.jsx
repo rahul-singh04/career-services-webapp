@@ -1,6 +1,6 @@
 import React from 'react';
 
-const JobCard = ({ jobTitle, companyName, location, dateAdded, imageUrl, jobDescription, totalOpenings }) => {
+const JobCard = ({ jobTitle, companyName, location, dateAdded, imageUrl, jobDescription, workLocation, totalOpenings }) => {
   return (
     <div className="flex flex-row bg-white rounded-lg shadow-md p-6 mb-4 gap-4">
       <div className="flex items-center">
@@ -11,7 +11,10 @@ const JobCard = ({ jobTitle, companyName, location, dateAdded, imageUrl, jobDesc
         <p className="text-blue-600 text-xs font-medium mb-2">{companyName}</p>
         <p className="text-gray-600 text-sm mb-4">{jobDescription}</p>
         <div className="flex items-center justify-between">
+          <div className='flex gap-2'>
           <p className="text-blue-500 text-xs">{location}</p>
+          <p className="text-blue-500 text-xs">({workLocation})</p>
+          </div>
           <p className="text-gray-600 text-xs">Posted on: <span className='text-blue-500'>{dateAdded}</span></p>
         </div>
         <div className="bg-gray-100 my-2 p-2 w-fit rounded-md">
