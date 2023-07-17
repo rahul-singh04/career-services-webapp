@@ -19,12 +19,12 @@ export const updatePhoto = async (formData, authToken) => {
     };
   
     try {
-      const response = await axios.get(`http://localhost:8090/api/test/candidate/getPhoto?candidateID=${id}`, {
-        headers,
-        responseType: 'blob', 
-      });
-      const url = URL.createObjectURL(response.data);
-      return url ;
+      const response = await axios.get(`http://localhost:8090/api/test/candidate/getPhoto?candidateID=${id}`, {headers,responseType: 'blob' });
+      if(response.data.type.includes('image')){
+        const url = URL.createObjectURL(response.data);
+        return url ;
+      }
+   
     } catch (error) {
       console.error('Error in Fetching', error);
     }

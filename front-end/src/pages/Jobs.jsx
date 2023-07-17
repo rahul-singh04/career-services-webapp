@@ -16,7 +16,6 @@ const JobList = () => {
       console.log(error);
     })
   }, [])
-  console.log(jobs);
 
   return (
     <div className="w-1/2 mx-auto">
@@ -24,6 +23,7 @@ const JobList = () => {
       {jobs.map((job) => (
         <JobCard
           key={job._id}
+          id={job._id}
           jobTitle={job.jobTitle}
           companyName={job.companyName}
           location={job.companyLocation}

@@ -90,12 +90,12 @@ module.exports = function (app) {
 
   app.get(
     endPointConfig.candidateEndpoint + "/getResume",
-    [authController.verifyToken, authController.isCandidate],
+    [authController.verifyToken],
     userController.getResume
   );
   app.get(
     endPointConfig.candidateEndpoint + "/getPhoto",
-    [authController.verifyToken, authController.isCandidate],
+    [authController.verifyToken],
     userController.getPhoto
   );
 

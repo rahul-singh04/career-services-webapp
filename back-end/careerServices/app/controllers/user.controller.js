@@ -227,7 +227,7 @@ exports.getPhoto = async (req, res) => {
     res.status(200).sendFile(photo);
   } catch (error) {
     logger.error("Failed to fetch photo:", error);
-    res.status(500).send("Failed to fetch photo");
+    res.status(200).send("Failed to fetch photo");
   }
 };
 

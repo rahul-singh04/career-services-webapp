@@ -24,12 +24,13 @@ const Candidates = () => {
       {candidateProfiles && candidateProfiles.map((candidate) => (
         <CandidateCard
           key={candidate._id}
+          id={candidate._id}
           fullName={candidate.fullName}
           location={candidate.location}
           phoneNumber={candidate.phoneNumber}
           linkedinProfile={candidate.linkedInProfile}
           githubProfile={candidate.githubProfile}
-          profileImage={candidate.profileImage}
+          bio={candidate.userBio}
         />
       ))}
     </div>
