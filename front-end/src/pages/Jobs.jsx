@@ -27,7 +27,7 @@ const JobList = () => {
           jobTitle={job.jobTitle}
           companyName={job.companyName}
           location={job.companyLocation}
-          dateAdded={job.dateAdded}
+          dateAdded={job.datePosted}
           workLocation = {job.workLocation}
           totalOpenings={job.totalOpenings}
           jobDescription={job.jobDesc}
