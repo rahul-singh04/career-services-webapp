@@ -131,7 +131,7 @@ const AddJobs = () => {
           <div className="my-2 p-2 w-full rounded-md text-center">
             <p
               className={
-                displayMessage.includes('Successful')
+                displayMessage.includes('Posted')
                   ? 'text-green-500 font-extrabold'
                   : 'text-red-500 font-extrabold'
               }

@@ -28,3 +28,18 @@ export const getProfile = async (authToken) => {
     }
   };
   
+
+
+  export const getAllJobs = async (authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+  
+    try {
+        const response = await axios.get('http://localhost:8090/api/test/candidate/browseJobs', { headers });
+        return response.data;
+    } catch (error) {
+        console.error('Error in Fetching', error);
+    }
+  };
+  
