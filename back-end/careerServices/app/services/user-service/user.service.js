@@ -34,21 +34,20 @@ exports.getFilteredCandidates = async () => {
 exports.getAllJobs = async () => {
   const jobs = await jobPostingsModel
     .find()
-    .populate("employerID", "username email")
+    .populate("employerID", "username email fullName")
     .exec();
   return jobs.map((job) => {
     const {
       _id,
       jobTitle,
       jobDesc,
-      fullName,
       employerID,
       companyLocation,
       workLocation,
       totalOpenings,
       datePosted,
     } = job;
-    const { username, email } = employerID;
+    const { username, email , fullName } = employerID;
     return {
       _id,
       jobTitle,
@@ -61,6 +60,7 @@ exports.getAllJobs = async () => {
       employerID: {
         username,
         email,
+        fullName,
       },
     };
   });
