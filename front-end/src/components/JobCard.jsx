@@ -1,14 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getPhoto } from '../api/CommonApis';
+import defaultProfile from '/Users/thewithcer/linkedin-project/front-end/src/assets/defaultProfile.png'
 
-const JobCard = ({ jobTitle, companyName, location, dateAdded, imageUrl, jobDescription, workLocation, totalOpenings }) => {
+const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings }) => {
 
   const date = new Date(dateAdded);
+  const fullDate = date.toLocaleDateString();
 
-const fullDate = date.toLocaleDateString();
+  const [photo, setphoto] = useState(null)
+
+  useEffect(() => {
+    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    getPhoto(id, authToken)
+      .then((resp) => {
+        if (resp) {
+          setphoto(resp);
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching photo:', error);
+      });
+
+  }, [id]);
   return (
     <div className="flex flex-row bg-white rounded-lg shadow-md p-6 mb-4 gap-4">
       <div className="flex items-center">
-        <img src={imageUrl} alt={companyName} className="w-24 h-24 rounded-full border-2 border-gray-200 mr-2 object-cover" />
+        <img src={photo && photo || defaultProfile} alt={companyName} className="w-24 h-24 rounded-full border-2 border-gray-200 mr-2 object-cover" />
       </div>
       <div className="flex flex-col w-full">
         <h3 className="text-xl font-bold text-gray-800">{jobTitle}</h3>
@@ -16,8 +33,8 @@ const fullDate = date.toLocaleDateString();
         <p className="text-gray-600 text-sm mb-4">{jobDescription}</p>
         <div className="flex items-center justify-between">
           <div className='flex gap-2'>
-          <p className="text-blue-500 text-xs">{location}</p>
-          <p className="text-blue-500 text-xs">({workLocation})</p>
+            <p className="text-blue-500 text-xs">{location}</p>
+            <p className="text-blue-500 text-xs">({workLocation})</p>
           </div>
           <p className="text-gray-600 text-xs">Posted on: <span className='text-blue-500'>{fullDate}</span></p>
         </div>
