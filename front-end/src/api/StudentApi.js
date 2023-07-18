@@ -70,6 +70,18 @@ export const getProfile = async (authToken) => {
     }
   };
 
+  export const buildResume = async (authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+  
+    try {
+        const response = await axios.get(`http://localhost:8090/api/test/candidate/resume` , {headers,responseType: 'blob' });
+        return response.data;
+    } catch (error) {
+        console.error('Error in Fetching', error);
+    }
+  }
 
   export const applyJob = async (id, authToken) => {
     const headers = {
@@ -82,4 +94,4 @@ export const getProfile = async (authToken) => {
       } catch (error) {
           console.error('Error updating data in the database:', error);
       }
-  };
+  }

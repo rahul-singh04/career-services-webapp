@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { TagsInput } from "react-tag-input-component";
 import { getProfile, updateProfile } from '../api/StudentApi';
 
 const CandidateProfileForm = ({ onUpdateSuccess }) => {
@@ -12,6 +13,11 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
 
   const [profileInfo, setProfileInfo] = useState(null);
   const [displayMessage, setdisplayMessage] = useState('')
+  const [skills, setSkills] = useState([]);
+  const [experiences, setExperiences] = useState([
+    { companyName: '', title: '', startDate: '', endDate: '' },
+  ]);
+
 
   useEffect(() => {
     setdisplayMessage('')
@@ -25,11 +31,35 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
         setLinkedin(profileData.linkedInProfile || '');
         setTwitter(profileData.twitterProfile || '');
         setGithub(profileData.githubProfile || '');
+        setSkills(profileData.skills || []);
+        setExperiences(profileData.professionalSummary)
       })
       .catch((error) => {
         console.error('Error fetching profile:', error);
       });
   }, []);
+
+  const handleInputChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedExperiences = [...experiences];
+    updatedExperiences[index] = {
+      ...updatedExperiences[index],
+      [name]: value,
+    };
+    setExperiences(updatedExperiences);
+  };
+
+  const handleAddExperience = (e) => {
+    e.preventDefault();
+    setExperiences([...experiences, { companyName: '', title: '', startDate: '', endDate: '' }]);
+  };
+
+  const handleRemoveExperience = (e, index) => {
+    e.preventDefault();
+    const updatedExperiences = [...experiences];
+    updatedExperiences.splice(index, 1);
+    setExperiences(updatedExperiences);
+  };
 
 
   const handleSubmit = (e) => {
@@ -48,21 +78,23 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
     }
     const formData = {
       fullName: fullName,
-      location:location,
-      phoneNumber :phoneNumber,
+      location: location,
+      phoneNumber: phoneNumber,
       linkedInProfile: linkedin,
       twitterProfile: twitter,
       githubProfile: github,
+      skills,
+      professionalSummary: experiences
     };
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
     updateProfile(formData, authToken)
       .then((response) => {
-        if(response){
+        if (response) {
           setdisplayMessage('Profile Update Successful')
           setTimeout(() => {
             onUpdateSuccess();
           }, [1000])
-        }else{
+        } else {
           setdisplayMessage('Error updating profile:')
         }
       })
@@ -146,6 +178,58 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
             value={github}
             onChange={(e) => setGithub(e.target.value)}
           />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="skills" className="block font-semibold mb-1">
+            Skills
+          </label>
+          <TagsInput
+            value={skills}
+            onChange={setSkills}
+            name="skills"
+            placeHolder="Type your skills"
+          />
+        </div>
+        <div className='mb-4'>
+          <label htmlFor="skills" className="block font-semibold mb-1">
+            Professional Summary
+          </label>
+          <button className='mb-2' onClick={handleAddExperience}>Add Experience</button>
+          {experiences.length > 0 && experiences.map((experience, index) => (
+            <div className="border p-2 mb-2" key={index}>
+              <input
+                type="text"
+                name="companyName"
+                value={experience.companyName}
+                onChange={(e) => handleInputChange(index, e)}
+                placeholder="Company Name"
+                className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
+              />
+              <input
+                type="text"
+                name="title"
+                value={experience.title}
+                onChange={(e) => handleInputChange(index, e)}
+                placeholder="Title"
+                className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
+              />
+              <input
+                type="date"
+                name="startDate"
+                value={experience.startDate.length > 0 ? new Date(experience.startDate).toISOString().split("T")[0] : ''}
+                onChange={(e) => handleInputChange(index, e)}
+                className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
+              />
+              <input
+                type="date"
+                name="endDate"
+                value={experience.endDate.length > 0 ? new Date(experience.endDate).toISOString().split("T")[0] : ''}
+                onChange={(e) => handleInputChange(index, e)}
+                className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
+              />
+              {index >= 0 && <button className="mx-2 py-2 px-4 bg-red-500 text-white rounded-md" onClick={(e) => handleRemoveExperience(e, index)}>Remove</button>}
+            </div>
+          ))}
         </div>
         {displayMessage && (
           <div className="my-2 p-2 w-full rounded-md text-center">
