@@ -95,7 +95,10 @@ const LoginPage = () => {
       if(result == 'Network Error'){
         //do something here , add material react modal
       }
-      console.log(result);
+      if(result.data.message == 'User not found.'){
+        setlafterSignInMessage(result.data.message)
+      }
+      // console.log(result.data.message);
     }
   };
 

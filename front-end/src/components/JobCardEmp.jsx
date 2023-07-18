@@ -8,8 +8,9 @@ import {
 } from "@material-tailwind/react";
 import JobApplyForm from '../components/JobApplyForm';
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import ListAppliedCand from './ListAppliedCand';
 
-const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings }) => {
+const JobCardEmp = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings }) => {
 
   const date = new Date(dateAdded);
   const fullDate = date.toLocaleDateString();
@@ -56,20 +57,17 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
           <div className="bg-gray-100 my-2 p-2 w-fit rounded-md">
             <p className="text-xs  text-gray-600">Total Openings: <span className="text-gray-700 font-semibold">{totalOpenings}</span></p>
           </div>
-          <Button size="sm" onClick={handleApply} variant="gradient" className='h-8 my-2'>Apply</Button>
+          <Button size="sm" onClick={handleApply} variant="gradient" className='h-8 my-2'>Show Applicants</Button>
         </div>
       </div>
-      <Dialog open={open} handler={handleOpen}>
+      <Dialog open={open} handler={handleOpen} style={{ maxHeight: "90vh" }}>
         <div className='flex justify-end'>
           <IconButton variant="text" size="sm" onClick={handleOpen}>
             <XMarkIcon className="h-4 w-4 " />
           </IconButton>
         </div>
-        <div className='flex justify-center'>
-          <DialogHeader>Apply Form</DialogHeader>
-        </div>
         <div className='mx-4 mb-8 px-8'>
-          <JobApplyForm id={id} />
+            <ListAppliedCand id={id}/>
         </div>
       </Dialog>
     </div>
@@ -77,4 +75,4 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
   );
 };
 
-export default JobCard;
+export default JobCardEmp;

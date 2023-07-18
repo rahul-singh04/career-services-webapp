@@ -69,3 +69,29 @@ export const getProfile = async (authToken) => {
         console.error('Error in Fetching', error);
     }
   };
+
+  export const buildResume = async (authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+  
+    try {
+        const response = await axios.get(`http://localhost:8090/api/test/candidate/resume` , {headers,responseType: 'blob' });
+        return response.data;
+    } catch (error) {
+        console.error('Error in Fetching', error);
+    }
+  }
+
+  export const applyJob = async (id, authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+    try {
+          const response = await axios.post(`http://localhost:8090/api/test/candidate/applyJob?jobID=${id}`,{}, { headers });
+        //   console.log('Data successfully updated in the database:', response.data);
+          return response.data;
+      } catch (error) {
+          console.error('Error updating data in the database:', error);
+      }
+  }

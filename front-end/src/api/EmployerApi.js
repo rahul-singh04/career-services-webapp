@@ -55,3 +55,30 @@ export const getAllCandidates = async (authToken) => {
           console.error('Error updating data in the database:', error);
       }
   };
+
+
+  export const getJobsAdded = async (authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+  
+    try {
+        const response = await axios.get('http://localhost:8090/api/test/employer/getJobs', { headers });
+        return response.data;
+    } catch (error) {
+        console.error('Error in Fetching', error);
+    }
+  };
+
+  export const getApplicants = async (id, authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+  
+    try {
+        const response = await axios.get(`http://localhost:8090/api/test/employer/getApplicants?jobID=${id}`, { headers });
+        return response.data;
+    } catch (error) {
+        console.error('Error in Fetching', error);
+    }
+  };

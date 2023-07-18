@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import JobCard from '../components/JobCard';
-import { getAllJobs } from '../api/StudentApi';
+import JobCardEmp from './JobCardEmp';
+import { getJobsAdded } from '../api/EmployerApi';
 
 
 
-const JobList = () => {
+const AddedJobs = () => {
 
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
-    getAllJobs(authToken)
-      .then((candidates) => {
-        setJobs(candidates)
+    getJobsAdded(authToken)
+      .then((jobs) => {
+        setJobs(jobs)
       })
       .catch((error) => {
         console.log(error);
@@ -23,7 +23,7 @@ const JobList = () => {
       <div className="w-1/2 mx-auto">
         <h2 className="text-2xl font-bold m-4 text-center">Job Listings</h2>
         {jobs.map((job) => (
-          <JobCard
+          <JobCardEmp
             key={job._id}
             id={job._id}
             jobTitle={job.jobTitle}
@@ -39,4 +39,4 @@ const JobList = () => {
   );
 };
 
-export default JobList;
+export default AddedJobs;
