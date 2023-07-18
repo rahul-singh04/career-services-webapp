@@ -10,7 +10,7 @@ import { getEmployerProfile } from '../api/EmployerApi';
 import EmployerProfileForm from './EmployerProfileForm';
 import defaultProfile from '../assets/defaultProfile.png';
 import { updatePhoto, getPhoto } from '../api/CommonApis';
-import { LuUpload } from  'react-icons/Lu';
+import { LuUpload } from  'react-icons/lu';
 
 const EmployerProfileDisplay = () => {
     const [open, setOpen] = React.useState(false);
