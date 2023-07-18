@@ -26,7 +26,6 @@ const CandidateProfileDisplay = () => {
     const [id, setid] = useState(null);
     const [displayMessage, setdisplayMessage] = useState('');
     const [resume, setresume] = useState(null);
-    const [skills, setSkills] = useState([]);
 
 
     useEffect(() => {
@@ -233,6 +232,27 @@ const CandidateProfileDisplay = () => {
                                     {profileInfo.skills.map((skill, index) =>
                                     (
                                         <p className="text-base text-gray-600 p-2 border rounded" key={index}>{skill}</p>
+                                    ))
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div className='mb-4'>
+                        <label htmlFor="experiences" className="block font-semibold mb-1">
+                            Experience
+                        </label>
+                        <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
+                            {profileInfo && profileInfo.professionalSummary && profileInfo.professionalSummary.length > 0 &&
+                                <div className=''>
+                                    {profileInfo.professionalSummary.map((summary, index) =>
+                                    (
+                                        <div key={index}>
+                                            <p className="text-base text-gray-600 p-2 border rounded">{summary.companyName}</p>
+                                            <p className="text-base text-gray-600 p-2 border rounded">Title: {summary.title}</p>
+                                            <p className="text-base text-gray-600 p-2 border rounded">Start: {new Date(summary.startDate).toISOString().split('T')[0]}</p>
+                                            <p className="text-base text-gray-600 p-2 border rounded">End: {new Date(summary.endDate).toISOString().split('T')[0]}</p>
+                                        </div>
                                     ))
                                     }
                                 </div>
