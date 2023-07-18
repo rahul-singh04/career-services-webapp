@@ -49,7 +49,7 @@ const CandidateProfileDisplay = () => {
             });
 
 
-    }, [open]);
+    }, [open  , displayMessage]);
 
     const fileInputRef = useRef(null);
     const resumeInputRef = useRef(null);
@@ -61,7 +61,7 @@ const CandidateProfileDisplay = () => {
         formData.append('file', file);
 
         const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
-
+        setdisplayMessage('');
         updatePhoto(formData, authToken)
             .then((resp) => {
                 if (resp) {

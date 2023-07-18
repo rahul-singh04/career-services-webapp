@@ -107,7 +107,7 @@ module.exports = function (app) {
   );
   app.post(
     endPointConfig.candidateEndpoint + "/postPhoto",
-    [authController.verifyToken, authController.isCandidate],
+    [authController.verifyToken],
     userController.uploadFileMiddleware,
     userController.postPhoto
   );
