@@ -241,7 +241,7 @@ const CandidateProfileDisplay = () => {
                     </div>
                 </div>
             </div>
-            <Drawer open={open} onClose={closeDrawer} className="p-4" size={550}>
+            <Drawer open={open} onClose={closeDrawer} className="p-4 overflow-y-auto" size={550}>
                 <div className="mb-6 flex items-center justify-between">
                     <Typography variant="h5" color="blue-gray">Edit Profile</Typography>
                     <IconButton variant="text" color="blue-gray" onClick={closeDrawer}>
