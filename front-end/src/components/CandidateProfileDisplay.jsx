@@ -124,12 +124,10 @@ const CandidateProfileDisplay = () => {
         buildResume(authToken)
             .then((resp) => {
                 if (resp) {
-                    const fileURL = URL.createObjectURL(resp);
-                    window.open(fileURL, '_blank');
-                    const url = window.URL.createObjectURL(new Blob([resp]));
+                    const url = window.URL.createObjectURL(new Blob([resp], { type: "application/pdf" }));
                     const link = document.createElement('a');
                     link.href = url;
-                    link.setAttribute('download', filename);
+                    link.setAttribute('download', "Resume.pdf");
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
