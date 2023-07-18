@@ -3,7 +3,7 @@ import { getPhoto } from '../api/CommonApis';
 import defaultProfile from '../assets/defaultProfile.png'
 import { Button } from "@material-tailwind/react";
 
-const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings , handleOpen }) => {
+const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings  , onApply }) => {
 
   const date = new Date(dateAdded);
   const fullDate = date.toLocaleDateString();
@@ -25,10 +25,8 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
   }, [id]);
 
   const handleApply = () => {
-    // Implement the logic for applying to the job here
-    // You can use the job ID or any other relevant data to handle the application process
-    console.log('Applying to job:', id);
-    handleOpen();
+    // handleOpen();
+    onApply(id);
   };
 
   return (

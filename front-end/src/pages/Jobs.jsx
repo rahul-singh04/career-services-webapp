@@ -13,6 +13,8 @@ const JobList = () => {
 
   const [jobs, setJobs] = useState([]);
   const [open, setOpen] = useState(false);
+  const [jobIdApplying, setjobIdApplying] = useState(null);
+
 
   const handleOpen = () => setOpen(!open);
 
@@ -25,7 +27,14 @@ const JobList = () => {
       .catch((error) => {
         console.log(error);
       })
-  }, [])
+  }, [jobIdApplying])
+
+  const handleApplyJob = (jobId) => {
+    console.log(jobId);
+    handleOpen();
+    setjobIdApplying(jobId);
+  };
+  console.log(jobIdApplying);
   return (
     <Fragment>
       <div className="w-1/2 mx-auto">
@@ -42,6 +51,7 @@ const JobList = () => {
             totalOpenings={job.totalOpenings}
             jobDescription={job.jobDesc}
             handleOpen={handleOpen}
+            onApply={handleApplyJob}
           />
         ))}
       </div>
@@ -55,7 +65,7 @@ const JobList = () => {
           <DialogHeader>Apply Form</DialogHeader>
         </div>
         <div className='mx-4 mb-8 px-8'>
-          <JobApplyForm />
+          <JobApplyForm jobIdApplying={jobIdApplying}/>
         </div>
       </Dialog>
     </Fragment>
