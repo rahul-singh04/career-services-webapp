@@ -9,6 +9,7 @@ import ApplicationCandidate from './pages/ApplicationCandidate';
 import AddJobs from './pages/AddJobs';
 import Candidates from './pages/Candidates';
 import EmployerProfile from './pages/EmployerProfile';
+import BuildResume from './pages/BuildResume';
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
         <Route path="/jobsSearch" element={<Jobs />} />
         <Route path="/applications" element={<ApplicationCandidate />} />
         <Route path="/candidates" element={<Candidates />} />
+        <Route path='/build-resume' element={<BuildResume />} />
         <Route path="/addjob" element={<AddJobs />} />
         <Route path="/employerProfile" element={<EmployerProfile />} />
       </Routes>

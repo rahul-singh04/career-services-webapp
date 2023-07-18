@@ -5,12 +5,13 @@ import {
     Typography,
     IconButton,
 } from "@material-tailwind/react";
+import { TagsInput } from "react-tag-input-component";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import CandidateProfileForm from '../components/CandidateProfileForm';
 import { getProfile } from '../api/StudentApi';
 import defaultProfile from '../assets/defaultProfile.png';
 import { updatePhoto, getPhoto } from '../api/CommonApis';
-import { LuUpload } from 'react-icons/Lu';
+import { LuUpload } from 'react-icons/lu';
 import { updateResume, getResume } from '../api/StudentApi'
 
 
@@ -25,6 +26,7 @@ const CandidateProfileDisplay = () => {
     const [id, setid] = useState(null);
     const [displayMessage, setdisplayMessage] = useState('');
     const [resume, setresume] = useState(null);
+    const [skills, setSkills] = useState([]);
 
 
     useEffect(() => {
@@ -106,21 +108,21 @@ const CandidateProfileDisplay = () => {
     const handleResumeDownload = () => {
         const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
         getResume(profileInfo._id, authToken)
-          .then((resp) => {
-            if (resp) {
-              setresume(resp);
-              const fileURL = URL.createObjectURL(resp);
-              window.open(fileURL, '_blank');
-            }
-          })
-          .catch((error) => {
-            console.error('Error fetching resume:', error);
-          });
-      };
+            .then((resp) => {
+                if (resp) {
+                    setresume(resp);
+                    const fileURL = URL.createObjectURL(resp);
+                    window.open(fileURL, '_blank');
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching resume:', error);
+            });
+    };
 
     return (
         <React.Fragment>
-            <div className="flex flex-col gap-4 max-w-lg mx-auto">
+            <div className="flex flex-col gap-4 mx-auto">
                 <div className="flex flex-row items-center justify-center">
                     <img
                         src={profilePic || defaultProfile}
@@ -148,8 +150,8 @@ const CandidateProfileDisplay = () => {
                         ? 'text-green-500 font-extrabold'
                         : 'text-red-500 font-extrabold'}`}>{displayMessage}</p>
                 )}
-                <div className="flex justify-between mb-4">
-                    <label htmlFor="resume-upload" className="flex items-center cursor-pointer">
+                <div className="flex justify-around mb-4">
+                    <label htmlFor="resume-upload" className="flex items-center cursor-pointer mx-2">
                         <input
                             type="file"
                             id="resume-upload"
@@ -165,9 +167,12 @@ const CandidateProfileDisplay = () => {
                             {profileInfo && profileInfo.resumeUploaded && <Button size="sm" color="green" onClick={() => handleResumeDownload()}>
                                 Download Resume
                             </Button>}
+                            <Button size="sm" color="orange">
+                                Build resume
+                            </Button>
+                            <Button size="sm" onClick={openDrawer}>Edit</Button>
                         </div>
                     </label>
-                    <Button size="sm" onClick={openDrawer}>Edit</Button>
                 </div>
                 <div className='flex flex-col'>
                     <div className="mb-4">
@@ -216,6 +221,22 @@ const CandidateProfileDisplay = () => {
                         </label>
                         <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
                             <p className="text-base text-gray-600">{profileInfo && profileInfo.githubProfile}</p>
+                        </div>
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="github" className="block font-semibold mb-1">
+                            Skills
+                        </label>
+                        <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
+                            {profileInfo && profileInfo.skills &&
+                                <div className=' flex flex-wrap justify-between'>
+                                    {profileInfo.skills.map((skill, index) =>
+                                    (
+                                        <p className="text-base text-gray-600 p-2 border rounded" key={index}>{skill}</p>
+                                    ))
+                                    }
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

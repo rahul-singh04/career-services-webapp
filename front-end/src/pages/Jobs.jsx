@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import JobCard from '../components/Jobcard';
+import JobCard from '../components/JobCard';
 import { getAllJobs } from '../api/StudentApi';
 import { Fragment } from "react";
 import {

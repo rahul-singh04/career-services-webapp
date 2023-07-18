@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { TagsInput } from "react-tag-input-component";
 import { getProfile, updateProfile } from '../api/StudentApi';
 
 const CandidateProfileForm = ({ onUpdateSuccess }) => {
@@ -12,6 +13,7 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
 
   const [profileInfo, setProfileInfo] = useState(null);
   const [displayMessage, setdisplayMessage] = useState('')
+  const [skills, setSkills] = useState([]);
 
   useEffect(() => {
     setdisplayMessage('')
@@ -25,6 +27,7 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
         setLinkedin(profileData.linkedInProfile || '');
         setTwitter(profileData.twitterProfile || '');
         setGithub(profileData.githubProfile || '');
+        setSkills(profileData.skills || [])
       })
       .catch((error) => {
         console.error('Error fetching profile:', error);
@@ -48,21 +51,22 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
     }
     const formData = {
       fullName: fullName,
-      location:location,
-      phoneNumber :phoneNumber,
+      location: location,
+      phoneNumber: phoneNumber,
       linkedInProfile: linkedin,
       twitterProfile: twitter,
       githubProfile: github,
+      skills
     };
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
     updateProfile(formData, authToken)
       .then((response) => {
-        if(response){
+        if (response) {
           setdisplayMessage('Profile Update Successful')
           setTimeout(() => {
             onUpdateSuccess();
           }, [1000])
-        }else{
+        } else {
           setdisplayMessage('Error updating profile:')
         }
       })
@@ -145,6 +149,17 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
             className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             value={github}
             onChange={(e) => setGithub(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="skills" className="block font-semibold mb-1">
+            skills
+          </label>
+          <TagsInput
+            value={skills}
+            onChange={setSkills}
+            name="skills"
+            placeHolder="Type your skills"
           />
         </div>
         {displayMessage && (
