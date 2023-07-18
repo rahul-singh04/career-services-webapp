@@ -76,7 +76,7 @@ export const getProfile = async (authToken) => {
       'x-access-token': authToken,
     };
     try {
-      console.log(id);
+      console.log(authToken);
           const response = await axios.post(`http://localhost:8090/api/test/candidate/applyJob?jobID=${id}`, { headers });
         //   console.log('Data successfully updated in the database:', response.data);
           return response.data;

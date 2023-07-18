@@ -36,7 +36,7 @@ const JobApplyForm = ({id}) => {
             }
         })
         .catch((error) => {
-            console.error('Error uploading photo:', error);
+            console.error('Error applying job:', error);
         });
     };
 
