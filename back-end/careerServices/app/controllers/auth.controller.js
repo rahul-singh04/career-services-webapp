@@ -1,77 +1,96 @@
-const config = require("../config/config");
-const db = require("../models");
-var jwt = require("jsonwebtoken");
-var bcrypt = require("bcryptjs");
+const service = require("../services");
+const authService = service.authService;
 
-const User = db.user;
-const Role = db.role;
+exports.verifySignUp = async (req, res, next) => {
+  try {
+    await authService.checkDuplicateUsernameOrEmail(
+      req.body.username,
+      req.body.email
+    );
 
-exports.signup = (req, res) => {
-  const user = new User({
-    username: req.body.username,
-    email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8),
-  });
+    authService.checkRolesExisted(req.body.roles);
 
-  user
-    .save()
-    .then((user) => {
-      if (req.body.roles) {
-        return Role.find({ name: { $in: req.body.roles } });
-      } else {
-        return Role.findOne({ name: "user" });
-      }
-    })
-    .then((roles) => {
-      user.roles = roles.map((role) => role._id);
-      return user.save();
-    })
-    .then(() => {
-      res.status(200).send({ message: "User was registered successfully!" });
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err });
-    });
+    next();
+  } catch (err) {
+    res.status(400).send({ message: err.message });
+  }
 };
 
-exports.signin = (req, res) => {
-  User.findOne({ username: req.body.username })
-    .populate("roles", "-__v")
-    .then((user) => {
-      if (!user) {
-        return res.status(404).send({ message: "User not found." });
-      }
+exports.signup = async (req, res) => {
+  try {
+    const { username, email, password, roles } = req.body;
+    await authService.signup(username, email, password, roles);
+    res.status(200).json({ message: "User was registered successfully!" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
-      const passwordIsValid = bcrypt.compareSync(
-        req.body.password,
-        user.password
-      );
+exports.signin = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await authService.signin(username, password);
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
-      if (!passwordIsValid) {
-        return res
-          .status(401)
-          .send({ accessToken: null, message: "Invalid Password!" });
-      }
+exports.verifyToken = async (req, res, next) => {
+  try {
+    const token = req.headers["x-access-token"];
 
-      const token = jwt.sign({ id: user.id }, config.secret, {
-        algorithm: "HS256",
-        allowInsecureKeySizes: true,
-        expiresIn: 86400,
-      });
+    if (!token) {
+      return res.status(403).send({ message: "No token provided!" });
+    }
 
-      const authorities = user.roles.map(
-        (role) => "ROLE_" + role.name.toUpperCase()
-      );
+    await authService.verifyToken(token);
+    const decoded = await authService.verifyToken(token);
+    req.userId = decoded.id;
+    next();
+  } catch (err) {
+    res.status(401).send({ message: err.message });
+  }
+};
 
-      res.status(200).send({
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        roles: authorities,
-        accessToken: token,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({ message: err });
-    });
+exports.isAdmin = async (req, res, next) => {
+  try {
+    const roles = await authService.getUserRoles(req.userId);
+
+    if (roles.includes("admin")) {
+      next();
+    } else {
+      res.status(403).send({ message: "Require Admin Role!" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+exports.isEmployer = async (req, res, next) => {
+  try {
+    const roles = await authService.getUserRoles(req.userId);
+
+    if (roles.includes("employer")) {
+      next();
+    } else {
+      res.status(403).send({ message: "Require Employer Role!" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
+exports.isCandidate = async (req, res, next) => {
+  try {
+    const roles = await authService.getUserRoles(req.userId);
+
+    if (roles.includes("candidate")) {
+      next();
+    } else {
+      res.status(403).send({ message: "Require Candidate Role!" });
+    }
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
 };
