@@ -11,7 +11,7 @@ import CandidateProfileForm from '../components/CandidateProfileForm';
 import { getProfile } from '../api/StudentApi';
 import defaultProfile from '../assets/defaultProfile.png';
 import { updatePhoto, getPhoto } from '../api/CommonApis';
-import { LuUpload } from 'react-icons/lu';
+import { LuUpload } from  'react-icons/lu';
 import { updateResume, getResume, buildResume } from '../api/StudentApi'
 
 
