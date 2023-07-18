@@ -169,7 +169,7 @@ const CandidateProfileDisplay = () => {
                             className="hidden"
                             onChange={handleResumeUpload}
                         />
-                        <div className='flex gap-4'>
+                        <div className='flex gap-4 h-12'>
                             <Button size="sm" onClick={() => resumeInputRef.current.click()}>
                                 {profileInfo && profileInfo.resumeUploaded ? ` Replace Resume` :` Upload Resume` }
                             </Button>
