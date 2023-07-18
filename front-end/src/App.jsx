@@ -10,6 +10,7 @@ import AddJobs from './pages/AddJobs';
 import Candidates from './pages/Candidates';
 import EmployerProfile from './pages/EmployerProfile';
 import BuildResume from './pages/BuildResume';
+import AddedJobs from './components/AddedJobs';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/build-resume' element={<BuildResume />} />
         <Route path="/addjob" element={<AddJobs />} />
         <Route path="/employerProfile" element={<EmployerProfile />} />
+        <Route path="/jobsAdded" element={<AddedJobs />} />
       </Routes>
     </div>
 
