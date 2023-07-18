@@ -35,7 +35,6 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
   const handleApply = () => {
     handleOpen();
   };
-
   return (
     <Fragment>
     <div className="flex flex-row bg-white rounded-lg shadow-md p-6 mb-4 gap-4">
