@@ -12,7 +12,7 @@ import { getProfile } from '../api/StudentApi';
 import defaultProfile from '../assets/defaultProfile.png';
 import { updatePhoto, getPhoto } from '../api/CommonApis';
 import { LuUpload } from 'react-icons/lu';
-import { updateResume, getResume } from '../api/StudentApi'
+import { updateResume, getResume, buildResume } from '../api/StudentApi'
 
 
 
@@ -119,6 +119,28 @@ const CandidateProfileDisplay = () => {
             });
     };
 
+    const handleBuildResume = () => {
+        const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+        buildResume(authToken)
+            .then((resp) => {
+                if (resp) {
+                    const fileURL = URL.createObjectURL(resp);
+                    window.open(fileURL, '_blank');
+                    const url = window.URL.createObjectURL(new Blob([resp]));
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.setAttribute('download', filename);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching resume:', error);
+            });
+    }
+
     return (
         <React.Fragment>
             <div className="flex flex-col gap-4 mx-auto">
@@ -166,7 +188,7 @@ const CandidateProfileDisplay = () => {
                             {profileInfo && profileInfo.resumeUploaded && <Button size="sm" color="green" onClick={() => handleResumeDownload()}>
                                 Download Resume
                             </Button>}
-                            <Button size="sm" color="orange">
+                            <Button size="sm" color="orange" onClick={handleBuildResume}>
                                 Build resume
                             </Button>
                             <Button size="sm" onClick={openDrawer}>Edit</Button>
@@ -247,7 +269,7 @@ const CandidateProfileDisplay = () => {
                                 <div className=''>
                                     {profileInfo.professionalSummary.map((summary, index) =>
                                     (
-                                        <div key={index}>
+                                        <div key={index} className='my-2 bg-gray-200'>
                                             <p className="text-base text-gray-600 p-2 border rounded">{summary.companyName}</p>
                                             <p className="text-base text-gray-600 p-2 border rounded">Title: {summary.title}</p>
                                             <p className="text-base text-gray-600 p-2 border rounded">Start: {new Date(summary.startDate).toISOString().split('T')[0]}</p>
