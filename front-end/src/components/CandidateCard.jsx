@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getPhoto } from '../api/CommonApis';
-import defaultProfile from '/Users/thewithcer/linkedin-project/front-end/src/assets/defaultProfile.png'
+import defaultProfile from '../assets/defaultProfile.png'
 
 const CandidateCard = ({ id , fullName, bio, location, phoneNumber, linkedinProfile, githubProfile }) => {
   const [photo, setphoto] = useState(null)

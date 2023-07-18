@@ -6,16 +6,17 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import CandidateProfileForm from '../components/CandidateProfileForm'
+import CandidateProfileForm from '../components/CandidateProfileForm';
 import { getProfile } from '../api/StudentApi';
-import defaultProfile from '/Users/thewithcer/linkedin-project/front-end/src/assets/defaultProfile.png'
+import defaultProfile from '../assets/defaultProfile.png';
 import { updatePhoto, getPhoto } from '../api/CommonApis';
 import { LuUpload } from 'react-icons/Lu';
+import { updateResume, getResume } from '../api/StudentApi'
 
 
 
 const CandidateProfileDisplay = () => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const openDrawer = () => setOpen(true);
     const closeDrawer = () => setOpen(false);
 
@@ -23,30 +24,44 @@ const CandidateProfileDisplay = () => {
     const [profilePic, setprofilePic] = useState();
     const [id, setid] = useState(null);
     const [displayMessage, setdisplayMessage] = useState('');
+    const [resume, setresume] = useState(null);
+
 
     useEffect(() => {
         const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
         getProfile(authToken)
             .then((profileData) => {
+                console.log(profileData);
                 setProfileInfo(profileData);
-                setid(profileData._id)
+                setid(profileData._id);
+                getPhoto(profileData._id, authToken)
+                    .then((resp) => {
+                        if (resp) {
+                            setprofilePic(resp);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching photo:', error);
+                    });
+                // getResume(profileData._id, authToken)
+                //     .then((resp) => {
+                //         if (resp) {
+                //             setresume(resp);
+                //             const fileURL = URL.createObjectURL(resp);
+                //             window.open(fileURL, '_blank');
+                //         }
+                //     })
+                //     .catch((error) => {
+                //         console.error('Error fetching photo:', error);
+                //     });
+
             })
             .catch((error) => {
                 console.error('Error fetching profile:', error);
             });
-         if(id){
-            getPhoto(id, authToken)
-            .then((resp) => {
-                if (resp) {
-                    setprofilePic(resp);
-                }
-            })
-            .catch((error) => {
-                console.error('Error uploading photo:', error);
-            });
-         }
-    }, [open , id , displayMessage]);
 
+
+    }, [open]);
 
     const fileInputRef = useRef(null);
 
@@ -62,21 +77,55 @@ const CandidateProfileDisplay = () => {
                 if (resp) {
                     setdisplayMessage('Photo uploaded successfully');
                 } else {
-                    setdisplayMessage('upload unsuccesfull')
+                    setdisplayMessage('Upload unsuccessful');
                 }
             })
             .catch((error) => {
                 console.error('Error uploading photo:', error);
             });
     };
+
+    const handleResumeUpload = (e) => {
+        const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+        updateResume(formData, authToken)
+            .then((resp) => {
+                if (resp) {
+                    setdisplayMessage('Resume uploaded successfully');
+                } else {
+                    setdisplayMessage('Resume unsuccessful');
+                }
+            })
+            .catch((error) => {
+                console.error('Error uploading photo:', error);
+            });
+    };
+
+    const handleResumeDownload = () => {
+        const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+        getResume(profileInfo._id, authToken)
+          .then((resp) => {
+            if (resp) {
+              setresume(resp);
+              const fileURL = URL.createObjectURL(resp);
+              window.open(fileURL, '_blank');
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching resume:', error);
+          });
+      };
+
     return (
         <React.Fragment>
-            <div className="max-w-lg mx-auto">
+            <div className="flex flex-col gap-4 max-w-lg mx-auto">
                 <div className="flex flex-row items-center justify-center">
                     <img
-                        src={profilePic && profilePic || defaultProfile}  
+                        src={profilePic || defaultProfile}
                         alt="Profile"
-                        className={`w-40 h-40 rounded-full ${profilePic && profilePic ? 'object-cover' : ''} border-2`}
+                        className={`w-40 h-40 rounded-full ${profilePic ? 'object-cover' : ''} border-2`}
                     />
                     <div className="relative">
                         <input
@@ -89,63 +138,85 @@ const CandidateProfileDisplay = () => {
                         />
                         <LuUpload
                             size={24}
-                            className={"cursor-pointer w-8 h-8 rounded-lg p-1"}
+                            className="cursor-pointer w-8 h-8 rounded-lg p-1"
                             onClick={() => fileInputRef.current.click()}
                         />
                     </div>
                 </div>
-                {displayMessage && <p className={`font-extrabold text-center ${displayMessage.includes('successfully')
-                    ? 'text-green-500 font-extrabold'
-                    : 'text-red-500 font-extrabold'}`}>{displayMessage}</p>}
-                <div className="flex justify-end mb-4">
-                    <Button onClick={openDrawer}>Edit</Button>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="fullName" className="block font-semibold mb-1">
-                        Full Name
+                {displayMessage && (
+                    <p className={`font-extrabold text-center ${displayMessage.includes('successfully')
+                        ? 'text-green-500 font-extrabold'
+                        : 'text-red-500 font-extrabold'}`}>{displayMessage}</p>
+                )}
+                <div className="flex justify-between mb-4">
+                    <label htmlFor="resume-upload" className="flex items-center cursor-pointer">
+                        <input
+                            type="file"
+                            id="resume-upload"
+                            ref={fileInputRef}
+                            accept="application/pdf"
+                            className="hidden"
+                            onChange={handleResumeUpload}
+                        />
+                        <div className='flex gap-4'>
+                            <Button size="sm" onClick={() => fileInputRef.current.click()}>
+                                Upload Resume
+                            </Button>
+                            {profileInfo && profileInfo.resumeUploaded && <Button size="sm" color="green" onClick={() => handleResumeDownload()}>
+                                Download Resume
+                            </Button>}
+                        </div>
                     </label>
-                    <div className="bg-gray-100 my-2 p-2 w-full rounded-md">
-                        <p className="text-base  text-gray-600"> {profileInfo && profileInfo.fullName}</p>
+                    <Button size="sm" onClick={openDrawer}>Edit</Button>
+                </div>
+                <div className='flex flex-col'>
+                    <div className="mb-4">
+                        <label htmlFor="fullName" className="block font-semibold mb-1">
+                            Full Name
+                        </label>
+                        <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
+                            <p className="text-base text-gray-600">{profileInfo && profileInfo.fullName}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="location" className="block font-semibold mb-1">
-                        Location
-                    </label>
-                    <div className="bg-gray-100 my-2 p-2 w-full rounded-md">
-                        <p className="text-base  text-gray-600">{profileInfo && profileInfo.location}</p>
+                    <div className="mb-4">
+                        <label htmlFor="location" className="block font-semibold mb-1">
+                            Location
+                        </label>
+                        <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
+                            <p className="text-base text-gray-600">{profileInfo && profileInfo.location}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="phoneNumber" className="block font-semibold mb-1">
-                        Phone Number
-                    </label>
-                    <div className="bg-gray-100 my-2 p-2 w-full rounded-md">
-                        <p className="text-base  text-gray-600">{profileInfo && profileInfo.phoneNumber}</p>
+                    <div className="mb-4">
+                        <label htmlFor="phoneNumber" className="block font-semibold mb-1">
+                            Phone Number
+                        </label>
+                        <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
+                            <p className="text-base text-gray-600">{profileInfo && profileInfo.phoneNumber}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="linkedin" className="block font-semibold mb-1">
-                        LinkedIn Profile
-                    </label>
-                    <div className="bg-gray-100 my-2 p-2 w-full rounded-md">
-                        <p className="text-base  text-gray-600">{profileInfo && profileInfo.linkedInProfile}</p>
+                    <div className="mb-4">
+                        <label htmlFor="linkedin" className="block font-semibold mb-1">
+                            LinkedIn Profile
+                        </label>
+                        <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
+                            <p className="text-base text-gray-600">{profileInfo && profileInfo.linkedInProfile}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="twitter" className="block font-semibold mb-1">
-                        Twitter Profile
-                    </label>
-                    <div className="bg-gray-100 my-2 p-2 w-full rounded-md">
-                        <p className="text-base  text-gray-600">{profileInfo && profileInfo.twitterProfile}</p>
+                    <div className="mb-4">
+                        <label htmlFor="twitter" className="block font-semibold mb-1">
+                            Twitter Profile
+                        </label>
+                        <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
+                            <p className="text-base text-gray-600">{profileInfo && profileInfo.twitterProfile}</p>
+                        </div>
                     </div>
-                </div>
-                <div className="mb-4">
-                    <label htmlFor="github" className="block font-semibold mb-1">
-                        GitHub Profile
-                    </label>
-                    <div className="bg-gray-100 my-2 p-2 w-full rounded-md">
-                        <p className="text-base  text-gray-600">{profileInfo && profileInfo.githubProfile}</p>
+                    <div className="mb-4">
+                        <label htmlFor="github" className="block font-semibold mb-1">
+                            GitHub Profile
+                        </label>
+                        <div className="bg-gray-100 my-1 p-2 w-full rounded-md">
+                            <p className="text-base text-gray-600">{profileInfo && profileInfo.githubProfile}</p>
+                        </div>
                     </div>
                 </div>
             </div>
