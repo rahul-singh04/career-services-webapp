@@ -32,7 +32,6 @@ const CandidateProfileDisplay = () => {
         const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
         getProfile(authToken)
             .then((profileData) => {
-                console.log(profileData);
                 setProfileInfo(profileData);
                 setid(profileData._id);
                 getPhoto(profileData._id, authToken)
@@ -44,17 +43,6 @@ const CandidateProfileDisplay = () => {
                     .catch((error) => {
                         console.error('Error fetching photo:', error);
                     });
-                // getResume(profileData._id, authToken)
-                //     .then((resp) => {
-                //         if (resp) {
-                //             setresume(resp);
-                //             const fileURL = URL.createObjectURL(resp);
-                //             window.open(fileURL, '_blank');
-                //         }
-                //     })
-                //     .catch((error) => {
-                //         console.error('Error fetching photo:', error);
-                //     });
 
             })
             .catch((error) => {
@@ -65,6 +53,8 @@ const CandidateProfileDisplay = () => {
     }, [open]);
 
     const fileInputRef = useRef(null);
+    const resumeInputRef = useRef(null);
+
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
@@ -174,14 +164,14 @@ const CandidateProfileDisplay = () => {
                         <input
                             type="file"
                             id="resume-upload"
-                            ref={fileInputRef}
+                            ref={resumeInputRef}
                             accept="application/pdf"
                             className="hidden"
                             onChange={handleResumeUpload}
                         />
                         <div className='flex gap-4'>
-                            <Button size="sm" onClick={() => fileInputRef.current.click()}>
-                                Upload Resume
+                            <Button size="sm" onClick={() => resumeInputRef.current.click()}>
+                                {profileInfo && profileInfo.resumeUploaded ? ` Replace Resume` :` Upload Resume` }
                             </Button>
                             {profileInfo && profileInfo.resumeUploaded && <Button size="sm" color="green" onClick={() => handleResumeDownload()}>
                                 Download Resume
