@@ -112,17 +112,16 @@ exports.putInterview = async (req, res) => {
 
 exports.applyJob = async (req, res) => {
   try {
-    if (!req.body) {
+    if (Object.keys(req.query).length == 0) {
       return res.status(400).send({
         message: "Data to update cannot be empty!",
       });
     }
     const token = req.headers["x-access-token"];
-    const candidateID = req.query.candidateID;
-
+    const jobId = req.query.jobID;
     const createdApplication = await userService.createApplication(
-      candidateID,
-      token
+       token,
+      jobId
     );
     res.status(200).send(createdApplication);
   } catch (error) {

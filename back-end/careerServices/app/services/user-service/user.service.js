@@ -47,7 +47,7 @@ exports.getAllJobs = async () => {
       totalOpenings,
       datePosted,
     } = job;
-    const { username, email , fullName } = employerID;
+    const { username, email, fullName } = employerID;
     return {
       _id,
       jobTitle,
@@ -179,12 +179,10 @@ exports.updateApplicationStatus = async (jobID, candidateID) => {
   }
 };
 
-exports.createApplication = async (candidateID, token) => {
+exports.createApplication = async (token, jobID) => {
   const application = {
-    candidateID: new models.mongoose.Types.ObjectId(candidateID),
-    jobID: new models.mongoose.Types.ObjectId(
-      extractuserModelIdFromToken(token)
-    ),
+    candidateID: new models.mongoose.Types.ObjectId(extractuserModelIdFromToken(token)),
+    jobID: new models.mongoose.Types.ObjectId(jobID),
     status: "New",
   };
   return applicationModel.create(application);
