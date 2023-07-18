@@ -81,6 +81,7 @@ export const getProfile = async (authToken) => {
     } catch (error) {
         console.error('Error in Fetching', error);
     }
+  }
 
   export const applyJob = async (id, authToken) => {
     const headers = {
@@ -93,4 +94,4 @@ export const getProfile = async (authToken) => {
       } catch (error) {
           console.error('Error updating data in the database:', error);
       }
-  };
+  }
