@@ -47,7 +47,7 @@ exports.getAllJobs = async () => {
       totalOpenings,
       datePosted,
     } = job;
-    const { username, email, fullName } = employerID;
+    const { username, email, fullName , _id:employerId } = employerID;
     return {
       _id,
       jobTitle,
@@ -61,6 +61,7 @@ exports.getAllJobs = async () => {
         username,
         email,
         fullName,
+        _id:employerId
       },
     };
   });
