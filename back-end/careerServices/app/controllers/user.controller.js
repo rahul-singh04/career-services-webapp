@@ -91,6 +91,18 @@ exports.getApplicants = async (req, res) => {
   }
 };
 
+exports.getApplications = async (req, res) => {
+  try {
+    const result = await userService.getApplications(
+      req.headers["x-access-token"]
+    );
+    res.status(200).send(result);
+  } catch (error) {
+    logger.error("Failed to fetch applications:", error);
+    res.status(500).send("Failed to fetch applications");
+  }
+};
+
 exports.putInterview = async (req, res) => {
   try {
     const result = await userService.updateApplicationStatus(
@@ -120,7 +132,7 @@ exports.applyJob = async (req, res) => {
     const token = req.headers["x-access-token"];
     const jobId = req.query.jobID;
     const createdApplication = await userService.createApplication(
-       token,
+      token,
       jobId
     );
     res.status(200).send(createdApplication);
@@ -168,6 +180,22 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
+exports.deleteJobPosting = async (req, res) => {
+  try {
+    const deletedJobPosting = await userService.deletejobPostingsModel(
+      req.query.jobID
+    );
+    if (!deletedJobPosting) {
+      res.status(404).send("Job not found");
+    } else {
+      res.status(200).json("Successfully deleted jobPosting!");
+    }
+  } catch (error) {
+    logger.error("Failed to delete Job:", error);
+    res.status(500).send("Failed to delete Job");
+  }
+};
+
 exports.readJobPostings = async (req, res) => {
   try {
     const jobPostings = await userService.getAllJobPostings();
@@ -181,11 +209,7 @@ exports.readJobPostings = async (req, res) => {
 exports.updateJobPosting = async (req, res) => {
   try {
     const updatedFields = req.body;
-
-    await userService.updateJobPosting(
-      req.headers["x-access-token"],
-      updatedFields
-    );
+    await userService.updatejobPostingsModel(req.query.jobID, updatedFields);
     res.status(200).json({ message: "JobPosting updated successfully" });
   } catch (error) {
     logger.error("Error updating JobPosting:", error);
