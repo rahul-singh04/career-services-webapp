@@ -129,7 +129,7 @@ export default HomePage;
 const HomeComponent = styled.div`
   display: flex;
   flex-direction:column ;
-  background:#f6b529 ;
+  background:#f2f2f2 ;
   border-top: 2px solid #5B0101;
 `;
 
