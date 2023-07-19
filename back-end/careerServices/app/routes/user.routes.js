@@ -45,6 +45,16 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isEmployer],
     userController.browseCandidates
   );
+  app.delete(
+    endPointConfig.employerEndpoint + "/deleteJobPosting",
+    [authController.verifyToken, authController.isEmployer],
+    userController.deleteJobPosting
+  );
+  app.get(
+    endPointConfig.employerEndpoint + "/updateJobPosting",
+    [authController.verifyToken, authController.isEmployer],
+    userController.updateJobPosting
+  );
 
   app.get(
     endPointConfig.employerEndpoint + "/getJobs",
@@ -110,5 +120,10 @@ module.exports = function (app) {
     [authController.verifyToken],
     userController.uploadFileMiddleware,
     userController.postPhoto
+  );
+  app.get(
+    endPointConfig.candidateEndpoint + "/getApplications",
+    [authController.verifyToken, authController.isCandidate],
+    userController.getApplications
   );
 };

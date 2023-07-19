@@ -47,7 +47,7 @@ exports.getAllJobs = async () => {
       totalOpenings,
       datePosted,
     } = job;
-    const { username, email , fullName } = employerID;
+    const { username, email, fullName } = employerID;
     return {
       _id,
       jobTitle,
@@ -92,21 +92,6 @@ exports.updateUserProfile = async (token, updatedFields) => {
     return result;
   } catch (error) {
     logger.error("Error updating user profile:", error);
-    throw error;
-  }
-};
-exports.updateJobPosting = async (token, updatedFields) => {
-  const userId = new mongoose.Types.ObjectId(
-    extractuserModelIdFromToken(token)
-  );
-
-  try {
-    const result = await jobPostingsModel
-      .updateOne({ _id: userId }, { $set: updatedFields })
-      .exec();
-    return result;
-  } catch (error) {
-    logger.error("Error updating job posting:", error);
     throw error;
   }
 };
@@ -181,8 +166,10 @@ exports.updateApplicationStatus = async (jobID, candidateID) => {
 
 exports.createApplication = async (token, jobID) => {
   const application = {
-    candidateID: new models.mongoose.Types.ObjectId(extractuserModelIdFromToken(token)),
-     jobID: new models.mongoose.Types.ObjectId(jobID),
+    candidateID: new models.mongoose.Types.ObjectId(
+      extractuserModelIdFromToken(token)
+    ),
+    jobID: new models.mongoose.Types.ObjectId(jobID),
     status: "New",
   };
   return applicationModel.create(application);
@@ -221,7 +208,9 @@ exports.updatejobPostingsModel = async (jobID, jobPostingData) => {
 };
 
 exports.deletejobPostingsModel = async (jobID) => {
-  return userModel.findByIdAndRemove(jobID, { useFindAndModify: false }).exec();
+  return jobPostingsModel
+    .findByIdAndRemove(jobID, { useFindAndModify: false })
+    .exec();
 };
 
 exports.getAllApplications = async () => {
@@ -321,4 +310,38 @@ exports.postPhoto = async (file, token, filePath) => {
       throw new Error("Failed to update the database.");
     }
   }
+};
+
+exports.getApplications = async (token) => {
+  const id = extractuserModelIdFromToken(token);
+  console.log(id);
+  const applications = await applicationModel.find({ candidateID: id }).exec();
+  const candidateIDs = applications.map((app) => app.candidateID);
+
+  // Retrieve jobIDs from the applications
+  const jobIDs = applications.map((app) => app.jobID);
+
+  // Retrieve job information for the corresponding jobIDs
+  const jobs = await jobPostingsModel.find({ _id: { $in: jobIDs } }).exec();
+
+  const users = await userModel
+    .find({ _id: { $in: candidateIDs } })
+    .select("-password -roles") // Exclude 'password' and 'roles' fields
+    .exec();
+
+  return applications.map((app) => {
+    const user = users.find(
+      (user) => user._id.toString() === app.candidateID.toString()
+    );
+
+    const job = jobs.find((job) => job._id.toString() === app.jobID.toString());
+
+    return {
+      _id: app._id,
+      candidateID: app.candidateID,
+      jobID: app.jobID,
+      status: app.status,
+      job: job, // Include job information
+    };
+  });
 };
