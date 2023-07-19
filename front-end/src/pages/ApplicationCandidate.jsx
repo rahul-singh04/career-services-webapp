@@ -31,6 +31,7 @@ const [applications, setapplications] = useState([])
         workLocation={application.job.workLocation}
         totalOpenings={application.job.totalOpenings}
         jobDescription={application.job.jobDesc}
+        companyId={application.job.employerID}
         applications={applications}
       />
     ))}
