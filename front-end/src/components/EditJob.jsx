@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { postJob } from '../api/EmployerApi';
+import React, { useEffect, useState } from 'react';
+import {  updateJob } from '../api/EmployerApi';
 
-const EditJob = () => {
-  const [jobTitle, setJobTitle] = useState('');
-  const [companylocation, setcompanylocation] = useState('');
-  const [jobDescription, setJobDescription] = useState('');
-  const [totalOpenings, setTotalOpenings] = useState('');
-  const [worklocation, setworklocation] = useState('');
+const EditJob = ({onUpdateSuccess ,id, jobTitle, location, jobDescription, workLocation, totalOpenings }) => {
+  const [jobTitleEdit, setJobTitle] = useState(jobTitle);
+  const [companylocationEdit, setcompanylocation] = useState(location);
+  const [jobDescriptionEdit, setJobDescription] = useState(jobDescription);
+  const [totalOpeningsEdit, setTotalOpenings] = useState(totalOpenings);
+  const [worklocationEdit, setworklocation] = useState(workLocation);
   const [displayMessage, setDisplayMessage] = useState('');
 
 
@@ -14,36 +14,32 @@ const EditJob = () => {
     e.preventDefault();
   
     if (
-      jobTitle.trim() === '' ||
-      worklocation.trim() === '' ||
-      companylocation.trim() === '' ||
-      jobDescription.trim() === '' ||
-      totalOpenings.trim() === ''
+        jobTitleEdit.trim() === '' ||
+        companylocationEdit.trim() === '' ||
+        worklocationEdit.trim() === '' ||
+      jobDescriptionEdit.trim() === '' ||
+      totalOpeningsEdit.trim() === ''
     ) {
       setDisplayMessage('All fields are required');
       return;
     }
   
     const formData = {
-      jobTitle: jobTitle,
-      companyLocation:companylocation,
-      jobDesc: jobDescription,
-      workLocation: worklocation,
-      totalOpenings: totalOpenings
+      jobTitle: jobTitleEdit,
+      companyLocation:companylocationEdit,
+      jobDesc: jobDescriptionEdit,
+      workLocation: worklocationEdit,
+      totalOpenings: totalOpeningsEdit
     }
 
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
-    postJob(formData, authToken)
+    console.log(id);
+    console.log(formData);
+    updateJob(id, formData, authToken)
       .then((response) => {
         if(response){
-          setDisplayMessage('Job Posted');
-          setTimeout(() => {
-            setJobTitle('');
-            setcompanylocation('');
-            setworklocation('');
-            setJobDescription('');
-            setTotalOpenings('');
-          }, 1000);
+          setDisplayMessage('Job Updated');
+            onUpdateSuccess();
         }else{
           setDisplayMessage('Error posting job: Please contact Support');
         }
@@ -52,7 +48,11 @@ const EditJob = () => {
         console.error('Error posting job:', error);
       });
   };
-  
+
+    useEffect(() => {
+      setDisplayMessage('')
+    }, [onUpdateSuccess])
+
 
   return (
     <div className='flex w-full'>
@@ -66,7 +66,7 @@ const EditJob = () => {
             <input
               type="text"
               id="jobTitle"
-              value={jobTitle}
+              value={jobTitleEdit}
               onChange={(e) => {setJobTitle(e.target.value),setDisplayMessage('');}}
               placeholder="Example: Software Engineer"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
@@ -80,7 +80,7 @@ const EditJob = () => {
             <input
               type="text"
               id="location"
-              value={companylocation}
+              value={companylocationEdit}
               onChange={(e) => {setcompanylocation(e.target.value) ,setDisplayMessage('');}}
               placeholder="Example: San Francisco, CA"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
@@ -93,7 +93,7 @@ const EditJob = () => {
             </label>
             <textarea
               id="jobDescription"
-              value={jobDescription}
+              value={jobDescriptionEdit}
               onChange={(e) =>{ setJobDescription(e.target.value) ,setDisplayMessage('');}}
               placeholder="Example: We are seeking a highly motivated software engineer with experience in web development..."
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2 h-32"
@@ -107,13 +107,12 @@ const EditJob = () => {
             <input
               type="text"
               id="totalOpenings"
-              value={worklocation}
+              value={worklocationEdit}
               onChange={(e) => {setworklocation(e.target.value),setDisplayMessage('');}}
               placeholder="Example: 5"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
             />
           </div>
-
           <div>
             <label htmlFor="totalOpenings" className="block font-semibold mb-1">
               Total Openings
@@ -121,7 +120,7 @@ const EditJob = () => {
             <input
               type="text"
               id="totalOpenings"
-              value={totalOpenings}
+              value={totalOpeningsEdit}
               onChange={(e) => {setTotalOpenings(e.target.value),setDisplayMessage('');}}
               placeholder="Example: 5"
               className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 mb-2"
@@ -131,7 +130,7 @@ const EditJob = () => {
           <div className="my-2 p-2 w-full rounded-md text-center">
             <p
               className={
-                displayMessage.includes('Posted')
+                displayMessage.includes('Updated')
                   ? 'text-green-500 font-extrabold'
                   : 'text-red-500 font-extrabold'
               }

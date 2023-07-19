@@ -7,6 +7,7 @@ import { getJobsAdded } from '../api/EmployerApi';
 const AddedJobs = () => {
 
   const [jobs, setJobs] = useState([]);
+  const [trigger, settrigger] = useState(false);
 
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
@@ -17,8 +18,9 @@ const AddedJobs = () => {
       .catch((error) => {
         console.log(error);
       })
-  }, [])
+  }, [trigger])
 
+  console.log(jobs);
   return (
       <div className="w-1/2 mx-auto">
         <h2 className="text-2xl font-bold m-4 text-center">Job Listings</h2>
@@ -33,6 +35,8 @@ const AddedJobs = () => {
             workLocation={job.workLocation}
             totalOpenings={job.totalOpenings}
             jobDescription={job.jobDesc}
+            settrigger={settrigger}
+            companyID={job.employerID}
           />
         ))}
       </div>
