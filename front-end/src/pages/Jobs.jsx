@@ -33,6 +33,7 @@ const JobList = () => {
             workLocation={job.workLocation}
             totalOpenings={job.totalOpenings}
             jobDescription={job.jobDesc}
+            companyId= {job.employerID._id}
           />
         ))}
       </div>

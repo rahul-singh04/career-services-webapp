@@ -9,7 +9,7 @@ import {
 import JobApplyForm from '../components/JobApplyForm';
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
-const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings }) => {
+const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings , applications ,companyId }) => {
 
   const date = new Date(dateAdded);
   const fullDate = date.toLocaleDateString();
@@ -17,10 +17,11 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
   const handleOpen = () => setOpen(!open);
 
   const [photo, setPhoto] = useState(null);
+  // console.log(companyId);
 
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
-    getPhoto(id, authToken)
+    getPhoto(companyId, authToken)
       .then((resp) => {
         if (resp) {
           setPhoto(resp);
@@ -30,7 +31,7 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
         console.error('Error fetching photo:', error);
       });
 
-  }, [id]);
+  }, [companyId]);
 
   const handleApply = () => {
     handleOpen();
@@ -56,7 +57,7 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
           <div className="bg-gray-100 my-2 p-2 w-fit rounded-md">
             <p className="text-xs  text-gray-600">Total Openings: <span className="text-gray-700 font-semibold">{totalOpenings}</span></p>
           </div>
-          <Button size="sm" onClick={handleApply} variant="gradient" className='h-8 my-2'>Apply</Button>
+          {!applications && <Button size="sm" onClick={handleApply} variant="gradient" className='h-8 my-2'>Apply</Button>}
         </div>
       </div>
       <Dialog open={open} handler={handleOpen}>

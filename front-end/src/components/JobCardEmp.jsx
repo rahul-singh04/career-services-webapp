@@ -14,8 +14,9 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ListAppliedCand from './ListAppliedCand';
 import EditJob from './EditJob';
+import { deleteJob } from '../api/EmployerApi';
 
-const JobCardEmp = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings }) => {
+const JobCardEmp = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings , settrigger , companyID }) => {
 
   const date = new Date(dateAdded);
   const fullDate = date.toLocaleDateString();
@@ -23,14 +24,15 @@ const JobCardEmp = ({ id, jobTitle, companyName, location, dateAdded, jobDescrip
   const handleOpen = () => setOpen(!open);
 
   const [photo, setPhoto] = useState(null);
+  const [deleteMessage, setdeleteMessage] = useState('')
 
   const [openEdit, setopenEdit] = useState(false);
   const openDrawer = () => setopenEdit(true);
-  const closeDrawer = () => setopenEdit(false);
+  const closeDrawer = () => {setopenEdit(false);  settrigger((prev)=>!prev) };
 
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
-    getPhoto(id, authToken)
+    getPhoto(companyID, authToken)
       .then((resp) => {
         if (resp) {
           setPhoto(resp);
@@ -40,10 +42,25 @@ const JobCardEmp = ({ id, jobTitle, companyName, location, dateAdded, jobDescrip
         console.error('Error fetching photo:', error);
       });
 
-  }, [id]);
+  }, [id, deleteMessage]);
 
   const handleApply = () => {
     handleOpen();
+  };
+  
+  const handleDelete = () => {
+    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    console.log(id);
+    deleteJob(id, authToken)
+    .then((resp) => {
+      if (resp) {
+        setdeleteMessage(resp);
+        settrigger((prev)=>!prev)
+      }
+    })
+    .catch((error) => {
+      console.error('Error deleting Job:', error);
+    });
   };
 
   return (
@@ -59,7 +76,7 @@ const JobCardEmp = ({ id, jobTitle, companyName, location, dateAdded, jobDescrip
             <Button size="sm" color="orange" className=" p-2" onClick={openDrawer}>
               Edit
             </Button>
-            <Button size="sm" color="deep-orange" className=" p-2" onClick={openDrawer}>
+            <Button size="sm" color="deep-orange" className=" p-2" onClick={handleDelete}>
               Delete
             </Button>
             </div>
@@ -96,7 +113,15 @@ const JobCardEmp = ({ id, jobTitle, companyName, location, dateAdded, jobDescrip
               <XMarkIcon strokeWidth={2} className="h-5 w-5" />
             </IconButton>
           </div>
-          <EditJob onUpdateSuccess={closeDrawer} />
+          <EditJob onUpdateSuccess={closeDrawer}
+           id={id} 
+            jobTitle={jobTitle}
+            companyName={companyName}
+            location={location}
+            dateAdded={dateAdded}
+            workLocation={workLocation}
+            totalOpenings={totalOpenings}
+            jobDescription={jobDescription} />
         </Drawer>
       </div>
     </Fragment>
