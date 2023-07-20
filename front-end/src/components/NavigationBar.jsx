@@ -9,13 +9,15 @@ import {
 import { Link } from 'react-router-dom';
 import { useState } from "react";
 import { getCurrentUser, logout } from "../api/authApi";
-import { useNavigate , useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AuthVerify from "../api/AuthVerify";
+import logo from '../assets/CU.jpg'
 
 
 export default function NavigationBar() {
   const [openNav, setOpenNav] = useState(false);
   const [loggedin, setloggedin] = useState(false);
+  const [currentUserRole, setcurrentUserRole] = useState('')
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,93 +29,98 @@ export default function NavigationBar() {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
     checkIfloggedIn();
-  }, [loggedin , location]);
+  }, [loggedin, location]);
 
   function handleSignOut() {
     if (getCurrentUser() != null) {
       logout();
-    setloggedin(false);
-    navigate('/');
+      setloggedin(false);
+      setTimeout(() => {
+        navigate('/');
+      }, 1000);
     }
   }
 
   function checkIfloggedIn() {
     if (getCurrentUser() != null) {
       setloggedin(true);
+      setcurrentUserRole(getCurrentUser().roles[0]);
     }
   }
 
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      {loggedin && <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <Link to="/profile">
-          Profile
+    {loggedin && currentUserRole.includes('CANDIDATE') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large  ">
+        <Link to="/profile" className="text-red-600 ">Profile</Link>
+      </li>
+    )}
+    {loggedin && currentUserRole.includes('CANDIDATE') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/jobsSearch" className="text-red-600">Jobs</Link>
+      </li>
+    )}
+    {loggedin && currentUserRole.includes('CANDIDATE') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/applications" className="text-red-600">Applications</Link>
+      </li>
+    )}
+    {loggedin && currentUserRole.includes('EMPLOYER') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/candidates" className="text-red-600">Candidates</Link>
+      </li>
+    )}
+    {loggedin && currentUserRole.includes('EMPLOYER') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/addjob">
+          <p className="whitespace-nowrap text-red-600" >Add Jobs</p>
         </Link>
-      </Typography>}
-      {/* <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Account
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="#" className="flex items-center">
-          Docs
-        </a>
-      </Typography> */}
-    </ul>
-  );
+      </li>
+    )}
+    {loggedin && currentUserRole.includes('EMPLOYER') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/jobsAdded">
+          <p className="whitespace-nowrap text-red-600">Jobs Added</p>
+        </Link>
+      </li>
+    )}
+    {loggedin && currentUserRole.includes('EMPLOYER') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/employerProfile">
+          <p className="whitespace-nowrap text-red-600 ">Profile</p>
+        </Link>
+      </li>
+    )}
+  </ul>
+);
+
 
   return (
     <>
-      <Navbar className="sticky top z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4" key={loggedin}>
+      <Navbar className="sticky top z-10 h-max max-w-full rounded-none py-2 px-4  lg:px-8 lg:py-4" key={loggedin}>
         <div className="flex items-center justify-between text-blue-gray-900">
           <Link to="/">
-            <Typography
-              className="mr-4 cursor-pointer py-1.5 font-large"
-              variant="h5" color="blue" textGradient
-            >
-              Linkedin Clone
-            </Typography>
+            <div className="flex items-center">
+              <img src={logo} alt="CU Career Services Logo" className="w-12 h-12 mr-2 rounded-lg object-cover" />
+              <span className="mr-4 cursor-pointer py-1.5 text-2xl font-bold text-red-700">
+                CU Career Services
+              </span>
+            </div>
           </Link>
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
             {loggedin ?
-            <Button variant="gradient" size="sm" fullWidth className="mb-2" onClick={handleSignOut}>
-              <span>Sign out</span>
-            </Button>
-            :
-            <Link to="/Signin">
-              <Button variant="gradient" size="sm" fullWidth className="mb-2">
-                <span>Sign in</span>
+              <Button variant="gradient" color="red" size="sm" fullWidth className="mb-2" onClick={handleSignOut}>
+                <span>Sign out</span>
               </Button>
-            </Link>
-          }
+              :
+              <Link to="/Signin">
+                <Button variant="outlined" size="sm" fullWidth className="mb-2">
+                  <span>Sign in</span>
+                </Button>
+              </Link>
+            }
             <IconButton
               variant="text"
               className="ml-auto h-6 w-6 text-inherit hover:bg-transparent focus:bg-transparent active:bg-transparent lg:hidden"
@@ -167,7 +174,7 @@ export default function NavigationBar() {
             </Link>
           }
         </Collapse>
-        <AuthVerify logout={handleSignOut}/>
+        <AuthVerify logout={handleSignOut} />
       </Navbar>
     </>
   );

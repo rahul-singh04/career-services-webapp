@@ -1,64 +1,79 @@
 const express = require("express");
 const cors = require("cors");
 
-const config = require("./app/config/config");
+const config = require("./app/config/");
+const serverConfig = config.serverConfig;
+const logger = config.loggerConfig.logger;
 
-const db = require("./app/models");
-const Role = db.role;
+const models = require("./app/models/");
+const roleModel = models.roleModel;
 
 var corsOptions = {
-  origin: config.corsOrigin,
+  origin: serverConfig.corsOrigin,
 };
 
-const PORT = process.env.PORT || config.serverPort;
+const PORT = process.env.PORT || serverConfig.serverPort;
 const path = __dirname + "/app/views/";
-
 const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path));
 
-// app.get("/", (req, res) => {
-//   res.json({ message: "Welcome to careerServices application!" });
-// });
-
 app.get("/", function (req, res) {
   res.sendFile(path + "index.html");
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+  logger.info(`Server is running on port ${PORT}.`);
 });
 
-db.mongoose
-  .connect(db.url, {
+app.use(async (req, res, next) => {
+  try {
+    console.log("Request Method:", req.method);
+    console.log("Request URL:", req.originalUrl);
+    console.log("Request Body:", req.body);
+
+    const oldSend = res.send;
+    res.send = async function (data) {
+      console.log("Response Body:", data);
+      await oldSend.apply(res, arguments);
+    };
+
+    await next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+models.mongoose
+  .connect(serverConfig.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to the database!");
+    logger.info("Connected to the database!");
     initial();
   })
   .catch((err) => {
-    console.log("Cannot connect to the database!", err);
+    logger.error("Cannot connect to the database!", err);
     process.exit();
   });
 
 async function initial() {
   try {
-    const count = await Role.estimatedDocumentCount();
+    const count = await roleModel.estimatedDocumentCount();
     if (count === 0) {
       await Promise.all([
-        new Role({ name: "candidate" }).save(),
-        new Role({ name: "employer" }).save(),
-        new Role({ name: "admin" }).save(),
+        new roleModel({ name: "candidate" }).save(),
+        new roleModel({ name: "employer" }).save(),
+        new roleModel({ name: "admin" }).save(),
       ]);
 
-      console.log("Roles added to the collection");
+      logger.notice("Roles added to the collection");
     }
   } catch (err) {
-    console.log("Error adding roles to the collection", err);
+    logger.error("Error adding roles to the collection", err);
   }
 }
 
