@@ -298,7 +298,7 @@ const Cright = styled.div`
 const CRTitle = styled.div`
 padding-bottom:20px ;
   p{
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bolder;
     color: black;
 
