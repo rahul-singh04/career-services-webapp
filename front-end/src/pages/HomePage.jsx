@@ -250,6 +250,7 @@ const Subhead = styled.div`
     padding-top: 2rem;
     font-size: 3rem;
     font-weight: 800;
+    
     font-family: 'Oswald', sans-serif;
     h2{
       border-bottom: 6px solid black;
@@ -298,7 +299,7 @@ const Cright = styled.div`
 const CRTitle = styled.div`
 padding-bottom:20px ;
   p{
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bolder;
     color: black;
 
