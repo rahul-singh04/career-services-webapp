@@ -41,5 +41,8 @@ Database
 
 As data storage, we decided to use MongoDB as our database. Compared with other databases, its document structure storage method ensures easier access to data. With the built-in distributed file system GridFS, MongoDB can satisfy fast range queries on large data sets. In addition, the sharding design capability of MongoDB can support a maximum of about 20 petabytes, which is enough to support general applications.
 
+## Video link of the progress till sprint 2:
+
+https://drive.google.com/file/d/176OlOu4HIoXBTXK4HCoHoTX1IjxL8Oyb/view
 
 
