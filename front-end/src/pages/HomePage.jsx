@@ -117,6 +117,39 @@ const HomePage = () => {
           </Line2>
       </Cright>
     </Cards>
+    <Carrer>
+      <About>
+          <p>The Career Hub provides career and employment (permanent/summer/ part-time) support services for undergraduate, graduate students and alumni from all disciplines. The Hub helps students develop lifelong career management skills through a comprehensive range of accessible services to support and empower students in making informed decisions about their career and employment goals. The Hub also assists employers in recruiting students from the university.</p>
+      </About>
+      <Services>
+        <h3>Services Include</h3>
+        <S>
+          <button>Job Postings</button>
+          <button>On-Campus Jobs</button>
+          <button>Internship Opportunities</button>
+          <button>Career Fairs</button>
+          <button>Career Coaching</button>
+          <button>Resume, Cover Letter, and Interview Advising</button>
+          <button>Employment and Career Workshops</button>
+        </S>
+      </Services>
+      <DropDowns>
+          <T>
+            <p>Recent Career Fairs</p>
+          </T>
+          <DD>
+            <D1>
+
+            </D1>
+            <D1>
+
+            </D1>
+            <D1>
+
+            </D1>
+          </DD>
+      </DropDowns>
+    </Carrer>
     <Footer>
 
     </Footer>
@@ -125,6 +158,74 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+const Carrer = styled.div`
+    display: flex;
+    /* border: 2px solid black; */
+    height: 90vh;
+    flex-direction:column ;
+    width: 100%;
+`;
+
+const About = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+  p{
+    font-size: 1.2rem;
+    font-weight: bolder;
+    padding:0px 50px 20px ;
+
+  }
+`;
+const Services = styled.div`
+  display: flex;
+  flex-direction: column;
+  h3{
+    text-align: center;
+    padding-bottom: 10px;
+    font-size: 2rem;
+    font-family: 'Oswald', sans-serif;
+  }
+  justify-content:center;
+  align-items: center;
+`;
+const DropDowns = styled.div``;
+const S = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content:center ;
+  align-items: center;
+
+  button{
+    width: 25rem;
+    padding: 15px;
+    border: 2px solid #5B0101;
+    background: white;
+    color: #5B0101;
+  }
+  button:hover{
+    color: white;
+    background: #5B0101;
+    border: 2px solid black;
+  }
+  
+`;
+const T = styled.div``;
+
+const DD = styled.div``;
+const D1 = styled.div``;
+
+
+
+
+
+
+
+
+
+
 
 const HomeComponent = styled.div`
   display: flex;
@@ -181,7 +282,7 @@ const LeftSide = styled.div`
 
 `;
 const Image = styled.div`
-  background: url("./public/img.png");
+  background: url("/img.png");
   background-size: 70vh 70vh;
   padding: 20px;
   display:flex ;
@@ -223,12 +324,12 @@ h4{
   font-size: 2.1rem;
 }
   h2{
-    font-family: 'Caveat', cursive;
-    font-size: 2rem;
+    /* font-family: 'Caveat', cursive; */
+    font-size: 1.2rem;
   }
   h3{
-    font-family: 'Caveat', cursive;
-    font-size: 2.5rem;
+    /* font-family: 'Caveat', cursive; */
+    font-size: 1.2rem;
     text-decoration:  underline solid  black 2px;
   }
 `;
@@ -243,6 +344,11 @@ padding-top: 10px;
     font-weight:500 ;
     font-size: 2rem;
     border-radius: 20px;
+    border:2px solid #5B0101;
+  }
+  >button:hover{
+    color: white;
+    background: #5B0101;
   }
 `;
 
