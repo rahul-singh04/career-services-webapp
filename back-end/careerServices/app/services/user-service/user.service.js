@@ -5,6 +5,7 @@ const mongoose = models.mongoose;
 const userModel = models.userModel;
 const jobPostingsModel = models.jobPostingsModel;
 const applicationModel = models.applicationModel;
+const roleModel = models.roleModel;
 const path = require("path");
 const multer = require("multer");
 
@@ -341,6 +342,72 @@ exports.getApplications = async (token) => {
       candidateID: app.candidateID,
       jobID: app.jobID,
       status: app.status,
+      job: job, // Include job information
+    };
+  });
+};
+
+exports.getUsers = async (token) => {
+  const id = extractuserModelIdFromToken(token);
+  const users = await userModel.find({ _id: { $ne: id } }).exec();
+  const adminRole = await roleModel.findOne({ name: "admin" }).exec();
+  if (!adminRole) {
+    throw new Error("Admin role not found!");
+  }
+  const filteredUsers = users.filter((user) => {
+    return !user.roles.some((roleId) => roleId.equals(adminRole._id));
+  });
+  return filteredUsers.map((user) => {
+    const { password, roles, ...userInfo } = user._doc;
+    const userRole = roles.find((roleId) => !roleId.equals(adminRole._id));
+    const userType = userRole ? userRole.name : null;
+    return { ...userInfo, userType };
+  });
+};
+
+exports.deleteUser = async (id) => {
+  console.log(id);
+  const deletedUser = await userModel.findByIdAndRemove(id).exec();
+  return deletedUser;
+};
+
+exports.deleteApplicationModel = async (id) => {
+  console.log(id);
+  const deletedApplication = await applicationModel
+    .findByIdAndRemove(id)
+    .exec();
+  return deletedApplication;
+};
+
+// generate getApplicationsAdmin which will fetch all applications and their corresponding job and user information
+exports.getApplicationsAdmin = async () => {
+  const applications = await applicationModel.find().exec();
+  const candidateIDs = applications.map((app) => app.candidateID);
+
+  // Retrieve jobIDs from the applications
+  const jobIDs = applications.map((app) => app.jobID);
+
+  // Retrieve job information for the corresponding jobIDs
+  const jobs = await jobPostingsModel.find({ _id: { $in: jobIDs } }).exec();
+
+  const users = await userModel
+    .find({ _id: { $in: candidateIDs } })
+    .select("-password -roles") // Exclude 'password' and 'roles' fields
+    .exec();
+
+  return applications.map((app) => {
+    const user = users.find(
+      (user) => user._id.toString() === app.candidateID.toString()
+    );
+
+    const job = jobs.find((job) => job._id.toString() === app.jobID.toString());
+
+    return {
+      _id: app._id,
+      candidateID: app.candidateID,
+      jobID: app.jobID,
+      status: app.status,
+      user: user, // Include user information
       job: job, // Include job information
     };
   });

@@ -298,3 +298,53 @@ exports.postPhoto = async (req, res) => {
     res.status(400).send(error.message);
   }
 };
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await userService.getUsers(req.headers["x-access-token"]);
+    res.status(200).send(users);
+  } catch (error) {
+    logger.error("Failed to fetch users:", error);
+    res.status(500).send("Failed to fetch users");
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const deletedUser = await userService.deleteUser(req.query.id);
+    if (!deletedUser) {
+      res.status(404).send("User not found");
+    } else {
+      res.status(200).json("Successfully deleted user!");
+    }
+  } catch (error) {
+    logger.error("Failed to delete user:", error);
+    res.status(500).send("Failed to delete user");
+  }
+};
+
+exports.getApplications = async (req, res) => {
+  try {
+    const applicationsData = await userService.getApplicationsAdmin();
+    res.status(200).send(applicationsData);
+  } catch (error) {
+    logger.error("Failed to fetch applications:", error);
+    res.status(500).send("Failed to fetch applications");
+  }
+};
+
+exports.deleteApplication = async (req, res) => {
+  try {
+    const deletedApplication = await userService.deleteApplicationModel(
+      req.query.id
+    );
+    if (!deletedApplication) {
+      res.status(404).send("Application not found");
+    } else {
+      res.status(200).json("Successfully deleted application!");
+    }
+  } catch (error) {
+    logger.error("Failed to delete application:", error);
+    res.status(500).send("Failed to delete application");
+  }
+};

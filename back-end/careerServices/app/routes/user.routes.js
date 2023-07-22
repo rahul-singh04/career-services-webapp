@@ -126,4 +126,35 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isCandidate],
     userController.getApplications
   );
+  app.get(
+    endPointConfig.adminEndpoint + "/getUsers",
+    [authController.verifyToken, authController.isAdmin],
+    userController.getUsers
+  );
+
+  app.delete(
+    endPointConfig.adminEndpoint + "/deleteUser",
+    [authController.verifyToken, authController.isAdmin],
+    userController.deleteUser
+  );
+  app.get(
+    endPointConfig.adminEndpoint + "/getJobs",
+    [authController.verifyToken, authController.isAdmin],
+    userController.browseJobs
+  );
+  app.delete(
+    endPointConfig.adminEndpoint + "/deleteJobPosting",
+    [authController.verifyToken, authController.isAdmin],
+    userController.deleteJobPosting
+  );
+  app.get(
+    endPointConfig.adminEndpoint + "/getApplications",
+    [authController.verifyToken, authController.isAdmin],
+    userController.getApplications
+  );
+  app.delete(
+    endPointConfig.adminEndpoint + "/deleteApplication",
+    [authController.verifyToken, authController.isAdmin],
+    userController.deleteApplication
+  );
 };
