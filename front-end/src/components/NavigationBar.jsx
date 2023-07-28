@@ -92,6 +92,34 @@ export default function NavigationBar() {
         </Link>
       </li>
     )}
+        {loggedin && currentUserRole.includes('ADMIN') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/jobs-admin">
+          <p className="whitespace-nowrap text-red-600 ">Jobs</p>
+        </Link>
+      </li>
+    )}
+            {loggedin && currentUserRole.includes('ADMIN') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/users-admin">
+          <p className="whitespace-nowrap text-red-600 ">Candidates</p>
+        </Link>
+      </li>
+    )}
+       {loggedin && currentUserRole.includes('ADMIN') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/">
+          <p className="whitespace-nowrap text-red-600 ">Employers</p>
+        </Link>
+      </li>
+    )}
+          {loggedin && currentUserRole.includes('ADMIN') && (
+      <li className="mr-4 cursor-pointer py-1.5 font-large ">
+        <Link to="/">
+          <p className="whitespace-nowrap text-red-600 ">Applications</p>
+        </Link>
+      </li>
+    )}
   </ul>
 );
 
@@ -111,7 +139,7 @@ export default function NavigationBar() {
           <div className="flex items-center gap-4">
             <div className="mr-4 hidden lg:block">{navList}</div>
             {loggedin ?
-              <Button variant="gradient" color="red" size="sm" fullWidth className="mb-2" onClick={handleSignOut}>
+              <Button variant="gradient" color="indigo" size="sm" fullWidth className="mb-2" onClick={handleSignOut}>
                 <span>Sign out</span>
               </Button>
               :

@@ -16,22 +16,23 @@ const [applications, setapplications] = useState([])
         console.log(error);
       })
   }, [])
+
   console.log(applications);
   return (
     <div className="w-1/2 mx-auto">
     <h2 className="text-2xl font-bold m-4 text-center">Job Listings</h2>
-    {applications.map((application) => (
+    {applications && applications.map((application) => (
       <JobCard
-        key={application.job._id}
-        id={application.job._id}
-        jobTitle={application.job.jobTitle}
-        companyName={application.job.fullName}
-        location={application.job.companyLocation}
-        dateAdded={application.job.datePosted}
-        workLocation={application.job.workLocation}
-        totalOpenings={application.job.totalOpenings}
-        jobDescription={application.job.jobDesc}
-        companyId={application.job.employerID}
+        key={application._id}
+        id={application.job?._id}
+        jobTitle={application.job?.jobTitle}
+        companyName={application.job?.fullName}
+        location={application.job?.companyLocation}
+        dateAdded={application.job?.datePosted}
+        workLocation={application.job?.workLocation}
+        totalOpenings={application.job?.totalOpenings}
+        jobDescription={application.job?.jobDesc}
+        companyId={application.job?.employerID}
         applications={applications}
       />
     ))}
