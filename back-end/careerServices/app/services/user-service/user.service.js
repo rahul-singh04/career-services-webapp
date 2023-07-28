@@ -48,7 +48,7 @@ exports.getAllJobs = async () => {
       totalOpenings,
       datePosted,
     } = job;
-    const { username, email, fullName , _id:employerId } = employerID;
+    const { username, email, fullName } = employerID;
     return {
       _id,
       jobTitle,
@@ -62,7 +62,6 @@ exports.getAllJobs = async () => {
         username,
         email,
         fullName,
-        _id:employerId
       },
     };
   });
@@ -190,12 +189,6 @@ exports.updateuserModel = async (userID, userData) => {
     .exec();
 };
 
-// exports.deleteuserModel = async (userID) => {
-//   return userModel
-//     .findByIdAndRemove(userID, { useFindAndModify: false })
-//     .exec();
-// };
-
 exports.getAlljobPostingsModels = async () => {
   return jobPostingsModel.find().exec();
 };
@@ -222,27 +215,37 @@ exports.updateApplication = async (applicationID, applicationData) => {
     .exec();
 };
 
+// exports.getResume = async (id) => {
+//   const user = await userModel.findById(id);
+
+//   if (user && user.resumeUploaded !== "") {
+//     const baseDir = path.resolve(__dirname, "../../../");
+//     const filePath = path.join(baseDir, user.resumeUploaded);
+//     return filePath;
+//   } else {
+//     throw new Error("Resume not uploaded.");
+//   }
+// };
+
 exports.getResume = async (id) => {
   const user = await userModel.findById(id);
-
-  if (user && user.resumeUploaded !== "") {
+  if (user.resumeUploaded == "") {
+    return "Resume not uploaded.";
+  } else if (user && user.resumeUploaded !== "") {
     const baseDir = path.resolve(__dirname, "../../../");
     const filePath = path.join(baseDir, user.resumeUploaded);
     return filePath;
-  } else {
-    throw new Error("Resume not uploaded.");
   }
 };
 
 exports.getPhoto = async (id) => {
   const user = await userModel.findById(id);
-
-  if (user && user.photoUploaded !== "") {
+  if (user.photoUploaded == "") {
+    return "Photo not uploaded.";
+  } else if (user && user.photoUploaded !== "") {
     const baseDir = path.resolve(__dirname, "../../../");
     const filePath = path.join(baseDir, user.photoUploaded);
     return filePath;
-  } else {
-    throw new Error("Photo not uploaded.");
   }
 };
 
@@ -374,7 +377,6 @@ exports.getApplicationsAdmin = async () => {
 
 exports.getApplicationStats = async () => {
   const pipeline = [
-    // Group applications by jobID, jobTitle, companyLocation, and status
     {
       $group: {
         _id: {
@@ -386,7 +388,6 @@ exports.getApplicationStats = async () => {
         count: { $sum: 1 },
       },
     },
-    // Add missing combinations of jobID, jobTitle, and companyLocation with 0 counts for each status
     {
       $group: {
         _id: {
@@ -403,7 +404,6 @@ exports.getApplicationStats = async () => {
         totalApplications: { $sum: "$count" },
       },
     },
-    // Add missing status entries with 0 count
     {
       $addFields: {
         statuses: {
@@ -437,7 +437,6 @@ exports.getApplicationStats = async () => {
         },
       },
     },
-    // Reshape the data to convert statuses array to an object
     {
       $project: {
         _id: 0,
@@ -485,12 +484,11 @@ exports.getUserCount = async () => {
   return userTypes;
 };
 
-// write a function which will return the top 3 company locations, top 3 work locations and average number of openings from the job postings model
 exports.getJobStats = async () => {
   const pipeline = [
     {
       $match: {
-        companyLocation: { $ne: null }, // Filter out documents where companyLocation is null or not present
+        companyLocation: { $ne: null },
       },
     },
     {
@@ -521,7 +519,7 @@ exports.getJobStats = async () => {
   const pipeline2 = [
     {
       $match: {
-        workLocation: { $ne: null }, // Filter out documents where workLocation is null or not present
+        workLocation: { $ne: null },
       },
     },
     {
@@ -664,24 +662,17 @@ exports.deleteUserCandidate = async (userID) => {
 
 exports.deleteUserEmployer = async (userID) => {
   try {
-    // Step 1: Find the user and get the jobIDs associated with the user's job postings
     const deletedUser = await userModel.findByIdAndRemove(userID).exec();
     const userJobIDs = await jobPostingsModel
       .find({ employerID: userID }, "_id")
       .exec();
     const jobIDs = userJobIDs.map((job) => job._id);
-
-    // Step 2: Delete the job postings associated with the user
     const deletedJobs = await jobPostingsModel
       .deleteMany({ employerID: userID })
       .exec();
-
-    // Step 3: Delete the corresponding applications using the jobIDs
     const deletedApplications = await applicationModel
       .deleteMany({ jobID: { $in: jobIDs } })
       .exec();
-    // Assuming applicationModel is the model for the applications collection
-
     return { deletedUser, deletedJobs, deletedApplications };
   } catch (error) {
     throw new Error(
@@ -689,22 +680,6 @@ exports.deleteUserEmployer = async (userID) => {
     );
   }
 };
-
-// // write a function to delete the user, if the user is of type employer delete all the corresponding job postings and applications as well
-// exports.deleteUser = async (userID) => {
-//   try {
-//     const deletedUser = await userModel.findByIdAndRemove(userID).exec();
-//     const deletedApplications = await applicationModel
-//       .deleteMany({ candidateID: userID })
-//       .exec();
-//     const deletedJobs = await jobPostingsModel
-//       .deleteMany({ employerID: userID })
-//       .exec();
-//     return { deletedUser, deletedApplications, deletedJobs };
-//   } catch (error) {
-//     throw new Error("Failed to delete the user and its applications.");
-//   }
-// };
 
 exports.deleteJobPosting = async (jobId) => {
   try {
@@ -724,7 +699,6 @@ exports.deleteApplication = async (applicationID) => {
     .exec();
 };
 
-// write a function which calls deleteUserCandidate or deleteUserEmployer based on the userType which has to be extracted from the roles array
 exports.deleteUser = async (userID) => {
   const user = await userModel.findById(userID).exec();
   const role = await user.roles[0].toString();
@@ -735,4 +709,125 @@ exports.deleteUser = async (userID) => {
     return this.deleteUserEmployer(userID);
   }
   return null;
+};
+
+exports.getAllStats = async () => {
+  const userCount = await this.getUserCount();
+  const candidateStats = await this.getCandidateStats();
+  const jobStats = await this.getJobStats();
+  const applicationStats = await this.getApplicationStats();
+
+  return {
+    userCount,
+    candidateStats,
+    jobStats,
+    applicationStats,
+  };
+};
+
+exports.getApplicationStatsForCandidate = async (candidateId) => {
+  const pipeline = [
+    {
+      $match: { candidateID: candidateId },
+    },
+    {
+      $group: {
+        _id: {
+          candidateID: "$candidateId",
+          jobID: "$jobID",
+          jobTitle: "$jobTitle",
+          companyLocation: "$companyLocation",
+          status: "$status",
+        },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          jobID: "$_id.jobID",
+          jobTitle: "$_id.jobTitle",
+          companyLocation: "$_id.companyLocation",
+        },
+        statuses: {
+          $push: {
+            k: "$_id.status",
+            v: "$count",
+          },
+        },
+        totalApplications: { $sum: "$count" },
+      },
+    },
+    {
+      $addFields: {
+        statuses: {
+          $concatArrays: [
+            {
+              $map: {
+                input: [
+                  "In progress",
+                  "Accepted",
+                  "New",
+                  "Interview Posted",
+                  "Rejected",
+                ],
+                as: "status",
+                in: {
+                  k: "$$status",
+                  v: {
+                    $cond: [
+                      {
+                        $eq: ["$$status", { $arrayElemAt: ["$statuses.k", 0] }],
+                      },
+                      { $arrayElemAt: ["$statuses.v", 0] },
+                      0,
+                    ],
+                  },
+                },
+              },
+            },
+            "$statuses",
+          ],
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        jobID: "$_id.jobID",
+        jobTitle: "$_id.jobTitle",
+        companyLocation: "$_id.companyLocation",
+        statuses: {
+          $arrayToObject: {
+            $map: {
+              input: [
+                "In progress",
+                "Accepted",
+                "New",
+                "Interview Posted",
+                "Rejected",
+              ],
+              as: "status",
+              in: {
+                k: "$$status",
+                v: {
+                  $arrayElemAt: [
+                    "$statuses.v",
+                    {
+                      $indexOfArray: ["$statuses.k", "$$status"],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        totalApplications: 1,
+      },
+    },
+  ];
+
+  const applicationStats = await applicationModel.aggregate(pipeline).exec();
+
+  return applicationStats;
 };

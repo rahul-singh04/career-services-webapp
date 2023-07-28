@@ -51,77 +51,71 @@ export default function NavigationBar() {
 
   const navList = (
     <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-    {loggedin && currentUserRole.includes('CANDIDATE') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large  ">
-        <Link to="/profile" className="text-red-600 ">Profile</Link>
-      </li>
-    )}
-    {loggedin && currentUserRole.includes('CANDIDATE') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/jobsSearch" className="text-red-600">Jobs</Link>
-      </li>
-    )}
-    {loggedin && currentUserRole.includes('CANDIDATE') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/applications" className="text-red-600">Applications</Link>
-      </li>
-    )}
-    {loggedin && currentUserRole.includes('EMPLOYER') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/candidates" className="text-red-600">Candidates</Link>
-      </li>
-    )}
-    {loggedin && currentUserRole.includes('EMPLOYER') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/addjob">
-          <p className="whitespace-nowrap text-red-600" >Add Jobs</p>
-        </Link>
-      </li>
-    )}
-    {loggedin && currentUserRole.includes('EMPLOYER') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/jobsAdded">
-          <p className="whitespace-nowrap text-red-600">Jobs Added</p>
-        </Link>
-      </li>
-    )}
-    {loggedin && currentUserRole.includes('EMPLOYER') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/employerProfile">
-          <p className="whitespace-nowrap text-red-600 ">Profile</p>
-        </Link>
-      </li>
-    )}
-        {loggedin && currentUserRole.includes('ADMIN') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/jobs-admin">
-          <p className="whitespace-nowrap text-red-600 ">Jobs</p>
-        </Link>
-      </li>
-    )}
-            {loggedin && currentUserRole.includes('ADMIN') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/users-admin">
-          <p className="whitespace-nowrap text-red-600 ">Candidates</p>
-        </Link>
-      </li>
-    )}
-       {loggedin && currentUserRole.includes('ADMIN') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/">
-          <p className="whitespace-nowrap text-red-600 ">Employers</p>
-        </Link>
-      </li>
-    )}
-          {loggedin && currentUserRole.includes('ADMIN') && (
-      <li className="mr-4 cursor-pointer py-1.5 font-large ">
-        <Link to="/">
-          <p className="whitespace-nowrap text-red-600 ">Applications</p>
-        </Link>
-      </li>
-    )}
-  </ul>
-);
+      {loggedin && currentUserRole.includes('CANDIDATE') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large  ">
+          <Link to="/profile" className="text-red-600 ">Profile</Link>
+        </li>
+      )}
+      {loggedin && currentUserRole.includes('CANDIDATE') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/jobsSearch" className="text-red-600">Jobs</Link>
+        </li>
+      )}
+      {loggedin && currentUserRole.includes('CANDIDATE') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/applications" className="text-red-600">Applications</Link>
+        </li>
+      )}
+      {loggedin && currentUserRole.includes('EMPLOYER') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/candidates" className="text-red-600">Candidates</Link>
+        </li>
+      )}
+      {loggedin && currentUserRole.includes('EMPLOYER') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/addjob">
+            <p className="whitespace-nowrap text-red-600" >Add Jobs</p>
+          </Link>
+        </li>
+      )}
+      {loggedin && currentUserRole.includes('EMPLOYER') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/jobsAdded">
+            <p className="whitespace-nowrap text-red-600">Jobs Added</p>
+          </Link>
+        </li>
+      )}
+      {loggedin && currentUserRole.includes('EMPLOYER') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/employerProfile">
+            <p className="whitespace-nowrap text-red-600 ">Profile</p>
+          </Link>
+        </li>
+      )}
+      {loggedin && currentUserRole.includes('ADMIN') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/jobs-admin">
+            <p className="whitespace-nowrap text-red-600 ">Jobs</p>
+          </Link>
+        </li>
+      )}
+
+      {loggedin && currentUserRole.includes('ADMIN') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/applications-admin">
+            <p className="whitespace-nowrap text-red-600 ">Applications</p>
+          </Link>
+        </li>
+      )}
+      {loggedin && currentUserRole.includes('ADMIN') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/users-admin">
+            <p className="whitespace-nowrap text-red-600 ">Users</p>
+          </Link>
+        </li>
+      )}
+    </ul>
+  );
 
 
   return (

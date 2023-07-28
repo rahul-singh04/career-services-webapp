@@ -13,6 +13,7 @@ import BuildResume from './pages/BuildResume';
 import AddedJobs from './components/AddedJobs';
 import { JobsAdminSide } from './pages/JobsAdminSide';
 import { AllUsersAdminSide } from './pages/AllUsersAdminSide';
+import ApplicationsAdmin from './components/ApplicationsAdmin';
 
 function App() {
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/jobsAdded" element={<AddedJobs />} />
         <Route path="/jobs-admin" element={<JobsAdminSide />} />
         <Route path="/users-admin" element={<AllUsersAdminSide />} />
+        <Route path="/applications-admin" element={<ApplicationsAdmin />} />
       </Routes>
     </div>
 
