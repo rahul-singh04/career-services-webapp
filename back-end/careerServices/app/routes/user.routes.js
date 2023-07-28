@@ -162,4 +162,9 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isAdmin],
     userController.deleteApplication
   );
+  app.get(
+    endPointConfig.adminEndpoint + "/getAllStats",
+    [authController.verifyToken, authController.isAdmin],
+    userController.getAllStats
+  );
 };

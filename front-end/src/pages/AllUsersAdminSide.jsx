@@ -18,7 +18,7 @@ export const AllUsersAdminSide = () => {
 
   const filterObjectsWithresumeUploadedKey = (arrayOfObjects) => {
     return arrayOfObjects.filter((object) => {
-      return Object.prototype.hasOwnProperty.call(object, 'resumeUploaded');
+      return Object.prototype.hasOwnProperty.call(object, 'githubProfile');
     });
   };
 
@@ -34,6 +34,8 @@ export const AllUsersAdminSide = () => {
         console.log(error);
       });
   }, [deletedJob]);
+
+  console.log();
 
   const data = [
     {

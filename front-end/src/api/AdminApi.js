@@ -26,6 +26,19 @@ export const getAllJobsAdmin = async (authToken) => {
     }
   };
 
+  export const getAllApplications = async (authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+  
+    try {
+        const response = await axios.get('http://localhost:8090/api/test/admin/getApplications', { headers });
+        return response.data;
+    } catch (error) {
+        console.error('Error in Fetching', error);
+    }
+  };
+
   export const deleteJobPosting = async (id, authToken) => {
     const headers = {
       'x-access-token': authToken,
@@ -45,6 +58,19 @@ export const getAllJobsAdmin = async (authToken) => {
     };
     try {
           const response = await axios.delete(`http://localhost:8090/api/test/admin/deleteUser?id=${id}`, { headers });
+        //   console.log('Data successfully updated in the database:', response.data);
+          return response.data;
+      } catch (error) {
+          console.error('Error updating data in the database:', error);
+      }
+  }
+
+  export const deleteApplication = async (id, authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+    try {
+          const response = await axios.delete(`http://localhost:8090/api/test/admin/deleteApplication?id=${id}`, { headers });
         //   console.log('Data successfully updated in the database:', response.data);
           return response.data;
       } catch (error) {
