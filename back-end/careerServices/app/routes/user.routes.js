@@ -50,7 +50,7 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isEmployer],
     userController.deleteJobPosting
   );
-  app.get(
+  app.put(
     endPointConfig.employerEndpoint + "/updateJobPosting",
     [authController.verifyToken, authController.isEmployer],
     userController.updateJobPosting
