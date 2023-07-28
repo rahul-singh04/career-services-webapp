@@ -244,10 +244,34 @@ exports.getResume = async (req, res) => {
   }
 };
 
+exports.getResume = async (req, res) => {
+  try {
+    const resume = await userService.getResume(req.query.candidateID);
+
+    if (resume === "resume not uploaded.") {
+      res.status(200).send("resume not uploaded.");
+    } else if (resume && fs.existsSync(resume)) {
+      res.status(200).sendFile(resume);
+    } else {
+      res.status(200).send("No resume found");
+    }
+  } catch (error) {
+    logger.error("Failed to fetch resume:", error);
+    res.status(200).send("Failed to fetch resume");
+  }
+};
+
 exports.getPhoto = async (req, res) => {
   try {
     const photo = await userService.getPhoto(req.query.candidateID);
-    res.status(200).sendFile(photo);
+
+    if (photo === "Photo not uploaded.") {
+      res.status(200).send("Photo not uploaded.");
+    } else if (photo && fs.existsSync(photo)) {
+      res.status(200).sendFile(photo);
+    } else {
+      res.status(200).send("No photo found");
+    }
   } catch (error) {
     logger.error("Failed to fetch photo:", error);
     res.status(200).send("Failed to fetch photo");
@@ -356,5 +380,15 @@ exports.deleteApplication = async (req, res) => {
   } catch (error) {
     logger.error("Failed to delete application:", error);
     res.status(500).send("Failed to delete application");
+  }
+};
+
+exports.getAllStats = async (req, res) => {
+  try {
+    const stats = await userService.getAllStats();
+    res.status(200).send(stats);
+  } catch (error) {
+    logger.error("Failed to fetch stats:", error);
+    res.status(500).send("Failed to fetch stats");
   }
 };

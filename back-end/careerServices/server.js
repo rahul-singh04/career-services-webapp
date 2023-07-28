@@ -28,14 +28,16 @@ app.get("/", function (req, res) {
 app.listen(PORT, () => {
   logger.info(`Server is running on port ${PORT}.`);
 });
-// async function printUserCounts() {
-//   try {
-//     const userTypes = await userService.get();
-//     console.log(userTypes);
-//   } catch (error) {
-//     console.error("Error fetching user types:", error);
-//   }
-// }
+async function printUserCounts() {
+  try {
+    const userTypes = await userService.getApplicationStatsForCandidate(
+      "64c31179a5521784747fcad9"
+    );
+    console.log(userTypes);
+  } catch (error) {
+    console.error("Error fetching user types:", error);
+  }
+}
 
 app.use(async (req, res, next) => {
   try {
@@ -63,7 +65,7 @@ models.mongoose
   .then(() => {
     logger.info("Connected to the database!");
     initial();
-    // printUserCounts();
+    printUserCounts();
   })
   .catch((err) => {
     logger.error("Cannot connect to the database!", err);
