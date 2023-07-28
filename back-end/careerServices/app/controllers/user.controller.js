@@ -182,7 +182,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.deleteJobPosting = async (req, res) => {
   try {
-    const deletedJobPosting = await userService.deletejobPostingsModel(
+    const deletedJobPosting = await userService.deleteJobPosting(
       req.query.jobID
     );
     if (!deletedJobPosting) {
@@ -326,6 +326,16 @@ exports.deleteUser = async (req, res) => {
 exports.getApplications = async (req, res) => {
   try {
     const applicationsData = await userService.getApplicationsAdmin();
+    res.status(200).send(applicationsData);
+  } catch (error) {
+    logger.error("Failed to fetch applications:", error);
+    res.status(500).send("Failed to fetch applications");
+  }
+};
+
+exports.getApplicationStats = async (req, res) => {
+  try {
+    const applicationsData = await userService.getApplicationStats();
     res.status(200).send(applicationsData);
   } catch (error) {
     logger.error("Failed to fetch applications:", error);
