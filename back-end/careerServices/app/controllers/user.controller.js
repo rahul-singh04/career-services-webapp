@@ -367,9 +367,33 @@ exports.getApplicationStats = async (req, res) => {
   }
 };
 
+exports.getAllCandidateStats = async (req, res) => {
+  try {
+    const stats = await userService.getAllCandidateStats(
+      req.headers["x-access-token"]
+    );
+    res.status(200).send(stats);
+  } catch (error) {
+    logger.error("Failed to fetch stats:", error);
+    res.status(500).send("Failed to fetch stats");
+  }
+};
+
+exports.getAllEmployerStats = async (req, res) => {
+  try {
+    const stats = await userService.getAllEmployerStats(
+      req.headers["x-access-token"]
+    );
+    res.status(200).send(stats);
+  } catch (error) {
+    logger.error("Failed to fetch stats:", error);
+    res.status(500).send("Failed to fetch stats");
+  }
+};
+
 exports.deleteApplication = async (req, res) => {
   try {
-    const deletedApplication = await userService.deleteApplicationModel(
+    const deletedApplication = await userService.deleteApplication(
       req.query.id
     );
     if (!deletedApplication) {

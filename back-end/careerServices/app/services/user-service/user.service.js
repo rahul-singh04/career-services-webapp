@@ -725,109 +725,107 @@ exports.getAllStats = async () => {
   };
 };
 
-exports.getApplicationStatsForCandidate = async (candidateId) => {
-  const pipeline = [
-    {
-      $match: { candidateID: candidateId },
-    },
-    {
-      $group: {
-        _id: {
-          candidateID: "$candidateId",
-          jobID: "$jobID",
-          jobTitle: "$jobTitle",
-          companyLocation: "$companyLocation",
-          status: "$status",
-        },
-        count: { $sum: 1 },
-      },
-    },
-    {
-      $group: {
-        _id: {
-          jobID: "$_id.jobID",
-          jobTitle: "$_id.jobTitle",
-          companyLocation: "$_id.companyLocation",
-        },
-        statuses: {
-          $push: {
-            k: "$_id.status",
-            v: "$count",
-          },
-        },
-        totalApplications: { $sum: "$count" },
-      },
-    },
-    {
-      $addFields: {
-        statuses: {
-          $concatArrays: [
-            {
-              $map: {
-                input: [
-                  "In progress",
-                  "Accepted",
-                  "New",
-                  "Interview Posted",
-                  "Rejected",
-                ],
-                as: "status",
-                in: {
-                  k: "$$status",
-                  v: {
-                    $cond: [
-                      {
-                        $eq: ["$$status", { $arrayElemAt: ["$statuses.k", 0] }],
-                      },
-                      { $arrayElemAt: ["$statuses.v", 0] },
-                      0,
-                    ],
-                  },
-                },
-              },
-            },
-            "$statuses",
-          ],
-        },
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        jobID: "$_id.jobID",
-        jobTitle: "$_id.jobTitle",
-        companyLocation: "$_id.companyLocation",
-        statuses: {
-          $arrayToObject: {
-            $map: {
-              input: [
-                "In progress",
-                "Accepted",
-                "New",
-                "Interview Posted",
-                "Rejected",
-              ],
-              as: "status",
-              in: {
-                k: "$$status",
-                v: {
-                  $arrayElemAt: [
-                    "$statuses.v",
-                    {
-                      $indexOfArray: ["$statuses.k", "$$status"],
-                    },
-                  ],
-                },
-              },
-            },
-          },
-        },
-        totalApplications: 1,
-      },
-    },
-  ];
+exports.getApplicationStatsForCandidate = async (token) => {
+  const id = extractuserModelIdFromToken(token);
+  const applications = await applicationModel.find({ candidateID: id }).exec();
+  const candidateIDs = applications.map((app) => app.candidateID);
+  const jobIDs = applications.map((app) => app.jobID);
+  const jobs = await jobPostingsModel.find({ _id: { $in: jobIDs } }).exec();
 
-  const applicationStats = await applicationModel.aggregate(pipeline).exec();
+  const users = await userModel
+    .find({ _id: { $in: candidateIDs } })
+    .select("-password -roles")
+    .exec();
 
-  return applicationStats;
+  const mappedApplications = applications.map((app) => {
+    const user = users.find(
+      (user) => user._id.toString() === app.candidateID.toString()
+    );
+
+    const job = jobs.find((job) => job._id.toString() === app.jobID.toString());
+
+    return {
+      _id: app._id,
+      candidateID: app.candidateID,
+      jobID: app.jobID,
+      status: app.status,
+      job: job,
+    };
+  });
+
+  const groupedApplications = mappedApplications.reduce((acc, app) => {
+    const status = app.status;
+    if (!acc[status]) {
+      acc[status] = 1;
+    } else {
+      acc[status]++;
+    }
+    return acc;
+  }, {});
+
+  const totalCount = applications.length;
+
+  const formattedApplications = Object.entries(groupedApplications).reduce(
+    (acc, [status, count]) => {
+      acc[status] = count.toString();
+      return acc;
+    },
+    {}
+  );
+
+  formattedApplications.total = totalCount;
+
+  return formattedApplications;
+};
+
+exports.getAllCandidateStats = async (token) => {
+  const jobStats = await this.getJobStats();
+  const applicationStats = await this.getApplicationStatsForCandidate(token);
+
+  return {
+    jobStats,
+    applicationStats,
+  };
+};
+
+exports.getAllEmployerStats = async (token) => {
+  const candidateStats = await this.getCandidateStats();
+  const applicationStats = await this.getApplicationStatsForEmployer(token);
+
+  return {
+    candidateStats,
+    applicationStats,
+  };
+};
+
+exports.getApplicationStatsForEmployer = async (token) => {
+  const userId = new mongoose.Types.ObjectId(
+    extractuserModelIdFromToken(token)
+  );
+  const jobs = await jobPostingsModel.find({ employerID: userId }).exec();
+
+  const jobsWithStatusSums = await Promise.all(
+    jobs.map(async (job) => {
+      const applications = await applicationModel
+        .find({ jobID: job._id })
+        .exec();
+
+      const status = applications.reduce((acc, app) => {
+        const status = app.status;
+        acc[status] = (acc[status] || 0) + 1;
+        return acc;
+      }, {});
+
+      const totalCount = applications.length;
+
+      status.total = totalCount;
+
+      return {
+        _id: job._id,
+        status,
+      };
+    })
+  );
+
+  return jobsWithStatusSums;
 };

@@ -167,4 +167,14 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isAdmin],
     userController.getAllStats
   );
+  app.get(
+    endPointConfig.candidateEndpoint + "/getAllStats",
+    [authController.verifyToken, authController.isCandidate],
+    userController.getAllCandidateStats
+  );
+  app.get(
+    endPointConfig.employerEndpoint + "/getAllStats",
+    [authController.verifyToken, authController.isEmployer],
+    userController.getAllEmployerStats
+  );
 };

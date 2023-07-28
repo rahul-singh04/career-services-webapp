@@ -30,7 +30,7 @@ app.listen(PORT, () => {
 });
 async function printUserCounts() {
   try {
-    const userTypes = await userService.getApplicationStatsForCandidate(
+    const userTypes = await userService.getAllCandidateStats(
       "64c31179a5521784747fcad9"
     );
     console.log(userTypes);
@@ -65,7 +65,7 @@ models.mongoose
   .then(() => {
     logger.info("Connected to the database!");
     initial();
-    printUserCounts();
+    //printUserCounts();
   })
   .catch((err) => {
     logger.error("Cannot connect to the database!", err);
