@@ -6,6 +6,7 @@ const serverConfig = config.serverConfig;
 const logger = config.loggerConfig.logger;
 
 const models = require("./app/models/");
+const { userService } = require("./app/services");
 const roleModel = models.roleModel;
 
 var corsOptions = {
@@ -27,6 +28,14 @@ app.get("/", function (req, res) {
 app.listen(PORT, () => {
   logger.info(`Server is running on port ${PORT}.`);
 });
+// async function printUserCounts() {
+//   try {
+//     const userTypes = await userService.get();
+//     console.log(userTypes);
+//   } catch (error) {
+//     console.error("Error fetching user types:", error);
+//   }
+// }
 
 app.use(async (req, res, next) => {
   try {
@@ -54,6 +63,7 @@ models.mongoose
   .then(() => {
     logger.info("Connected to the database!");
     initial();
+    // printUserCounts();
   })
   .catch((err) => {
     logger.error("Cannot connect to the database!", err);

@@ -152,6 +152,11 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isAdmin],
     userController.getApplications
   );
+  app.get(
+    endPointConfig.adminEndpoint + "/getApplicationStats",
+    [authController.verifyToken, authController.isAdmin],
+    userController.getApplicationStats
+  );
   app.delete(
     endPointConfig.adminEndpoint + "/deleteApplication",
     [authController.verifyToken, authController.isAdmin],
