@@ -91,9 +91,9 @@ exports.getApplicants = async (req, res) => {
   }
 };
 
-exports.getApplications = async (req, res) => {
+exports.getApplicationsCandidate = async (req, res) => {
   try {
-    const result = await userService.getApplications(
+    const result = await userService.getApplicationsCandidate(
       req.headers["x-access-token"]
     );
     res.status(200).send(result);

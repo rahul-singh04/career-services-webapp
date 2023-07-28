@@ -299,24 +299,21 @@ exports.postPhoto = async (file, token, filePath) => {
   }
 };
 
-exports.getApplications = async (token) => {
-  const id = extractuserModelIdFromToken(token);
+exports.getApplicationsCandidate = async (token) => {
+  const id = new mongoose.Types.ObjectId(extractuserModelIdFromToken(token));
   console.log(id);
   const applications = await applicationModel.find({ candidateID: id }).exec();
   const candidateIDs = applications.map((app) => app.candidateID);
   const jobIDs = applications.map((app) => app.jobID);
   const jobs = await jobPostingsModel.find({ _id: { $in: jobIDs } }).exec();
 
+  const employerIDs = jobs.map((app) => app.employerID);
+
   const users = await userModel
-    .find({ _id: { $in: candidateIDs } })
+    .find({ _id: { $in: employerIDs } })
     .select("-password -roles") // Exclude 'password' and 'roles' fields
     .exec();
-
   return applications.map((app) => {
-    const user = users.find(
-      (user) => user._id.toString() === app.candidateID.toString()
-    );
-
     const job = jobs.find((job) => job._id.toString() === app.jobID.toString());
 
     return {
@@ -325,6 +322,7 @@ exports.getApplications = async (token) => {
       jobID: app.jobID,
       status: app.status,
       job: job,
+      employer: users,
     };
   });
 };
