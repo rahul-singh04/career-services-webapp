@@ -114,6 +114,13 @@ export default function NavigationBar() {
           </Link>
         </li>
       )}
+      {loggedin && currentUserRole.includes('ADMIN') && (
+        <li className="mr-4 cursor-pointer py-1.5 font-large ">
+          <Link to="/dashboard-admin">
+            <p className="whitespace-nowrap text-red-600 ">Dashboard</p>
+          </Link>
+        </li>
+      )}
     </ul>
   );
 
