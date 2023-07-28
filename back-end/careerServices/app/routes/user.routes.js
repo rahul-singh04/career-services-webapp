@@ -124,7 +124,7 @@ module.exports = function (app) {
   app.get(
     endPointConfig.candidateEndpoint + "/getApplications",
     [authController.verifyToken, authController.isCandidate],
-    userController.getApplications
+    userController.getApplicationsCandidate
   );
   app.get(
     endPointConfig.adminEndpoint + "/getUsers",
