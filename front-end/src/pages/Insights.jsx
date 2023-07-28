@@ -11,7 +11,6 @@ export const Insights = () => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
     getInsights(authToken)
       .then((data) => {
-        console.log(data);
         setuserStats(data.userCount);
         setcandidateSkills(data.candidateStats.skills);
         setcandidateLocations(data.candidateStats.locations);

@@ -17,7 +17,6 @@ const [applications, setapplications] = useState([])
       })
   }, [])
 
-  console.log(applications);
   return (
     <div className="w-1/2 mx-auto">
     <h2 className="text-2xl font-bold m-4 text-center">Job Listings</h2>
