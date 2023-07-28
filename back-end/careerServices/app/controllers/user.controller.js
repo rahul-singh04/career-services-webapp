@@ -209,6 +209,8 @@ exports.readJobPostings = async (req, res) => {
 exports.updateJobPosting = async (req, res) => {
   try {
     const updatedFields = req.body;
+    console.log(req.query.jobID);
+    console.log(updatedFields);
     await userService.updatejobPostingsModel(req.query.jobID, updatedFields);
     res.status(200).json({ message: "JobPosting updated successfully" });
   } catch (error) {

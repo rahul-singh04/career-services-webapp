@@ -33,8 +33,7 @@ const EditJob = ({onUpdateSuccess ,id, jobTitle, location, jobDescription, workL
     }
 
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
-    console.log(id);
-    console.log(formData);
+
     updateJob(id, formData, authToken)
       .then((response) => {
         if(response){
