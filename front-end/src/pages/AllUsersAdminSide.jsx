@@ -69,7 +69,7 @@ export const AllUsersAdminSide = () => {
                 candidates.map((user) => (
                   <CandidateCard
                     key={user._id}
-                    id={user._id}
+                    candidateId={user._id}
                     fullName={user.fullName}
                     location={user.location}
                     phoneNumber={user.phoneNumber}

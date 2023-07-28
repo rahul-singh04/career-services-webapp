@@ -103,7 +103,7 @@ const JobCardEmp = ({ id, jobTitle, companyName, location, dateAdded, jobDescrip
               <XMarkIcon className="h-4 w-4 " />
             </IconButton>
           </div>
-          <div className='mx-4 mb-8 px-8'>
+          <div className='mx-8 mb-8 '>
             <ListAppliedCand id={id} />
           </div>
         </Dialog>
