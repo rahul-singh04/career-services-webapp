@@ -39,6 +39,20 @@ export const getAllJobsAdmin = async (authToken) => {
     }
   };
 
+  export const getInsights = async (authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+  
+    try {
+        const response = await axios.get('http://localhost:8090/api/test/admin/getAllStats', { headers });
+        return response.data;
+    } catch (error) {
+        console.error('Error in Fetching', error);
+    }
+  };
+
+
   export const deleteJobPosting = async (id, authToken) => {
     const headers = {
       'x-access-token': authToken,
