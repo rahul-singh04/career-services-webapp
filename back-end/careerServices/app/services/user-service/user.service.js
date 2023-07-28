@@ -227,6 +227,18 @@ exports.updateApplication = async (applicationID, applicationData) => {
 //   }
 // };
 
+// exports.getResume = async (id) => {
+//   const user = await userModel.findById(id);
+
+//   if (user && user.resumeUploaded !== "") {
+//     const baseDir = path.resolve(__dirname, "../../../");
+//     const filePath = path.join(baseDir, user.resumeUploaded);
+//     return filePath;
+//   } else {
+//     throw new Error("Resume not uploaded.");
+//   }
+// };
+
 exports.getResume = async (id) => {
   const user = await userModel.findById(id);
   if (user.resumeUploaded == "") {

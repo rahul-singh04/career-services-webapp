@@ -95,3 +95,17 @@ export const getProfile = async (authToken) => {
           console.error('Error updating data in the database:', error);
       }
   }
+
+
+  export const getApplications = async (authToken) => {
+    const headers = {
+      'x-access-token': authToken,
+    };
+  
+    try {
+        const response = await axios.get('http://localhost:8090/api/test/candidate/getApplications', { headers });
+        return response.data;
+    } catch (error) {
+        console.error('Error in Fetching', error);
+    }
+  };

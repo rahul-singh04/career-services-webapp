@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { getApplications } from '../api/StudentApi';
 import JobCard from '../components/JobCard';
+import { getAllApplications } from '../api/AdminApi';
+import { useLocation } from 'react-router-dom';
 
-const ApplicationCandidate = () => {
 
-const [applications, setapplications] = useState([])
+const ApplicationsAdmin = () => {
+
+const [applications, setapplications] = useState([]);
+const location = useLocation();
+const [deletedJob, setdeletedJob] = useState(false);
+
 
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
-    getApplications(authToken)
+    getAllApplications(authToken)
       .then((candidates) => {
         setapplications(candidates)
       })
@@ -17,14 +22,17 @@ const [applications, setapplications] = useState([])
       })
   }, [])
 
-  console.log(applications);
+  function jobsStateChange() {
+    setdeletedJob((prevState)=> !prevState)
+  }
+
   return (
     <div className="w-1/2 mx-auto">
     <h2 className="text-2xl font-bold m-4 text-center">Job Listings</h2>
     {applications && applications.map((application) => (
       <JobCard
         key={application._id}
-        id={application.job?._id}
+        id={application._id}
         jobTitle={application.job?.jobTitle}
         companyName={application.job?.fullName}
         location={application.job?.companyLocation}
@@ -34,10 +42,12 @@ const [applications, setapplications] = useState([])
         jobDescription={application.job?.jobDesc}
         companyId={application.job?.employerID}
         applications={applications}
+        path={location.pathname}
+        jobsStateChange={jobsStateChange}
       />
     ))}
   </div>
   );
 };
 
-export default ApplicationCandidate;
+export default ApplicationsAdmin;
