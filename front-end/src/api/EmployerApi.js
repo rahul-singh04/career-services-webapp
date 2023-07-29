@@ -102,6 +102,7 @@ export const updateJob = async (id, formData, authToken) => {
   const headers = {
     'x-access-token': authToken,
   };
+  console.log(id);
   try {
     const response = await axios.put(`http://localhost:8090/api/test/employer/updateJobPosting?jobID=${id}`, formData, { headers });
     return response.data;
@@ -109,5 +110,19 @@ export const updateJob = async (id, formData, authToken) => {
     console.error('Error in Update', error);
   }
 };
+
+
+export const callInterview = async (candidateId ,jobId, authToken) => {
+  const headers = {
+    'x-access-token': authToken,
+  };
+  try {
+    const response = await axios.put(`http://localhost:8090/api/test/employer/putInterview?jobID=${jobId}&candidateID=${candidateId}`,{}, { headers });
+    return response.data;
+  } catch (error) {
+    console.error('Error in Update', error);
+  }
+};
+
 
   

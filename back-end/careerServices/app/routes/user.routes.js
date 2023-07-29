@@ -50,7 +50,7 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isEmployer],
     userController.deleteJobPosting
   );
-  app.get(
+  app.put(
     endPointConfig.employerEndpoint + "/updateJobPosting",
     [authController.verifyToken, authController.isEmployer],
     userController.updateJobPosting
@@ -124,6 +124,57 @@ module.exports = function (app) {
   app.get(
     endPointConfig.candidateEndpoint + "/getApplications",
     [authController.verifyToken, authController.isCandidate],
+    userController.getApplicationsCandidate
+  );
+  app.get(
+    endPointConfig.adminEndpoint + "/getUsers",
+    [authController.verifyToken, authController.isAdmin],
+    userController.getUsers
+  );
+
+  app.delete(
+    endPointConfig.adminEndpoint + "/deleteUser",
+    [authController.verifyToken, authController.isAdmin],
+    userController.deleteUser
+  );
+  app.get(
+    endPointConfig.adminEndpoint + "/getJobs",
+    [authController.verifyToken, authController.isAdmin],
+    userController.browseJobs
+  );
+  app.delete(
+    endPointConfig.adminEndpoint + "/deleteJobPosting",
+    [authController.verifyToken, authController.isAdmin],
+    userController.deleteJobPosting
+  );
+  app.get(
+    endPointConfig.adminEndpoint + "/getApplications",
+    [authController.verifyToken, authController.isAdmin],
     userController.getApplications
+  );
+  app.get(
+    endPointConfig.adminEndpoint + "/getApplicationStats",
+    [authController.verifyToken, authController.isAdmin],
+    userController.getApplicationStats
+  );
+  app.delete(
+    endPointConfig.adminEndpoint + "/deleteApplication",
+    [authController.verifyToken, authController.isAdmin],
+    userController.deleteApplication
+  );
+  app.get(
+    endPointConfig.adminEndpoint + "/getAllStats",
+    [authController.verifyToken, authController.isAdmin],
+    userController.getAllStats
+  );
+  app.get(
+    endPointConfig.candidateEndpoint + "/getAllStats",
+    [authController.verifyToken, authController.isCandidate],
+    userController.getAllCandidateStats
+  );
+  app.get(
+    endPointConfig.employerEndpoint + "/getAllStats",
+    [authController.verifyToken, authController.isEmployer],
+    userController.getAllEmployerStats
   );
 };

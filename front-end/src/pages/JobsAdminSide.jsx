@@ -1,27 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
+import { getAllJobsAdmin } from '../api/AdminApi';
 import JobCard from '../components/JobCard';
-import { getAllJobs } from '../api/StudentApi';
 
+export const JobsAdminSide = () => {
 
+    const [jobs, setJobs] = useState([]);
+    const [deletedJob, setdeletedJob] = useState(false);
 
-const JobList = () => {
-
-  const [jobs, setJobs] = useState();
 
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
-    getAllJobs(authToken)
+    getAllJobsAdmin(authToken)
       .then((candidates) => {
         setJobs(candidates)
       })
       .catch((error) => {
         console.log(error);
       })
-  }, [])
+  }, [deletedJob])
 
+  function jobsStateChange() {
+    setdeletedJob((prevState)=> !prevState)
+  }
 
   return (
-      <div className="w-1/2 mx-auto">
+    <div className="w-1/2 mx-auto">
         <h2 className="text-2xl font-bold m-4 text-center">Job Listings</h2>
         {jobs && jobs.map((job) => (
           <JobCard
@@ -35,10 +38,9 @@ const JobList = () => {
             totalOpenings={job.totalOpenings}
             jobDescription={job.jobDesc}
             companyId= {job.employerID._id}
+            jobsStateChange={jobsStateChange}
           />
         ))}
       </div>
-  );
-};
-
-export default JobList;
+  )
+}

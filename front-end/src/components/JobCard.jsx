@@ -8,8 +8,9 @@ import {
 } from "@material-tailwind/react";
 import JobApplyForm from '../components/JobApplyForm';
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { deleteApplication, deleteJobPosting } from '../api/AdminApi';
 
-const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings , applications ,companyId }) => {
+const JobCard = ({ id, userName, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings , applications ,companyId , jobsStateChange  , path }) => {
 
   const date = new Date(dateAdded);
   const fullDate = date.toLocaleDateString();
@@ -17,10 +18,12 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
   const handleOpen = () => setOpen(!open);
 
   const [photo, setPhoto] = useState(null);
-  // console.log(companyId);
+  const [role, setRole] = useState(null);
+
 
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    setRole(JSON.parse(localStorage.getItem('user')).roles[0].slice(5)) ;
     getPhoto(companyId, authToken)
       .then((resp) => {
         if (resp) {
@@ -28,13 +31,41 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
         }
       })
       .catch((error) => {
-        console.error('Error fetching photo:', error);
+        // console.error('Error fetching photo:', error);
       });
 
   }, [companyId]);
 
   const handleApply = () => {
     handleOpen();
+  };
+
+  const handleDeleteJob = () => {
+    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    deleteJobPosting(id, authToken)
+    .then((resp) => {
+      if (resp) {
+        console.log('deleted');
+        jobsStateChange();
+      }
+    })
+    .catch((error) => {
+      console.error('Error deleting job:', error);
+    });
+  };
+
+  const handleDeleteApplication = () => {
+    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    console.log(id);
+    deleteApplication(id, authToken)
+    .then((resp) => {
+      if (resp) {
+        jobsStateChange();
+      }
+    })
+    .catch((error) => {
+      console.error('Error deleting job:', error);
+    });
   };
   return (
     <Fragment>
@@ -44,7 +75,7 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
       </div>
       <div className="flex flex-col w-full">
         <h3 className="text-xl font-bold text-gray-800">{jobTitle}</h3>
-        <p className="text-blue-600 text-xs font-medium mb-2">{companyName}</p>
+        <p className="text-blue-600 text-xs font-medium mb-2">{companyName ? companyName : userName}</p>
         <p className="text-gray-600 text-sm mb-4">{jobDescription}</p>
         <div className="flex items-center justify-between">
           <div className='flex gap-2'>
@@ -57,7 +88,7 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
           <div className="bg-gray-100 my-2 p-2 w-fit rounded-md">
             <p className="text-xs  text-gray-600">Total Openings: <span className="text-gray-700 font-semibold">{totalOpenings}</span></p>
           </div>
-          {!applications && <Button size="sm" onClick={handleApply} variant="gradient" className='h-8 my-2'>Apply</Button>}
+          {role === 'ADMIN' ? <Button size="sm" onClick={path === '/applications-admin' ?handleDeleteApplication :handleDeleteJob} variant="gradient" color="amber" className='h-8 my-2'>Delete</Button> : !applications && <Button size="sm" onClick={handleApply} variant="gradient" className='h-8 my-2'>Apply</Button>}
         </div>
       </div>
       <Dialog open={open} handler={handleOpen}>

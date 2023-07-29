@@ -91,9 +91,9 @@ exports.getApplicants = async (req, res) => {
   }
 };
 
-exports.getApplications = async (req, res) => {
+exports.getApplicationsCandidate = async (req, res) => {
   try {
-    const result = await userService.getApplications(
+    const result = await userService.getApplicationsCandidate(
       req.headers["x-access-token"]
     );
     res.status(200).send(result);
@@ -182,7 +182,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.deleteJobPosting = async (req, res) => {
   try {
-    const deletedJobPosting = await userService.deletejobPostingsModel(
+    const deletedJobPosting = await userService.deleteJobPosting(
       req.query.jobID
     );
     if (!deletedJobPosting) {
@@ -209,6 +209,8 @@ exports.readJobPostings = async (req, res) => {
 exports.updateJobPosting = async (req, res) => {
   try {
     const updatedFields = req.body;
+    console.log(req.query.jobID);
+    console.log(updatedFields);
     await userService.updatejobPostingsModel(req.query.jobID, updatedFields);
     res.status(200).json({ message: "JobPosting updated successfully" });
   } catch (error) {
@@ -244,10 +246,34 @@ exports.getResume = async (req, res) => {
   }
 };
 
+exports.getResume = async (req, res) => {
+  try {
+    const resume = await userService.getResume(req.query.candidateID);
+
+    if (resume === "resume not uploaded.") {
+      res.status(200).send("resume not uploaded.");
+    } else if (resume && fs.existsSync(resume)) {
+      res.status(200).sendFile(resume);
+    } else {
+      res.status(200).send("No resume found");
+    }
+  } catch (error) {
+    logger.error("Failed to fetch resume:", error);
+    res.status(200).send("Failed to fetch resume");
+  }
+};
+
 exports.getPhoto = async (req, res) => {
   try {
     const photo = await userService.getPhoto(req.query.candidateID);
-    res.status(200).sendFile(photo);
+
+    if (photo === "Photo not uploaded.") {
+      res.status(200).send("Photo not uploaded.");
+    } else if (photo && fs.existsSync(photo)) {
+      res.status(200).sendFile(photo);
+    } else {
+      res.status(200).send("No photo found");
+    }
   } catch (error) {
     logger.error("Failed to fetch photo:", error);
     res.status(200).send("Failed to fetch photo");
@@ -296,5 +322,99 @@ exports.postPhoto = async (req, res) => {
     res.send(result);
   } catch (error) {
     res.status(400).send(error.message);
+  }
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await userService.getUsers(req.headers["x-access-token"]);
+    res.status(200).send(users);
+  } catch (error) {
+    logger.error("Failed to fetch users:", error);
+    res.status(500).send("Failed to fetch users");
+  }
+};
+
+exports.deleteUser = async (req, res) => {
+  try {
+    const deletedUser = await userService.deleteUser(req.query.id);
+    if (!deletedUser) {
+      res.status(404).send("User not found");
+    } else {
+      res.status(200).json("Successfully deleted user!");
+    }
+  } catch (error) {
+    logger.error("Failed to delete user:", error);
+    res.status(500).send("Failed to delete user");
+  }
+};
+
+exports.getApplications = async (req, res) => {
+  try {
+    const applicationsData = await userService.getApplicationsAdmin();
+    res.status(200).send(applicationsData);
+  } catch (error) {
+    logger.error("Failed to fetch applications:", error);
+    res.status(500).send("Failed to fetch applications");
+  }
+};
+
+exports.getApplicationStats = async (req, res) => {
+  try {
+    const applicationsData = await userService.getApplicationStats();
+    res.status(200).send(applicationsData);
+  } catch (error) {
+    logger.error("Failed to fetch applications:", error);
+    res.status(500).send("Failed to fetch applications");
+  }
+};
+
+exports.getAllCandidateStats = async (req, res) => {
+  try {
+    const stats = await userService.getAllCandidateStats(
+      req.headers["x-access-token"]
+    );
+    res.status(200).send(stats);
+  } catch (error) {
+    logger.error("Failed to fetch stats:", error);
+    res.status(500).send("Failed to fetch stats");
+  }
+};
+
+exports.getAllEmployerStats = async (req, res) => {
+  try {
+    const stats = await userService.getAllEmployerStats(
+      req.headers["x-access-token"]
+    );
+    res.status(200).send(stats);
+  } catch (error) {
+    logger.error("Failed to fetch stats:", error);
+    res.status(500).send("Failed to fetch stats");
+  }
+};
+
+exports.deleteApplication = async (req, res) => {
+  try {
+    const deletedApplication = await userService.deleteApplication(
+      req.query.id
+    );
+    if (!deletedApplication) {
+      res.status(404).send("Application not found");
+    } else {
+      res.status(200).json("Successfully deleted application!");
+    }
+  } catch (error) {
+    logger.error("Failed to delete application:", error);
+    res.status(500).send("Failed to delete application");
+  }
+};
+
+exports.getAllStats = async (req, res) => {
+  try {
+    const stats = await userService.getAllStats();
+    res.status(200).send(stats);
+  } catch (error) {
+    logger.error("Failed to fetch stats:", error);
+    res.status(500).send("Failed to fetch stats");
   }
 };

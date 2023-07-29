@@ -24,7 +24,7 @@ const Candidates = () => {
       {candidateProfiles && candidateProfiles.map((candidate) => (
         <CandidateCard
           key={candidate._id}
-          id={candidate._id}
+          candidateId={candidate._id}
           fullName={candidate.fullName}
           location={candidate.location}
           phoneNumber={candidate.phoneNumber}

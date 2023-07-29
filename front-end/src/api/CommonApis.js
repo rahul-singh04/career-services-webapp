@@ -26,7 +26,7 @@ export const updatePhoto = async (formData, authToken) => {
       }
    
     } catch (error) {
-      console.error('Error in Fetching', error);
+      // console.error('Error in Fetching', error);
     }
   };
   
