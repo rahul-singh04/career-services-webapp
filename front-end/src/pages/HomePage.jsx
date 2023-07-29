@@ -139,13 +139,13 @@ const HomePage = () => {
           </T>
           <DD>
             <D1>
-
+              <p>Career Fair (2022 - 2023)</p>
             </D1>
             <D1>
-
+              <p>Career Fair (2021 - 2022)</p>
             </D1>
             <D1>
-
+              <p>Career Fair (2020 - 2021)</p>
             </D1>
           </DD>
       </DropDowns>
@@ -214,8 +214,20 @@ const S = styled.div`
 `;
 const T = styled.div``;
 
-const DD = styled.div``;
-const D1 = styled.div``;
+const DD = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+`;
+const D1 = styled.div`
+
+  p{
+    border: 2px solid red;
+    padding: 20px;
+  }
+`;
 
 
 
