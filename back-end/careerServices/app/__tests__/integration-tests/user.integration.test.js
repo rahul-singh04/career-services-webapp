@@ -15,7 +15,7 @@ describe('Integration Tests: Controller and Service', () => {
     });
 
     test('should browse candidates and return status 200 with candidate data', async () => {
-        const sampleCandidates = [{ _id: '1', name: 'John' }, { _id: '2', name: 'Alice' }];
+        const sampleCandidates = [{ _id: '1', name: 'Vikk' }, { _id: '2', name: 'dev-employeer' }];
         jest.spyOn(userService, 'getFilteredCandidates').mockResolvedValue(sampleCandidates);
         const response = await request(app)
             .get('/api/test/employer/getCandidates')
