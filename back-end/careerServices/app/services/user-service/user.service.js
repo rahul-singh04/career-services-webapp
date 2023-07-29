@@ -32,6 +32,7 @@ exports.getFilteredCandidates = async () => {
     return candidateInfo;
   });
 };
+
 exports.getAllJobs = async () => {
   const jobs = await jobPostingsModel
     .find()
