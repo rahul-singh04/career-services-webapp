@@ -298,31 +298,43 @@ exports.postPhoto = async (file, token, filePath) => {
     }
   }
 };
-
 exports.getApplicationsCandidate = async (token) => {
   const id = new mongoose.Types.ObjectId(extractuserModelIdFromToken(token));
   console.log(id);
   const applications = await applicationModel.find({ candidateID: id }).exec();
-  const candidateIDs = applications.map((app) => app.candidateID);
   const jobIDs = applications.map((app) => app.jobID);
   const jobs = await jobPostingsModel.find({ _id: { $in: jobIDs } }).exec();
 
-  const employerIDs = jobs.map((app) => app.employerID);
-
-  const users = await userModel
+  const employerIDs = jobs.map((job) => job.employerID);
+  const employers = await userModel
     .find({ _id: { $in: employerIDs } })
-    .select("-password -roles") // Exclude 'password' and 'roles' fields
+    .select("-password -roles")
     .exec();
+
   return applications.map((app) => {
     const job = jobs.find((job) => job._id.toString() === app.jobID.toString());
+    const employer = employers.find(
+      (emp) => emp._id.toString() === job.employerID.toString()
+    );
 
     return {
       _id: app._id,
       candidateID: app.candidateID,
       jobID: app.jobID,
       status: app.status,
-      job: job,
-      employer: users,
+
+      job: {
+        _id: job._id,
+        employerID: job.employerID,
+        jobTitle: job.jobTitle,
+        companyLocation: job.companyLocation,
+        jobDesc: job.jobDesc,
+        workLocation: job.workLocation,
+        totalOpenings: job.totalOpenings,
+        datePosted: job.datePosted,
+        fullName: employer.fullName,
+        username: employer.username,
+      },
     };
   });
 };
