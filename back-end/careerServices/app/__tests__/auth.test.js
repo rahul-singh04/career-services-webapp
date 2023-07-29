@@ -1,5 +1,4 @@
-const { signup } = require("../controllers").authController;
-const { signin } = require("../controllers/auth.controller");
+const { signup, signin } = require("../controllers").authController;
 const { authService } = require("../services")
 
 
