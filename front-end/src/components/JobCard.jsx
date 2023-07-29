@@ -10,7 +10,7 @@ import JobApplyForm from '../components/JobApplyForm';
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { deleteApplication, deleteJobPosting } from '../api/AdminApi';
 
-const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings , applications ,companyId , jobsStateChange  , path }) => {
+const JobCard = ({ id, userName, jobTitle, companyName, location, dateAdded, jobDescription, workLocation, totalOpenings , applications ,companyId , jobsStateChange  , path }) => {
 
   const date = new Date(dateAdded);
   const fullDate = date.toLocaleDateString();
@@ -75,7 +75,7 @@ const JobCard = ({ id, jobTitle, companyName, location, dateAdded, jobDescriptio
       </div>
       <div className="flex flex-col w-full">
         <h3 className="text-xl font-bold text-gray-800">{jobTitle}</h3>
-        <p className="text-blue-600 text-xs font-medium mb-2">{companyName}</p>
+        <p className="text-blue-600 text-xs font-medium mb-2">{companyName ? companyName : userName}</p>
         <p className="text-gray-600 text-sm mb-4">{jobDescription}</p>
         <div className="flex items-center justify-between">
           <div className='flex gap-2'>

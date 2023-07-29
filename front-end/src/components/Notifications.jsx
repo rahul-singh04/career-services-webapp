@@ -11,8 +11,6 @@ const filterObjectsWithoutStatusNew = (arrayOfObjects) => {
       return !('status' in object) || object.status !== 'New';
     });
   };
-  
-
 
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
@@ -26,15 +24,14 @@ const filterObjectsWithoutStatusNew = (arrayOfObjects) => {
       });
   }, []);
 
-  console.log(applications);
-
   return (
-    <div className='w-48'>
+    <div className='w-48 '>
         <p className="text-sm text-center mb-1 text-red-600 font-medium ">Interview Invites</p>
       {applications &&
         applications.map((notification, index) => (
           <NotificationItem
             key={index}
+            companyName={notification.job.fullName}
             companyLocation={notification.job.companyLocation}
             jobTitle={notification.job.jobTitle}
             workLocation={notification.job.workLocation}
