@@ -156,7 +156,7 @@ export default function NavigationBar() {
                     <MdOutlineNotificationsActive size={24} color="red" />
                   </button>
                 </PopoverHandler>}
-              <PopoverContent>
+              <PopoverContent className="bg-white">
                 <Notifications/>
               </PopoverContent>
               {loggedin ?
