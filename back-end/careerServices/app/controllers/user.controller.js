@@ -418,3 +418,19 @@ exports.getAllStats = async (req, res) => {
     res.status(500).send("Failed to fetch stats");
   }
 };
+
+exports.search = async (req, res) => {
+  try {
+    const { model, key, value } = req.body;
+    const results = await userService.search(
+      model,
+      key,
+      value,
+      req.headers["x-access-token"]
+    );
+    res.status(200).send(results);
+  } catch (error) {
+    logger.error("Failed to fetch results:", error);
+    res.status(500).send("Failed to fetch results");
+  }
+};

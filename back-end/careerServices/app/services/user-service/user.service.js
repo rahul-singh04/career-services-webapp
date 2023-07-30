@@ -840,3 +840,54 @@ exports.getApplicationStatsForEmployer = async (token) => {
 
   return jobsWithStatusSums;
 };
+
+exports.search = async (model, key, value, token) => {
+  if (model === "users") {
+    const users = await this.getUsers(token);
+    const filteredUsers = users.filter((user) => {
+      if (Array.isArray(user[key])) {
+        return user[key].some((item) =>
+          item.toLowerCase().includes(value.toLowerCase())
+        );
+      } else if (typeof user[key] === "string") {
+        return user[key].toLowerCase().includes(value.toLowerCase());
+      }
+      return false;
+    });
+    return {
+      users: filteredUsers,
+    };
+  } else if (model === "jobpostings") {
+    const jobs = await this.getAllJobs();
+    const filteredJobs = jobs.filter((job) => {
+      if (Array.isArray(job[key])) {
+        return job[key].some((item) =>
+          item.toLowerCase().includes(value.toLowerCase())
+        );
+      } else if (typeof job[key] === "string") {
+        return job[key].toLowerCase().includes(value.toLowerCase());
+      }
+      return false;
+    });
+    return {
+      jobs: filteredJobs,
+    };
+  } else if (model === "applications") {
+    const applications = await this.getApplicationsAdmin();
+    const filteredApplications = applications.filter((application) => {
+      if (Array.isArray(application[key])) {
+        return application[key].some((item) =>
+          item.toLowerCase().includes(value.toLowerCase())
+        );
+      } else if (typeof application[key] === "string") {
+        return application[key].toLowerCase().includes(value.toLowerCase());
+      }
+      return false;
+    });
+    return {
+      applications: filteredApplications,
+    };
+  } else {
+    throw new Error("Invalid model name.");
+  }
+};

@@ -177,4 +177,9 @@ module.exports = function (app) {
     [authController.verifyToken, authController.isEmployer],
     userController.getAllEmployerStats
   );
+  app.get(
+    "/api/test/search",
+    [authController.verifyToken],
+    userController.search
+  );
 };
