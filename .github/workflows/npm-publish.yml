@@ -25,7 +25,7 @@ jobs:
         run: |
           cd front-end
           yarn
-          yarn run build --if-present
+          yarn run build
           yarn run test
         shell: bash
 
