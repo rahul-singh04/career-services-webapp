@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import AddJobs from '../pages/AddJobs';
 import { postJob } from '../api/EmployerApi';
 
-// Mock the api/EmployerApi module
+
 jest.mock('../api/EmployerApi', () => ({
     postJob: jest.fn(),
 }));

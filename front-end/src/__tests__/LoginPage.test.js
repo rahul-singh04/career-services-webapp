@@ -9,16 +9,16 @@ jest.mock('../api/authApi', () => ({
     handleSignin: jest.fn(),
 }));
 
-// Mock the authApi module
+
 jest.mock('../api/authApi', () => ({
     handleSignup: jest.fn(),
     handleSignin: jest.fn(),
 }));
 
-// Mock the useNavigate hook
+
 jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'), // Use the actual react-router-dom module except for useNavigate
-    useNavigate: () => jest.fn(), // Mock the useNavigate function to return a mock function
+    ...jest.requireActual('react-router-dom'),
+    useNavigate: () => jest.fn(),
 }));
 
 
