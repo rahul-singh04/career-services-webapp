@@ -6,6 +6,8 @@ import { getAllJobs } from '../api/StudentApi';
 
 const JobList = () => {
 
+  console.log("testing CI/CD deployment")
+
   const [jobs, setJobs] = useState();
 
   useEffect(() => {
@@ -21,23 +23,23 @@ const JobList = () => {
 
 
   return (
-      <div className="w-1/2 mx-auto">
-        <h2 className="text-2xl font-bold m-4 text-center">Job Listings</h2>
-        {jobs && jobs.map((job) => (
-          <JobCard
-            key={job._id}
-            id={job._id}
-            jobTitle={job.jobTitle}
-            companyName={job.fullName}
-            location={job.companyLocation}
-            dateAdded={job.datePosted}
-            workLocation={job.workLocation}
-            totalOpenings={job.totalOpenings}
-            jobDescription={job.jobDesc}
-            companyId= {job.employerID._id}
-          />
-        ))}
-      </div>
+    <div className="w-1/2 mx-auto">
+      <h2 className="text-2xl font-bold m-4 text-center">Job Listings</h2>
+      {jobs && jobs.map((job) => (
+        <JobCard
+          key={job._id}
+          id={job._id}
+          jobTitle={job.jobTitle}
+          companyName={job.fullName}
+          location={job.companyLocation}
+          dateAdded={job.datePosted}
+          workLocation={job.workLocation}
+          totalOpenings={job.totalOpenings}
+          jobDescription={job.jobDesc}
+          companyId={job.employerID._id}
+        />
+      ))}
+    </div>
   );
 };
 
