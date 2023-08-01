@@ -26,100 +26,146 @@ const HomePage = () => {
           </Subtext>
         </Form>
       </Section>
-      <Sectiontwo>
-      <Cards ref={ref}>
-      <Cleft>
-        <H>
-          <h2>Find the right Job or</h2>
-          <h2>Internship for you</h2>
-        </H>
-      </Cleft>
-      <Cright>
-          <CRTitle>
-            <p>Suggested Searches</p> 
-          </CRTitle>
-          <Line1>
-              <Tile1>
-                <button>Engineering</button>
-              </Tile1>
-              <Tile2>
-                <button>Business Development</button>
-              </Tile2>
-              <Tile3>
-                <button>Marketing</button>
-              </Tile3>
-              <Tile4>
-                <button>Finance</button>
-              </Tile4>
-          </Line1>
-          <Line2>
-              <Tile1>
-                <button>Software Development</button>
-              </Tile1>
-              <Tile2>
-                <button>Customer Service</button>
-              </Tile2>
-              <Tile3>
-                <button>Industrial Design</button>
-              </Tile3>
-              <Tile4>
-                <button>Customer Service</button>
-              </Tile4>
-          </Line2>
-          <Line2>
-              <Tile1>
-                  <button>Retail Associate</button>
-              </Tile1>
-              <Tile2>
-                <button>Arts & Design</button>
-              </Tile2>
-              <Tile3>
-                <button>Product Management</button>
-              </Tile3>
-              <Tile4>
-                <button>Media & Communications</button>
-              </Tile4>
-          </Line2>
-          <Line2>
-              <Tile1>
-                  <button>Support</button>
-              </Tile1>
-              <Tile2>
-                <button>HealthCare Service</button>
-              </Tile2>
-              <Tile3>
-                <button>Consulting</button>
-              </Tile3>
-              <Tile4>
-                <button>Purchasing</button>
-              </Tile4>
-          </Line2>
-      </Cright>
-    </Cards>
-      </Sectiontwo>
-      <Sectionthree>
-      <Carrer>
-      <About>
-          <p>The Career Hub provides career and employment (permanent/summer/ part-time) support services for undergraduate, graduate students and alumni from all disciplines. The Hub helps students develop lifelong career management skills through a comprehensive range of accessible services to support and empower students in making informed decisions about their career and employment goals. The Hub also assists employers in recruiting students from the university.</p>
-      </About>
-      <Services>
-        <h3>Services Include</h3>
-        <S>
-          <button>Job Postings</button>
-          <button>On-Campus Jobs</button>
-          <button>Internship Opportunities</button>
-          <button>Career Fairs</button>
-          <button>Career Coaching</button>
-          <button>Resume, Cover Letter, and Interview Advising</button>
-          <button>Employment and Career Workshops</button>
-        </S>
-      </Services>
-     
-    </Carrer>
-    <Footer>
 
-    </Footer>
+      <Sectiontwo>
+        <Cards ref={ref}>
+        <Cleft>
+          <H>
+            <h2>Find the right Job or</h2>
+            <h2>Internship for you</h2>
+          </H>
+        </Cleft>
+        <Cright>
+            <CRTitle>
+              <p>Suggested Searches</p> 
+            </CRTitle>
+            <Line1>
+                <Tile1>
+                  <button>Engineering</button>
+                </Tile1>
+                <Tile2>
+                  <button>Business Development</button>
+                </Tile2>
+                <Tile3>
+                  <button>Marketing</button>
+                </Tile3>
+                <Tile4>
+                  <button>Finance</button>
+                </Tile4>
+            </Line1>
+            <Line2>
+                <Tile1>
+                  <button>Software Development</button>
+                </Tile1>
+                <Tile2>
+                  <button>Customer Service</button>
+                </Tile2>
+                <Tile3>
+                  <button>Industrial Design</button>
+                </Tile3>
+                <Tile4>
+                  <button>Customer Service</button>
+                </Tile4>
+            </Line2>
+            <Line2>
+                <Tile1>
+                    <button>Retail Associate</button>
+                </Tile1>
+                <Tile2>
+                  <button>Arts & Design</button>
+                </Tile2>
+                <Tile3>
+                  <button>Product Management</button>
+                </Tile3>
+                <Tile4>
+                  <button>Media & Communications</button>
+                </Tile4>
+            </Line2>
+            <Line2>
+                <Tile1>
+                    <button>Support</button>
+                </Tile1>
+                <Tile2>
+                  <button>HealthCare Service</button>
+                </Tile2>
+                <Tile3>
+                  <button>Consulting</button>
+                </Tile3>
+                <Tile4>
+                  <button>Purchasing</button>
+                </Tile4>
+            </Line2>
+        </Cright>
+        </Cards>
+      </Sectiontwo>
+
+      <Sectionthree>
+        <Carrer>
+        <About>
+            <p>The Career Hub provides career and employment (permanent/summer/ part-time) support services for undergraduate, graduate students and alumni from all disciplines. The Hub helps students develop lifelong career management skills through a comprehensive range of accessible services to support and empower students in making informed decisions about their career and employment goals. The Hub also assists employers in recruiting students from the university.</p>
+        </About>
+        <Services>
+          <h3>Services Include</h3>
+          <S>
+            <button>Job Postings</button>
+            <button>On-Campus Jobs</button>
+            <button>Internship Opportunities</button>
+            <button>Career Fairs</button>
+            <button>Career Coaching</button>
+            <button>Resume, Cover Letter, and Interview Advising</button>
+            <button>Employment and Career Workshops</button>
+          </S>
+        </Services>
+      
+        </Carrer>
       </Sectionthree>
+
+      <Footer>
+        <Box>
+          <FooterContainer>
+            <Row>
+              
+              <Column>
+                <Heading>Services</Heading>
+                <FooterLink href="#">Job Postings</FooterLink>
+                <FooterLink href="#">Job Applications</FooterLink>
+                <FooterLink href="#">Training</FooterLink>
+                <FooterLink href="#">Resume</FooterLink>
+              </Column>
+              <Column>
+                <Heading>Contact Us</Heading>
+                <FooterLink href="#">Montreal</FooterLink>
+                <FooterLink href="#">Toronto</FooterLink>
+                <FooterLink href="#">Ottawa</FooterLink>
+              </Column>
+              <Column>
+                <Heading>Social Media</Heading>
+                <FooterLink href="#">
+                  <i className="fab fa-facebook-f">
+                    <span style={{ marginLeft: "10px" }}>
+                      LinkedIn
+                    </span>
+                  </i>
+                </FooterLink>
+                <FooterLink href="#">
+                  <i className="fab fa-twitter">
+                    <span style={{ marginLeft: "10px" }}>
+                      Twitter
+                    </span>
+                  </i>
+                </FooterLink>
+                <FooterLink href="#">
+                  <i className="fab fa-youtube">
+                    <span style={{ marginLeft: "10px" }}>
+                      Youtube
+                    </span>
+                  </i>
+                </FooterLink>
+              </Column>
+            </Row>
+          </FooterContainer>
+        </Box>
+      </Footer>
     </Container>
 
   );
@@ -155,13 +201,15 @@ const Section = styled.section`
 const Sectiontwo = styled.section`
   display: flex;
   align-content: start;
-  min-height: 300px;
-  padding-bottom: 138px;
+  min-height: 200px;
+  /* padding-bottom: 138px; */
   padding-top: 40px;
   padding: 60px 0;
+  /* padding-bottom: ; */
   position: relative;
   flex-wrap: wrap;
   width: 100%;
+  
   max-width: 1128px;
   align-items: center;
   margin: auto;
@@ -174,22 +222,25 @@ const Sectiontwo = styled.section`
 
 const Sectionthree = styled.section`
   display: flex;
+  flex-direction: column;
   align-content: start;
-  min-height: 300px;
+  min-height: 50px;
   padding-bottom: 138px;
   padding-top: 40px;
+  
   padding: 60px 0;
-  position: relative;
+  /* padding-bottom: 0; */
+  /* border: 2px solid red; */
   flex-wrap: wrap;
   width: 100%;
-  max-width: 1128px;
+  /* max-width: 1128px; */
   align-items: center;
   margin: auto;
-
-  @media (max-width: 768px) {
+  /* position: relative; */
+  /* @media (max-width: 768px) {
     margin: auto;
     min-height: 0px;
-  }
+  } */
 `;
 const Hero = styled.div`
   width: 100%;
@@ -264,6 +315,50 @@ const Subtext = styled.div`
 
 
 
+const Box = styled.div`
+  height: 100%;
+  color: black;
+`;
+   
+export const FooterContainer = styled.div`
+    display: flex;
+    justify-content:center ;
+    align-items: center;
+    padding: 20px;
+`
+   
+export const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+   
+export const Row = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  /* border: 2px solid red; */
+  justify-content: space-around;
+  align-items: center;
+`;
+   
+export const FooterLink = styled.a`
+  color: #000000;
+  margin-bottom: 20px;
+  font-size: 15px;
+  text-decoration: none;
+   
+  &:hover {
+    color: #2977c9;
+      transition: 200ms ease-in;
+  }
+`;
+   
+export const Heading = styled.p`
+  font-size: 20px;
+  color: #000000;
+  margin-bottom: 20px;
+  font-weight: bold;
+`;
 
 
 
@@ -279,7 +374,7 @@ const Subtext = styled.div`
 const Carrer = styled.div`
     display: flex;
     /* border: 2px solid black; */
-    height: 90vh;
+    /* height: 90vh; */
     flex-direction:column ;
     width: 100%;
 `;
@@ -289,9 +384,12 @@ display: flex;
 justify-content: center;
 align-items: center;
   p{
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bolder;
     padding:0px 50px 20px ;
+    font-family: sans-serif;
+    font-weight: 500;
+
 
   }
 `;
@@ -313,18 +411,20 @@ const S = styled.div`
   flex-wrap: wrap;
   justify-content:center ;
   align-items: center;
-
+  cursor: pointer;
   button{
     width: 25rem;
+    padding: 5px;
+    margin:5px;
     padding: 15px;
-    border: 2px solid #5B0101;
-    background: white;
-    color: #5B0101;
+    /* border: 2px solid #5B0101; */
+    background: #ffffff;
+    color: #2977c9;
   }
   button:hover{
-    color: white;
-    background: #5B0101;
-    border: 2px solid black;
+    color: #ffffff; 
+    background: #2977c9;
+    /* border: 2px solid black; */
   }
   
 `;
@@ -448,7 +548,6 @@ const Tile4 = styled.div`
 `;
 
 const Footer = styled.div`
-  height: 15vh;
   background: white;
-  border-top: 2px solid #5B0101;
+  /* border: 2px solid yellow; */
 `;
