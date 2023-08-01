@@ -383,14 +383,19 @@ const About = styled.div`
 display: flex;
 justify-content: center;
 align-items: center;
+
   p{
     font-size: 1.1rem;
-    font-weight: bolder;
     padding:0px 150px 20px ;
     font-family: sans-serif;
     font-weight: 500;
     color:#1d1c1c;
-
+  }
+  @media only screen and (max-width: 700px){
+   p{
+    font-size: 1.1rem;
+    padding:0px 45px 20px ;
+   } 
   }
 `;
 const Services = styled.div`
@@ -439,6 +444,10 @@ const Cards = styled.div`
   display: flex;
   justify-content:space-around ;
   align-items:center ;
+  @media only screen and (max-width: 700px){
+    display: flex;
+    flex-direction:column ;
+  }
 `;
 
 const H = styled.div`
@@ -464,6 +473,7 @@ const Cleft = styled.div`
 const Cright = styled.div`
   /* flex: 0.7; */
   display: flex;
+  flex-wrap: wrap;
   /* border:2px solid green ; */
   flex-direction: column;
   align-items:center ;
@@ -483,7 +493,7 @@ padding-bottom:50px ;
 const Line1 = styled.div`
   display: flex;
   justify-content:center ;
-
+  flex-wrap:wrap ;
   align-items: center;
   padding-bottom:5px;
 `;
@@ -493,6 +503,7 @@ const Line2 = styled.div`
   justify-content:center ;
   align-items: center;
   padding-bottom:5px;
+  flex-wrap:wrap ;
 `;
 
 const Tile1 = styled.div`
