@@ -384,12 +384,12 @@ display: flex;
 justify-content: center;
 align-items: center;
   p{
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bolder;
-    padding:0px 50px 20px ;
+    padding:0px 150px 20px ;
     font-family: sans-serif;
     font-weight: 500;
-
+    color:#1d1c1c;
 
   }
 `;
@@ -398,9 +398,10 @@ const Services = styled.div`
   flex-direction: column;
   h3{
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 50px;
     font-size: 2rem;
-    font-family: 'Oswald', sans-serif;
+    /* font-family: sans-serif;
+    font-weight: 200; */
   }
   justify-content:center;
   align-items: center;
@@ -470,7 +471,7 @@ const Cright = styled.div`
 `;
 
 const CRTitle = styled.div`
-padding-bottom:20px ;
+padding-bottom:50px ;
   p{
     font-size: 1.8rem;
     font-weight: bolder;
