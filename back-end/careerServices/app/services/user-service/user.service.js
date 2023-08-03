@@ -38,35 +38,37 @@ exports.getAllJobs = async () => {
     .find()
     .populate("employerID", "username email fullName")
     .exec();
+
   return jobs.map((job) => {
     const {
       _id,
       jobTitle,
       jobDesc,
-      employerID,
+      employerID: { _id: employerID, username, email, fullName }, // Rename employerID to avoid conflict
       companyLocation,
       workLocation,
       totalOpenings,
       datePosted,
     } = job;
-    const { username, email, fullName } = employerID;
     return {
       _id,
       jobTitle,
       jobDesc,
-      fullName,
-      companyLocation,
-      workLocation,
-      totalOpenings,
-      datePosted,
       employerID: {
+        _id: employerID,
         username,
         email,
         fullName,
       },
+      companyLocation,
+      workLocation,
+      totalOpenings,
+      datePosted,
     };
   });
 };
+
+
 
 exports.getJobs = async (token) => {
   const userId = new mongoose.Types.ObjectId(

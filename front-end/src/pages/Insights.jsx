@@ -40,7 +40,9 @@ export const Insights = () => {
 
 
   return (
-    <div className='flex mt-8 w-3/4 gap-4 mx-auto '>
+    <div className='flex flex-col mt-8  gap-4 mx-auto '>
+      <h1 className='text-2xl font-bold mb-4 text-center'>User Analytics</h1>
+      <div className='flex gap-4'>
       <div className='w-3/5'>
         {userStats && (
           <div className='bg-white p-16 rounded-md shadow-md'>
@@ -51,11 +53,8 @@ export const Insights = () => {
               innerRadius={100}
               labels={({ datum }) => `${datum.x}: ${datum.y}`}
               colorScale={customColors}
-              animate={{
-                duration: 2000
-              }}
               style={{
-                labels: { fontSize: ({ text }) => text.length > 10 ? 8 : 12 },
+                labels: { fontSize: ({ text }) => text.length > 10 ? 4 : 12 },
               }}
               containerComponent={<VictoryContainer
               padding={10}/>}
@@ -63,7 +62,7 @@ export const Insights = () => {
           </div>
         )}
       </div>
-      <div className='w-1/2'>
+      <div className='w-2/5'>
         {pieDataCandidateSkills && (
           <div className='bg-white p-4 rounded-md shadow-md p-16'>
             <h1 className='text-2xl font-bold mb-4'>Candidates Skills Stats</h1>
@@ -73,6 +72,7 @@ export const Insights = () => {
               innerRadius={100}
               labels={({ datum }) => `${datum.x}: ${datum.y}`}
               colorScale={customColors2}
+              labelPlacement={'perpendicular'}
               style={{
                 labels: { fontSize: ({ text }) => text.length > 10 ? 8 : 12 },
               }}
@@ -88,12 +88,14 @@ export const Insights = () => {
               innerRadius={100}
               labels={({ datum }) => `${datum.x}: ${datum.y}`}
               colorScale={customColors2}
+              labelPlacement={'perpendicular'}
               style={{
                 labels: { fontSize: ({ text }) => text.length > 10 ? 8 : 12 },
               }}
             />
           </div>
         )}
+      </div>
       </div>
     </div>
   );

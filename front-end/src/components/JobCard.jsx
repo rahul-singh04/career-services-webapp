@@ -20,7 +20,6 @@ const JobCard = ({ id, userName, jobTitle, companyName, location, dateAdded, job
   const [photo, setPhoto] = useState(null);
   const [role, setRole] = useState(null);
 
-
   useEffect(() => {
     const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
     setRole(JSON.parse(localStorage.getItem('user')).roles[0].slice(5)) ;
@@ -31,7 +30,7 @@ const JobCard = ({ id, userName, jobTitle, companyName, location, dateAdded, job
         }
       })
       .catch((error) => {
-        // console.error('Error fetching photo:', error);
+        console.error('Error fetching photo:', error);
       });
 
   }, [companyId]);
@@ -88,7 +87,7 @@ const JobCard = ({ id, userName, jobTitle, companyName, location, dateAdded, job
           <div className="bg-gray-100 my-2 p-2 w-fit rounded-md">
             <p className="text-xs  text-gray-600">Total Openings: <span className="text-gray-700 font-semibold">{totalOpenings}</span></p>
           </div>
-          {role === 'ADMIN' ? <Button size="sm" onClick={path === '/applications-admin' ?handleDeleteApplication :handleDeleteJob} variant="gradient" color="amber" className='h-8 my-2'>Delete</Button> : !applications && <Button size="sm" onClick={handleApply} variant="gradient" className='h-8 my-2'>Apply</Button>}
+          {role === 'ADMIN' ? <Button size="sm" onClick={path === '/applications-admin' ?handleDeleteApplication :handleDeleteJob} variant="gradient" color="red" className='h-8 my-2'>Delete</Button> : !applications && <Button size="sm" onClick={handleApply} variant="gradient" className='h-8 my-2'>Apply</Button>}
         </div>
       </div>
       <Dialog open={open} handler={handleOpen}>
