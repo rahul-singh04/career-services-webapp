@@ -18,6 +18,8 @@ const Candidates = () => {
         console.log(error);
       });
   }, []);
+  console.log(candidateProfiles);
+
 
   // Function to handle search input changes
   const handleSearchChange = (event) => {
@@ -26,6 +28,7 @@ const Candidates = () => {
 
   // Filter candidates based on the search term
   const filteredCandidates = candidateProfiles?.filter((candidate) =>
+  candidate.fullName &&
     candidate.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (candidate.location && candidate.location.toLowerCase().includes(searchTerm.toLowerCase()))
   );
@@ -38,7 +41,7 @@ const Candidates = () => {
           <Input
             label="Search Candidates"
             icon={<i class="fa-brands fa-searchengin fa-lg"  />}
-            value={searchTerm}
+             value={searchTerm}
             onChange={handleSearchChange}
           />
         </div>
