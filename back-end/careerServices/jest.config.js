@@ -1,6 +1,6 @@
 module.exports = {
     testEnvironment: "node",
     testPathIgnorePatterns: [
-        "/integration-tests"
+        // "/integration-tests"
     ]
 }
