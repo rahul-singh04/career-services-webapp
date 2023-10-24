@@ -1,15 +1,27 @@
-import React from 'react';
-import { useRef } from 'react';
-import styled from 'styled-components'
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useRef } from "react";
+import styled from "styled-components";
 
 const HomePage = () => {
   const ref = useRef(null);
   const handleClick = () => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' });
+    ref.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  return (
+  useEffect(() => {
+    axios
+      .get("https://careerservices-backend.onrender.com/")
+      .then((response) => {
+        //   console.log(response.data.message);
+        callback(response.data.message);
+      })
+      .catch((error) => {
+        // console.error(error.response.data.message);
+      });
+  }, []);
 
+  return (
     <Container>
       <Section>
         <Hero>
@@ -17,28 +29,25 @@ const HomePage = () => {
           <img src="/images/login-hero.svg" alt="" />
         </Hero>
         <Form>
-          <Google onClick={handleClick} >
-            <img src="/images/google.svg" alt="" />
-            Explore More
-          </Google>
+          <Google onClick={handleClick}>Explore More</Google>
           <Subtext>
-          <p>Helping you Prepare, For the World of Work.</p>
+            <p>Helping you Prepare, For the World of Work.</p>
           </Subtext>
         </Form>
       </Section>
       <Sectiontwo>
-      <Cards ref={ref}>
-      <Cleft>
-        <H>
-          <h2>Find the right Job or</h2>
-          <h2>Internship for you</h2>
-        </H>
-      </Cleft>
-      <Cright>
-          <CRTitle>
-            <p>Suggested Searches</p> 
-          </CRTitle>
-          <Line1>
+        <Cards ref={ref}>
+          <Cleft>
+            <H>
+              <h2>Find the right Job or</h2>
+              <h2>Internship for you</h2>
+            </H>
+          </Cleft>
+          <Cright>
+            <CRTitle>
+              <p>Suggested Searches</p>
+            </CRTitle>
+            <Line1>
               <Tile1>
                 <button>Engineering</button>
               </Tile1>
@@ -51,8 +60,8 @@ const HomePage = () => {
               <Tile4>
                 <button>Finance</button>
               </Tile4>
-          </Line1>
-          <Line2>
+            </Line1>
+            <Line2>
               <Tile1>
                 <button>Software Development</button>
               </Tile1>
@@ -65,10 +74,10 @@ const HomePage = () => {
               <Tile4>
                 <button>Customer Service</button>
               </Tile4>
-          </Line2>
-          <Line2>
+            </Line2>
+            <Line2>
               <Tile1>
-                  <button>Retail Associate</button>
+                <button>Retail Associate</button>
               </Tile1>
               <Tile2>
                 <button>Arts & Design</button>
@@ -79,10 +88,10 @@ const HomePage = () => {
               <Tile4>
                 <button>Media & Communications</button>
               </Tile4>
-          </Line2>
-          <Line2>
+            </Line2>
+            <Line2>
               <Tile1>
-                  <button>Support</button>
+                <button>Support</button>
               </Tile1>
               <Tile2>
                 <button>HealthCare Service</button>
@@ -93,43 +102,47 @@ const HomePage = () => {
               <Tile4>
                 <button>Purchasing</button>
               </Tile4>
-          </Line2>
-      </Cright>
-    </Cards>
+            </Line2>
+          </Cright>
+        </Cards>
       </Sectiontwo>
       <Sectionthree>
-      <Carrer>
-      <About>
-          <p>The Career Hub provides career and employment (permanent/summer/ part-time) support services for undergraduate, graduate students and alumni from all disciplines. The Hub helps students develop lifelong career management skills through a comprehensive range of accessible services to support and empower students in making informed decisions about their career and employment goals. The Hub also assists employers in recruiting students from the university.</p>
-      </About>
-      <Services>
-        <h3>Services Include</h3>
-        <S>
-          <button>Job Postings</button>
-          <button>On-Campus Jobs</button>
-          <button>Internship Opportunities</button>
-          <button>Career Fairs</button>
-          <button>Career Coaching</button>
-          <button>Resume, Cover Letter, and Interview Advising</button>
-          <button>Employment and Career Workshops</button>
-        </S>
-      </Services>
-     
-    </Carrer>
-    <Footer>
-
-    </Footer>
+        <Carrer>
+          <About>
+            <p>
+              The Career Hub provides career and employment (permanent/summer/
+              part-time) support services for undergraduate, graduate students
+              and alumni from all disciplines. The Hub helps students develop
+              lifelong career management skills through a comprehensive range of
+              accessible services to support and empower students in making
+              informed decisions about their career and employment goals. The
+              Hub also assists employers in recruiting students from the
+              university.
+            </p>
+          </About>
+          <Services>
+            <h3>Services Include</h3>
+            <S>
+              <button>Job Postings</button>
+              <button>On-Campus Jobs</button>
+              <button>Internship Opportunities</button>
+              <button>Career Fairs</button>
+              <button>Career Coaching</button>
+              <button>Resume, Cover Letter, and Interview Advising</button>
+              <button>Employment and Career Workshops</button>
+            </S>
+          </Services>
+        </Carrer>
+        <Footer></Footer>
       </Sectionthree>
     </Container>
-
   );
 };
 
 export default HomePage;
 const Container = styled.div`
-  padding:0px;
+  padding: 0px;
   /* font-family: sans-serif; */
-
 `;
 const Section = styled.section`
   display: flex;
@@ -150,7 +163,6 @@ const Section = styled.section`
     min-height: 0px;
   }
 `;
-
 
 const Sectiontwo = styled.section`
   display: flex;
@@ -262,187 +274,165 @@ const Subtext = styled.div`
   display: flex;
 `;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const Carrer = styled.div`
-    display: flex;
-    /* border: 2px solid black; */
-    height: 90vh;
-    flex-direction:column ;
-    width: 100%;
+  display: flex;
+  /* border: 2px solid black; */
+  height: 90vh;
+  flex-direction: column;
+  width: 100%;
 `;
 
 const About = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-  p{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  p {
     font-size: 1.2rem;
     font-weight: bolder;
-    padding:0px 50px 20px ;
-
+    padding: 0px 50px 20px;
   }
 `;
 const Services = styled.div`
   display: flex;
   flex-direction: column;
-  h3{
+  h3 {
     text-align: center;
     padding-bottom: 10px;
     font-size: 2rem;
-    font-family: 'Oswald', sans-serif;
+    font-family: "Oswald", sans-serif;
   }
-  justify-content:center;
+  justify-content: center;
   align-items: center;
 `;
 const S = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content:center ;
+  justify-content: center;
   align-items: center;
 
-  button{
+  button {
     width: 25rem;
     padding: 15px;
-    border: 2px solid #5B0101;
+    border: 2px solid #5b0101;
     background: white;
-    color: #5B0101;
+    color: #5b0101;
   }
-  button:hover{
+  button:hover {
     color: white;
-    background: #5B0101;
+    background: #5b0101;
     border: 2px solid black;
   }
-  
 `;
-
-
-
-
 
 const Cards = styled.div`
   /* border:2px solid red ; */
   display: flex;
-  justify-content:space-around ;
-  align-items:center ;
+  justify-content: space-around;
+  align-items: center;
 `;
 
 const H = styled.div`
   display: flex;
-  justify-content:center ;
+  justify-content: center;
   align-items: center;
   padding: 20px;
-  flex-direction:column ;
-  h2{
-    font-size:2rem ;
+  flex-direction: column;
+  h2 {
+    font-size: 2rem;
     font-weight: 900;
-    
-    color: #2977c9;
 
+    color: #2977c9;
   }
 `;
 
 const Cleft = styled.div`
   /* flex: 0.45; */
-  display: flex; 
+  display: flex;
   /* border:2px solid black ; */
-`
+`;
 const Cright = styled.div`
   /* flex: 0.7; */
   display: flex;
   /* border:2px solid green ; */
   flex-direction: column;
-  align-items:center ;
+  align-items: center;
   justify-content: center;
 `;
 
 const CRTitle = styled.div`
-padding-bottom:20px ;
-  p{
+  padding-bottom: 20px;
+  p {
     font-size: 1.8rem;
     font-weight: bolder;
     color: black;
-
   }
 `;
 
 const Line1 = styled.div`
   display: flex;
-  justify-content:center ;
+  justify-content: center;
 
   align-items: center;
-  padding-bottom:5px;
+  padding-bottom: 5px;
 `;
 
 const Line2 = styled.div`
   display: flex;
-  justify-content:center ;
+  justify-content: center;
   align-items: center;
-  padding-bottom:5px;
+  padding-bottom: 5px;
 `;
 
 const Tile1 = styled.div`
   border-radius: 10px;
-  padding-right:5px;
+  padding-right: 5px;
   height: 3rem;
   cursor: pointer;
   background: #ffffff;
   /* box-shadow: black .5px .5px; */
   color: #2977c9;
-  :hover{
-    color: #ffffff; 
+  :hover {
+    color: #ffffff;
     background: #2977c9;
   }
 `;
 const Tile2 = styled.div`
-   border-radius: 10px;
-  padding-right:5px;
+  border-radius: 10px;
+  padding-right: 5px;
   height: 3rem;
   cursor: pointer;
   background: #ffffff;
   /* box-shadow: black .5px .5px; */
   color: #2977c9;
-  :hover{
-    color: #ffffff; 
+  :hover {
+    color: #ffffff;
     background: #2977c9;
   }
 `;
 const Tile3 = styled.div`
-   border-radius: 10px;
-  padding-right:5px;
+  border-radius: 10px;
+  padding-right: 5px;
   height: 3rem;
   cursor: pointer;
   background: #ffffff;
   /* box-shadow: black .5px .5px; */
   color: #2977c9;
-  :hover{
-    color: #ffffff; 
+  :hover {
+    color: #ffffff;
     background: #2977c9;
   }
 `;
 const Tile4 = styled.div`
-   border-radius: 10px;
-  padding-right:5px;
+  border-radius: 10px;
+  padding-right: 5px;
   height: 3rem;
   cursor: pointer;
   background: #ffffff;
   /* box-shadow: black .5px .5px; */
   color: #2977c9;
-  :hover{
-    color: #ffffff; 
+  :hover {
+    color: #ffffff;
     background: #2977c9;
   }
 `;
@@ -450,5 +440,5 @@ const Tile4 = styled.div`
 const Footer = styled.div`
   height: 15vh;
   background: white;
-  border-top: 2px solid #5B0101;
+  border-top: 2px solid #5b0101;
 `;
