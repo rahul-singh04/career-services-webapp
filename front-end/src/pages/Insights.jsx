@@ -53,6 +53,7 @@ export const Insights = () => {
               innerRadius={100}
               labels={({ datum }) => `${datum.x}: ${datum.y}`}
               colorScale={customColors}
+              labelPlacement={'perpendicular'}
               style={{
                 labels: { fontSize: ({ text }) => text.length > 10 ? 4 : 12 },
               }}
