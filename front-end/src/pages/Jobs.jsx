@@ -30,7 +30,6 @@ const JobList = () => {
           .toLowerCase()
           .includes(searchTerm.toLowerCase()))
   );
-  console.log(jobs);
 
   return (
     <div className="px-4 md:w-1/2 mx-auto">
@@ -39,7 +38,7 @@ const JobList = () => {
         <div className="w-72">
           <Input
             label="Search Jobs"
-            icon={<i class="fa-brands fa-searchengin fa-lg" />}
+            icon={<i className="fa-brands fa-searchengin fa-lg" />}
             value={searchTerm}
             onChange={handleSearchChange}
           />
