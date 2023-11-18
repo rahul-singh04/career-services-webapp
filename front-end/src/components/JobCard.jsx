@@ -78,7 +78,7 @@ const JobCard = ({
   };
   return (
     <Fragment>
-      <div className="flex flex-row bg-white rounded-lg shadow-md p-6 mb-4 gap-4">
+      <div className="flex flex-row bg-white rounded-lg shadow-md p-6 mb-4 gap-4 ">
         <div className="flex items-center">
           <img
             src={photo || defaultProfile}
