@@ -16,8 +16,15 @@ const HomePage = () => {
     if (!authToken) {
       toast.error("Please Login first");
       navigate("/Signin");
+    } else {
+      if (authToken.roles[0] === "ROLE_CANDIDATE") {
+        navigate("/jobsSearch");
+      } else if (authToken.roles[0] === "ROLE_ADMIN") {
+        navigate("/users-admin");
+      } else if (authToken.roles[0] === "ROLE_EMPLOYER") {
+        navigate("/candidates");
+      }
     }
-    navigate("/jobsSearch");
   };
 
   useEffect(() => {

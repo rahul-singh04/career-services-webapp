@@ -1,8 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { getAllUsers } from '../api/AdminApi';
-import CandidateCard from '../components/CandidateCard';
-import { Tabs, TabsHeader, TabsBody, Tab, TabPanel } from '@material-tailwind/react';
-import EmployerCard from '../components/EmployerCard';
+import React, { useEffect, useState } from "react";
+import { getAllUsers } from "../api/AdminApi";
+import CandidateCard from "../components/CandidateCard";
+import {
+  Tabs,
+  TabsHeader,
+  TabsBody,
+  Tab,
+  TabPanel,
+} from "@material-tailwind/react";
+import EmployerCard from "../components/EmployerCard";
 
 export const AllUsersAdminSide = () => {
   const [candidates, setcandidates] = useState([]);
@@ -12,21 +18,23 @@ export const AllUsersAdminSide = () => {
 
   const filterObjectsWithSectorKey = (arrayOfObjects) => {
     return arrayOfObjects.filter((object) => {
-      return Object.prototype.hasOwnProperty.call(object, 'sector');
+      return Object.prototype.hasOwnProperty.call(object, "sector");
     });
   };
 
   const filterObjectsWithresumeUploadedKey = (arrayOfObjects) => {
     return arrayOfObjects.filter((object) => {
-      return Object.prototype.hasOwnProperty.call(object, 'githubProfile');
+      return Object.prototype.hasOwnProperty.call(object, "githubProfile");
     });
   };
 
   useEffect(() => {
-    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    const authToken = JSON.parse(localStorage.getItem("user")).accessToken;
     getAllUsers(authToken)
       .then((users) => {
-        const arrayOfObjects = Object.values(users).map((item) => ({ ...item }));
+        const arrayOfObjects = Object.values(users).map((item) => ({
+          ...item,
+        }));
         setemployers(filterObjectsWithSectorKey(arrayOfObjects));
         setcandidates(filterObjectsWithresumeUploadedKey(arrayOfObjects));
       })
@@ -39,20 +47,20 @@ export const AllUsersAdminSide = () => {
 
   const data = [
     {
-      label: 'Candidates',
-      value: 'Candidates',
+      label: "Candidates",
+      value: "Candidates",
     },
     {
-      label: 'Employer',
-      value: 'Employer',
+      label: "Employer",
+      value: "Employer",
     },
   ];
 
   function jobsStateChange() {
-    setdeletedJob((prevState)=> !prevState)
+    setdeletedJob((prevState) => !prevState);
   }
   return (
-    <div className="w-2/3 mx-auto">
+    <div className="p-4 md:w-2/3 mx-auto">
       <h2 className="text-2xl font-bold my-4 text-center">User Profiles</h2>
       <Tabs value="Candidates">
         <TabsHeader>
@@ -65,7 +73,7 @@ export const AllUsersAdminSide = () => {
         <TabsBody>
           {data.map(({ value }) => (
             <TabPanel key={value} value={value}>
-              {value === 'Candidates' &&
+              {value === "Candidates" &&
                 candidates.map((user) => (
                   <CandidateCard
                     key={user._id}
@@ -79,20 +87,19 @@ export const AllUsersAdminSide = () => {
                     jobsStateChange={jobsStateChange}
                   />
                 ))}
-              {value === 'Employer' && 
-              employers.map((employer) => (
-                <EmployerCard
-                  key={employer._id}
-                  id={employer._id}
-                  fullName={employer.fullName}
-                  email={employer.email}
-                  sector={employer.sector}
-                  companyDesc={employer.companyDesc}
-                  totalNoOfEmp={employer.totalNoOfEmp}
-                  jobsStateChange={jobsStateChange}
-                />
-              ))
-              }
+              {value === "Employer" &&
+                employers.map((employer) => (
+                  <EmployerCard
+                    key={employer._id}
+                    id={employer._id}
+                    fullName={employer.fullName}
+                    email={employer.email}
+                    sector={employer.sector}
+                    companyDesc={employer.companyDesc}
+                    totalNoOfEmp={employer.totalNoOfEmp}
+                    jobsStateChange={jobsStateChange}
+                  />
+                ))}
             </TabPanel>
           ))}
         </TabsBody>

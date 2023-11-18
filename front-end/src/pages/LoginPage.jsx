@@ -81,11 +81,12 @@ const LoginPage = () => {
 
   const handleSigninCallback = (result) => {
     if (result === "success") {
-      console.log("Signin successful");
       setlafterSignInMessage("Successfully logged in!");
       setTimeout(() => {
         if (role === "candidate") {
           navigate("/profile");
+        } else if (role === "admin") {
+          navigate("/users-admin");
         } else {
           navigate("/");
         }
