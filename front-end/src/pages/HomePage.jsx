@@ -69,43 +69,43 @@ const HomePage = () => {
               <div className="mt-4">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 text-sm ">
                   <div
-                    className="border border-gray-300 p-3 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300"
+                    className="border border-gray-300 p-3 rounded-lg bg-gradient-to-r from-blue-500/[0.1] via-purple-500/[0.1] to-pink-500/[0.1]  hover:bg-blue-500 hover:text-white transition duration-300"
                     onClick={handleClick}
                   >
                     Job Postings
                   </div>
                   <div
-                    className="border border-gray-300 p-3 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300"
+                    className="border border-gray-300 p-3 rounded-lg bg-gradient-to-r from-blue-500/[0.1] via-purple-500/[0.1] to-pink-500/[0.1]  hover:bg-blue-500 hover:text-white transition duration-300"
                     onClick={handleClick}
                   >
                     On-Campus Jobs
                   </div>
                   <div
-                    className="border border-gray-300 p-3 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300"
+                    className="border border-gray-300 p-3 rounded-lg bg-gradient-to-r from-blue-500/[0.1] via-purple-500/[0.1] to-pink-500/[0.1]  hover:bg-blue-500 hover:text-white transition duration-300"
                     onClick={handleClick}
                   >
                     Internship Opportunities
                   </div>
                   <div
-                    className="border border-gray-300 p-3 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300"
+                    className="border border-gray-300 p-3 rounded-lg bg-gradient-to-r from-blue-500/[0.1] via-purple-500/[0.1] to-pink-500/[0.1]  hover:bg-blue-500 hover:text-white transition duration-300"
                     onClick={handleClick}
                   >
                     Career Fairs
                   </div>
                   <div
-                    className="border border-gray-300 p-3 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300"
+                    className="border border-gray-300 p-3 rounded-lg bg-gradient-to-r from-blue-500/[0.1] via-purple-500/[0.1] to-pink-500/[0.1]  hover:bg-blue-500 hover:text-white transition duration-300"
                     onClick={handleClick}
                   >
                     Career Coaching
                   </div>
                   <div
-                    className="border border-gray-300 p-3 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300"
+                    className="border border-gray-300 p-3 rounded-lg bg-gradient-to-r from-blue-500/[0.1] via-purple-500/[0.1] to-pink-500/[0.1]  hover:bg-blue-500 hover:text-white transition duration-300"
                     onClick={handleClick}
                   >
                     Resume, Cover Letter, and Interview Advising
                   </div>
                   <div
-                    className="border border-gray-300 p-3 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300"
+                    className="border border-gray-300 p-3 rounded-lg bg-gradient-to-r from-blue-500/[0.1] via-purple-500/[0.1] to-pink-500/[0.1]  hover:bg-blue-500 hover:text-white transition duration-300"
                     onClick={handleClick}
                   >
                     Employment and Career Workshops
