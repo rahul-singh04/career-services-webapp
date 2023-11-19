@@ -1,41 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { TagsInput } from "react-tag-input-component";
-import { getProfile, updateProfile } from '../api/StudentApi';
+import { getProfile, updateProfile } from "../api/StudentApi";
 
 const CandidateProfileForm = ({ onUpdateSuccess }) => {
-
-  const [fullName, setFullName] = useState('');
-  const [location, setLocation] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [linkedin, setLinkedin] = useState('');
-  const [twitter, setTwitter] = useState('');
-  const [github, setGithub] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [location, setLocation] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [github, setGithub] = useState("");
 
   const [profileInfo, setProfileInfo] = useState(null);
-  const [displayMessage, setdisplayMessage] = useState('')
+  const [displayMessage, setdisplayMessage] = useState("");
   const [skills, setSkills] = useState([]);
   const [experiences, setExperiences] = useState([
-    { companyName: '', title: '', startDate: '', endDate: '' },
+    { companyName: "", title: "", startDate: "", endDate: "" },
   ]);
 
-
   useEffect(() => {
-    setdisplayMessage('')
-    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    setdisplayMessage("");
+    const authToken = JSON.parse(localStorage.getItem("user")).accessToken;
     getProfile(authToken)
       .then((profileData) => {
         setProfileInfo(profileData);
-        setFullName(profileData.fullName || '');
-        setLocation(profileData.location || '');
-        setPhoneNumber(profileData.phoneNumber || '');
-        setLinkedin(profileData.linkedInProfile || '');
-        setTwitter(profileData.twitterProfile || '');
-        setGithub(profileData.githubProfile || '');
+        setFullName(profileData.fullName || "");
+        setLocation(profileData.location || "");
+        setPhoneNumber(profileData.phoneNumber || "");
+        setLinkedin(profileData.linkedInProfile || "");
+        setTwitter(profileData.twitterProfile || "");
+        setGithub(profileData.githubProfile || "");
         setSkills(profileData.skills || []);
-        setExperiences(profileData.professionalSummary)
+        setExperiences(profileData.professionalSummary);
       })
       .catch((error) => {
-        console.error('Error fetching profile:', error);
+        console.error("Error fetching profile:", error);
       });
   }, []);
 
@@ -51,7 +49,10 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
 
   const handleAddExperience = (e) => {
     e.preventDefault();
-    setExperiences([...experiences, { companyName: '', title: '', startDate: '', endDate: '' }]);
+    setExperiences([
+      ...experiences,
+      { companyName: "", title: "", startDate: "", endDate: "" },
+    ]);
   };
 
   const handleRemoveExperience = (e, index) => {
@@ -61,19 +62,18 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
     setExperiences(updatedExperiences);
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
     // Check if any field is blank
     if (
-      fullName.trim() === '' ||
-      location.trim() === '' ||
-      phoneNumber.trim() === '' ||
-      linkedin.trim() === '' ||
-      twitter.trim() === '' ||
-      github.trim() === ''
+      fullName.trim() === "" ||
+      location.trim() === "" ||
+      phoneNumber.trim() === "" ||
+      linkedin.trim() === "" ||
+      twitter.trim() === "" ||
+      github.trim() === ""
     ) {
-      setdisplayMessage('All fields are required');
+      setdisplayMessage("All fields are required");
       return;
     }
     const formData = {
@@ -84,31 +84,33 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
       twitterProfile: twitter,
       githubProfile: github,
       skills,
-      professionalSummary: experiences
+      professionalSummary: experiences,
     };
-    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    const authToken = JSON.parse(localStorage.getItem("user")).accessToken;
     updateProfile(formData, authToken)
       .then((response) => {
         if (response) {
-          setdisplayMessage('Profile Update Successful')
+          setdisplayMessage("Profile Update Successful");
           setTimeout(() => {
             onUpdateSuccess();
-          }, [1000])
+          }, [1000]);
         } else {
-          setdisplayMessage('Error updating profile:')
+          setdisplayMessage("Error updating profile:");
         }
       })
       .catch((error) => {
-        console.error('Error updating profile:', error);
+        console.error("Error updating profile:", error);
       });
   };
-
 
   return (
     <div className="max-w-lg mx-auto">
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="fullName" className="block font-semibold mb-1">
+          <label
+            htmlFor="fullName"
+            className="block font-semibold mb-1 text-black"
+          >
             Full Name
           </label>
           <input
@@ -120,7 +122,10 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="location" className="block font-semibold mb-1">
+          <label
+            htmlFor="location"
+            className="block font-semibold mb-1 text-black"
+          >
             Location
           </label>
           <input
@@ -132,7 +137,10 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="phoneNumber" className="block font-semibold mb-1">
+          <label
+            htmlFor="phoneNumber"
+            className="block font-semibold mb-1 text-black"
+          >
             Phone Number
           </label>
           <input
@@ -144,7 +152,10 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="linkedin" className="block font-semibold mb-1">
+          <label
+            htmlFor="linkedin"
+            className="block font-semibold mb-1 text-black"
+          >
             LinkedIn Profile
           </label>
           <input
@@ -156,7 +167,10 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="twitter" className="block font-semibold mb-1">
+          <label
+            htmlFor="twitter"
+            className="block font-semibold mb-1 text-black"
+          >
             Twitter Profile
           </label>
           <input
@@ -168,7 +182,10 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="github" className="block font-semibold mb-1">
+          <label
+            htmlFor="github"
+            className="block font-semibold mb-1 text-black"
+          >
             GitHub Profile
           </label>
           <input
@@ -180,7 +197,10 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="skills" className="block font-semibold mb-1">
+          <label
+            htmlFor="skills"
+            className="block font-semibold mb-1 text-black"
+          >
             Skills
           </label>
           <TagsInput
@@ -190,50 +210,79 @@ const CandidateProfileForm = ({ onUpdateSuccess }) => {
             placeHolder="Type your skills"
           />
         </div>
-        <div className='mb-4'>
-          <label htmlFor="skills" className="block font-semibold mb-1">
+        <div className="mb-4">
+          <label
+            htmlFor="skills"
+            className="block font-semibold mb-1 text-black"
+          >
             Professional Summary
           </label>
-          <button className='mb-2' onClick={handleAddExperience}>Add Experience</button>
-          {experiences.length > 0 && experiences.map((experience, index) => (
-            <div className="border p-2 mb-2" key={index}>
-              <input
-                type="text"
-                name="companyName"
-                value={experience.companyName}
-                onChange={(e) => handleInputChange(index, e)}
-                placeholder="Company Name"
-                className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
-              />
-              <input
-                type="text"
-                name="title"
-                value={experience.title}
-                onChange={(e) => handleInputChange(index, e)}
-                placeholder="Title"
-                className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
-              />
-              <input
-                type="date"
-                name="startDate"
-                value={experience.startDate.length > 0 ? new Date(experience.startDate).toISOString().split("T")[0] : ''}
-                onChange={(e) => handleInputChange(index, e)}
-                className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
-              />
-              <input
-                type="date"
-                name="endDate"
-                value={experience.endDate.length > 0 ? new Date(experience.endDate).toISOString().split("T")[0] : ''}
-                onChange={(e) => handleInputChange(index, e)}
-                className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
-              />
-              {index >= 0 && <button className="mx-2 py-2 px-4 bg-red-500 text-white rounded-md" onClick={(e) => handleRemoveExperience(e, index)}>Remove</button>}
-            </div>
-          ))}
+          <button className="mb-2" onClick={handleAddExperience}>
+            Add Experience
+          </button>
+          {experiences.length > 0 &&
+            experiences.map((experience, index) => (
+              <div className="border p-2 mb-2" key={index}>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={experience.companyName}
+                  onChange={(e) => handleInputChange(index, e)}
+                  placeholder="Company Name"
+                  className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
+                />
+                <input
+                  type="text"
+                  name="title"
+                  value={experience.title}
+                  onChange={(e) => handleInputChange(index, e)}
+                  placeholder="Title"
+                  className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
+                />
+                <input
+                  type="date"
+                  name="startDate"
+                  value={
+                    experience.startDate.length > 0
+                      ? new Date(experience.startDate)
+                          .toISOString()
+                          .split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) => handleInputChange(index, e)}
+                  className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
+                />
+                <input
+                  type="date"
+                  name="endDate"
+                  value={
+                    experience.endDate.length > 0
+                      ? new Date(experience.endDate).toISOString().split("T")[0]
+                      : ""
+                  }
+                  onChange={(e) => handleInputChange(index, e)}
+                  className="block w-full py-2 px-3 mb-2 border border-gray-300 rounded-md"
+                />
+                {index >= 0 && (
+                  <button
+                    className="mx-2 py-2 px-4 bg-red-500 text-white rounded-md"
+                    onClick={(e) => handleRemoveExperience(e, index)}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            ))}
         </div>
         {displayMessage && (
           <div className="my-2 p-2 w-full rounded-md text-center">
-            <p className={displayMessage.includes('Successful') ? 'text-green-500 font-extrabold' : 'text-red-500 font-extrabold'}>
+            <p
+              className={
+                displayMessage.includes("Successful")
+                  ? "text-green-500 font-extrabold"
+                  : "text-red-500 font-extrabold"
+              }
+            >
               {displayMessage}
             </p>
           </div>

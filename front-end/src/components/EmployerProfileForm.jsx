@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { getEmployerProfile, updateEmployerProfile } from '../api/EmployerApi';
+import React, { useEffect, useState } from "react";
+import { getEmployerProfile, updateEmployerProfile } from "../api/EmployerApi";
 
 const EmployerProfileForm = ({ onUpdateSuccess }) => {
-  const [fullName, setFullName] = useState('');
-  const [companyDesc, setCompanyDesc] = useState('');
-  const [totalNoOfEmp, setTotalNoOfEmp] = useState('');
-  const [sector, setSector] = useState('');
-  const [displayMessage, setDisplayMessage] = useState('');
+  const [fullName, setFullName] = useState("");
+  const [companyDesc, setCompanyDesc] = useState("");
+  const [totalNoOfEmp, setTotalNoOfEmp] = useState("");
+  const [sector, setSector] = useState("");
+  const [displayMessage, setDisplayMessage] = useState("");
 
   useEffect(() => {
-    setDisplayMessage('');
-    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    setDisplayMessage("");
+    const authToken = JSON.parse(localStorage.getItem("user")).accessToken;
     getEmployerProfile(authToken)
       .then((profileData) => {
-        setFullName(profileData.fullName || '');
-        setCompanyDesc(profileData.companyDesc || '');
-        setTotalNoOfEmp(profileData.totalNoOfEmp || '');
-        setSector(profileData.sector || '');
+        setFullName(profileData.fullName || "");
+        setCompanyDesc(profileData.companyDesc || "");
+        setTotalNoOfEmp(profileData.totalNoOfEmp || "");
+        setSector(profileData.sector || "");
       })
       .catch((error) => {
-        console.error('Error fetching profile:', error);
+        console.error("Error fetching profile:", error);
       });
   }, []);
 
@@ -27,12 +27,12 @@ const EmployerProfileForm = ({ onUpdateSuccess }) => {
     e.preventDefault();
     // Check if any field is blank
     if (
-      fullName.trim() === '' ||
-      companyDesc.trim() === '' ||
-      totalNoOfEmp.trim() === '' ||
-      sector.trim() === ''
+      fullName.trim() === "" ||
+      companyDesc.trim() === "" ||
+      totalNoOfEmp.trim() === "" ||
+      sector.trim() === ""
     ) {
-      setDisplayMessage('All fields are required');
+      setDisplayMessage("All fields are required");
       return;
     }
     const formData = {
@@ -41,17 +41,17 @@ const EmployerProfileForm = ({ onUpdateSuccess }) => {
       totalNoOfEmp,
       sector,
     };
-    const authToken = JSON.parse(localStorage.getItem('user')).accessToken;
+    const authToken = JSON.parse(localStorage.getItem("user")).accessToken;
     updateEmployerProfile(formData, authToken)
       .then(() => {
-        setDisplayMessage('Profile Update Successful');
+        setDisplayMessage("Profile Update Successful");
         setTimeout(() => {
           onUpdateSuccess();
         }, 1000);
       })
       .catch((error) => {
-        setDisplayMessage('Error updating profile:');
-        console.error('Error updating profile:', error);
+        setDisplayMessage("Error updating profile:");
+        console.error("Error updating profile:", error);
       });
   };
 
@@ -59,7 +59,10 @@ const EmployerProfileForm = ({ onUpdateSuccess }) => {
     <div className="max-w-lg mx-auto">
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="fullName" className="block font-semibold mb-1">
+          <label
+            htmlFor="fullName"
+            className="block font-semibold mb-1 text-black"
+          >
             Full Name
           </label>
           <input
@@ -71,7 +74,10 @@ const EmployerProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="companyDesc" className="block font-semibold mb-1">
+          <label
+            htmlFor="companyDesc"
+            className="block font-semibold mb-1 text-black"
+          >
             Company Description
           </label>
           <input
@@ -83,7 +89,10 @@ const EmployerProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="totalNoOfEmp" className="block font-semibold mb-1">
+          <label
+            htmlFor="totalNoOfEmp"
+            className="block font-semibold mb-1 text-black"
+          >
             Total Number of Employees
           </label>
           <input
@@ -95,7 +104,10 @@ const EmployerProfileForm = ({ onUpdateSuccess }) => {
           />
         </div>
         <div className="mb-4">
-          <label htmlFor="sector" className="block font-semibold mb-1">
+          <label
+            htmlFor="sector"
+            className="block font-semibold mb-1 text-black"
+          >
             Sector
           </label>
           <input
@@ -110,9 +122,9 @@ const EmployerProfileForm = ({ onUpdateSuccess }) => {
           <div className="my-2 p-2 w-full rounded-md text-center">
             <p
               className={
-                displayMessage.includes('Successful')
-                  ? 'text-green-500 font-extrabold'
-                  : 'text-red-500 font-extrabold'
+                displayMessage.includes("Successful")
+                  ? "text-green-500 font-extrabold"
+                  : "text-red-500 font-extrabold"
               }
             >
               {displayMessage}
