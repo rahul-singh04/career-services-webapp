@@ -154,18 +154,7 @@ const JobApplyForm = ({ id }) => {
             Upload Resume
           </Button>
         </div>
-        {/* {resumeOnServer && <div className="mb-4">
-                    <label htmlFor="resumeOnServer" className="block font-semibold mb-1">
-                        Resume On Server
-                    </label>
-                    <input
-                        type="checkbox"
-                        id="resumeOnServer"
-                        onChange={() => setresumeOnServer(!resumeOnServer)}
-                        className="mr-2"
-                    />
-                    <span>Resume On Server</span>
-                </div>} */}
+
         {displayMessage && (
           <p
             className={`font-extrabold text-center mb-4 ${
