@@ -124,7 +124,7 @@ const LoginPage = () => {
               id="email"
               value={username}
               onChange={handleuserNameChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-white text-black"
             />
           </div>
           {mode === "login" ? (
@@ -142,7 +142,7 @@ const LoginPage = () => {
                 id="email"
                 value={email}
                 onChange={handleEmailChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-white text-black"
               />
             </div>
           )}
@@ -156,7 +156,7 @@ const LoginPage = () => {
             <input
               type="password"
               id="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500 bg-white text-black"
               value={password}
               onChange={handlePasswordChange}
             />
@@ -176,7 +176,7 @@ const LoginPage = () => {
                   confirmPassword == "" || passwordMatch
                     ? "border-gray-300"
                     : "border-red-500"
-                } rounded focus:outline-none focus:border-blue-500`}
+                } rounded focus:outline-none focus:border-blue-500 bg-white text-black`}
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange}
               />
@@ -203,18 +203,18 @@ const LoginPage = () => {
           )}
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700"
+            className="w-full !bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 "
             onClick={handleSubmit}
           >
             {mode === "login" ? "Login" : "Sign Up"}
           </button>
         </form>
-        <p className="text-center mt-4">
+        <p className="text-center mt-4 text-black">
           {mode === "login"
             ? "Don't have an account?"
             : "Already have an account?"}{" "}
           <button
-            className="text-blue-500 font-semibold border border-indigo-600"
+            className="font-semibold border border-indigo-600 bg-blue-500 text-white"
             onClick={toggleMode}
           >
             {mode === "login" ? "Sign Up" : "Login"}
